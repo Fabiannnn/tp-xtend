@@ -16,14 +16,14 @@ class TestEventos {
 
 		cumple = new Evento()
 		cumple.fechaDeInicio = LocalDateTime.of(2017, 08, 20, 8, 20)
-		cumple.fechaFinalizacion = LocalDateTime.of(2017, 08, 20, 8, 25)
+		cumple.fechaFinalizacion = LocalDateTime.of(2017, 08, 20, 9,50)
 		jazz = new Evento()
 		Local1 = new Localizacion("Local1", new Point(35, 45))
 	}
 
 	@Test
 	def void testDuracionDelCumple300() {
-		Assert.assertEquals(300, cumple.duracion(), 0)
+		Assert.assertEquals(1.5, cumple.duracion(), 0)
 	}
 
 	@Test

@@ -10,8 +10,8 @@ class Evento {
 	LocalDateTime fechaDeInicio
 	LocalDateTime fechaFinalizacion
 
-	def long duracion() {
-		Duration.between(fechaDeInicio, fechaFinalizacion).getSeconds()
+	def double duracion() {
+		Duration.between(fechaDeInicio, fechaFinalizacion).getSeconds()/3600.0
 	}
 
 }
