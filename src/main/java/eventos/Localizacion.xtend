@@ -8,7 +8,7 @@ class Localizacion {
 	String nombreLugar
 	Point punto
 
-//	BigDecimal XCoord
+	// BigDecimal XCoord
 	// BigDecimal YCoord
 	new(String unNombreLugar, Point unPunto) {
 		nombreLugar = unNombreLugar
@@ -17,4 +17,5 @@ class Localizacion {
 
 	def double distancia(Point otroPunto) {
 		punto.distance(otroPunto)
-	}}
+	}
+}
