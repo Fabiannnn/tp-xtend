@@ -8,17 +8,12 @@ import org.uqbar.geodds.Point
 
 class TestEventos {
 	Evento cumple
-	Evento jazz
-	Localizacion Local1
 
 	@Before
 	def void init() {
-
-		cumple = new Evento()
+		cumple = new Evento("Cumple de Algoritmos 2", new Locacion("San Martin", new Point(35, 45)))
 		cumple.fechaDeInicio = LocalDateTime.of(2017, 08, 20, 8, 20)
-		cumple.fechaFinalizacion = LocalDateTime.of(2017, 08, 20, 9,50)
-		jazz = new Evento()
-		Local1 = new Localizacion("Local1", new Point(35, 45))
+		cumple.fechaFinalizacion = LocalDateTime.of(2017, 08, 20, 9, 50)
 	}
 
 	@Test
@@ -27,15 +22,15 @@ class TestEventos {
 	}
 
 	@Test
-	def void testDistanciaALocal1_0() {
+	def void testDistanciaASanMartin() {
 		val estoyAca = new Point(35, 45)
-		Assert.assertEquals(0.0, Local1.distancia(estoyAca), 0.0)
+		Assert.assertEquals(0.0, cumple.distancia(estoyAca), 0.0)
 	}
 
 	@Test
-	def void testDistanciaALocal1_Xmas10_Ymenos10_resultadoAproximado1400() {
+	def void testDistanciaASanMartin_Xmas10_Ymenos10_resultadoAproximado1400() {
 		val estoyAca = new Point(45, 35)
-		Assert.assertEquals(1400.0, Local1.distancia(estoyAca), 100.0)
+		Assert.assertEquals(1400.0, cumple.distancia(estoyAca), 100.0)
 	}
 
 }

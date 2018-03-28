@@ -4,12 +4,10 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.geodds.Point
 
 @Accessors
-class Localizacion {
+class Locacion {
 	String nombreLugar
 	Point punto
 
-	// BigDecimal XCoord
-	// BigDecimal YCoord
 	new(String unNombreLugar, Point unPunto) {
 		nombreLugar = unNombreLugar
 		punto = unPunto
