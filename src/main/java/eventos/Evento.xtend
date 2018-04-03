@@ -6,6 +6,7 @@ import java.time.Duration
 import org.uqbar.geodds.Point
 import java.time.LocalDate
 import java.util.Set
+import java.util.List
 
 @Accessors
 abstract class Evento {
@@ -61,13 +62,26 @@ class EventoAbierto extends Evento {
 
 	override hayEntradasDisponibles() { if(asistentesCompradores.size() < this.capacidadMaxima()) true else false } // o limitar elementos de la lista por capacidad maxima
 }
-
+@Accessors
 class EventoCerrado extends Evento {
-	/* 	List<Usuario> asistentesInvitados = newArrayList // usuario cantidad de invitados  no se si esto va aca o iria en los usuarios
-	 */
+	List<Invitacion> Invitados = newArrayList
 	new(String unNombre, Usuario unOrganizador, Locacion unaLocacion, int unaCapacidadMaxima) {
 		super(unNombre, unOrganizador, unaLocacion)
 		this.capacidadMaxima = unaCapacidadMaxima
 	}
+	
+	def invitadoConAcompañantes(Usuario elInvitado, int unaCantidadDeAcompañantes){
+		  hayCapacidadDisponible(unaCantidadDeAcompañantes+1)
+		
+	}
+	def boolean hayCapacidadDisponible(int unaCantidadTotal){
+		unaCantidadTotal <= (capacidadMaxima()-cantidadPosiblesAsistentes())
 
+	}
+	def agregarInvitacion(Invitacion invitacion){
+		Invitados.add(invitacion)
+	}
+	def int cantidadPosiblesAsistentes(){
+		 Invitados.fold(0)[acum, Invitados |acum + Invitados.cantidadDeAcompañantes+1]
+	}
 }
