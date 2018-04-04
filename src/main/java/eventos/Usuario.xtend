@@ -16,6 +16,8 @@ class Usuario {
 	boolean esAntisocial
 	Set<Usuario> amigos
 	double radioDeCercania
+	Set<Invitacion> invitaciones = newHashSet
+	Set<String> mensajesInvitaciones = newHashSet
 
 	new(String unNombreYApellido, String unEMail, LocalDate unaFechaDeNacimiento, String unaDireccion,
 		Point unaCoordenada) {
@@ -25,6 +27,24 @@ class Usuario {
 		this.direccion = unaDireccion
 		this.coordenadasDireccion = unaCoordenada
 
+	}
+
+	def recibirInvitacion(Invitacion invitacion) {
+		this.invitaciones.add(invitacion)
+	}
+
+	def recibirMensaje(String string) {
+		this.mensajesInvitaciones.add(string)
+	}
+
+	def rechazarInvitacion(Invitacion invitacion) {
+		if (this.equals(invitacion.unUsuario))
+			invitacion.rechazar()
+	}
+
+	def aceptarInvitacion(Invitacion invitacion, int cantidadAcompañantes) {
+		if (this.equals(invitacion.unUsuario) && (invitacion.cantidadDeAcompañantes >= cantidadAcompañantes))
+			invitacion.aceptar(cantidadAcompañantes)
 	}
 
 }

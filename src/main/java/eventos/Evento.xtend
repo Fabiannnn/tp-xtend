@@ -6,7 +6,7 @@ import java.time.Duration
 import org.uqbar.geodds.Point
 import java.time.LocalDate
 import java.util.Set
-import java.util.List
+
 
 @Accessors
 abstract class Evento {
@@ -60,28 +60,51 @@ class EventoAbierto extends Evento {
 		locacion.capacidadMaxima()
 	}
 
-	override hayEntradasDisponibles() { if(asistentesCompradores.size() < this.capacidadMaxima()) true else false } // o limitar elementos de la lista por capacidad maxima
+	override hayEntradasDisponibles() {
+		asistentesCompradores.size() < this.capacidadMaxima()
+	} 
 }
+
 @Accessors
 class EventoCerrado extends Evento {
-	List<Invitacion> Invitados = newArrayList
+	Set<Invitacion> Invitados = newHashSet // ver como pasar a Set
+	Invitacion  nuevaInvitacion 
 	new(String unNombre, Usuario unOrganizador, Locacion unaLocacion, int unaCapacidadMaxima) {
 		super(unNombre, unOrganizador, unaLocacion)
 		this.capacidadMaxima = unaCapacidadMaxima
 	}
+
+	def crearInvitacionConAcompañantes(Usuario elInvitado, int unaCantidadDeAcompañantes) {
+		if (hayCapacidadDisponible(unaCantidadDeAcompañantes + 1)) {
+
+		nuevaInvitacion= new Invitacion(this, elInvitado, unaCantidadDeAcompañantes)
+			registrarInvitacionEnEvento(nuevaInvitacion )
+			registrarInvitacionEnUsuario(nuevaInvitacion, elInvitado )
+						
 	
-	def invitadoConAcompañantes(Usuario elInvitado, int unaCantidadDeAcompañantes){
-		  hayCapacidadDisponible(unaCantidadDeAcompañantes+1)
-		
-	}
-	def boolean hayCapacidadDisponible(int unaCantidadTotal){
-		unaCantidadTotal <= (capacidadMaxima()-cantidadPosiblesAsistentes())
+		} else
+		println ("...")
+			//ver como mandar string al organizador que no se mando la invitacion
 
 	}
-	def agregarInvitacion(Invitacion invitacion){
-		Invitados.add(invitacion)
+
+	def boolean hayCapacidadDisponible(int unaCantidadTotal) {
+		unaCantidadTotal <= (capacidadMaxima() - cantidadPosiblesAsistentes())
+
 	}
-	def int cantidadPosiblesAsistentes(){
-		 Invitados.fold(0)[acum, Invitados |acum + Invitados.cantidadDeAcompañantes+1]
+
+	def registrarInvitacionEnEvento(Invitacion nuevaInvitacion) {
+		Invitados.add(nuevaInvitacion)
+				
+	}
+	
+
+	def registrarInvitacionEnUsuario(Invitacion nuevaInvitacion, Usuario elInvitado) {
+		elInvitado.recibirInvitacion(nuevaInvitacion)
+		elInvitado.recibirMensaje("Fuiste invitado a"+this.nombre+", con "+nuevaInvitacion.cantidadDeAcompañantes)
+		
+	}
+	def int cantidadPosiblesAsistentes() {
+		Invitados.fold(0)[acum, Invitados|acum + Invitados.cantidadDeAcompañantes + 1]
 	}
 }

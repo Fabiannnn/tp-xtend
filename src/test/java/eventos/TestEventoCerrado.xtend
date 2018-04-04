@@ -28,21 +28,39 @@ class TestEventoCerrado {
 	@Test
 	def cantidadPosiblesAsistentesEventoCerradoConUnInvitadoConOnceAcompañantes() {
 		invitacion = new Invitacion(reunionChica, usuario1, 5)
-		reunionChica.agregarInvitacion(invitacion)
+		reunionChica.registrarInvitacionEnEvento(invitacion)
 		Assert.assertEquals(6, reunionChica.cantidadPosiblesAsistentes(), 0)
 	}
+
 	@Test
 	def hayCapacidadDisponibleParaOtroInvitadoConTresAcompañantesEsFalso() {
 		invitacion = new Invitacion(reunionChica, usuario1, 5)
-		reunionChica.agregarInvitacion(invitacion)
+		reunionChica.registrarInvitacionEnEvento(invitacion)
 
 		Assert.assertTrue(reunionChica.hayCapacidadDisponible(4))
 	}
+
 	@Test
 	def hayCapacidadDisponibleParaOtroInvitadoConCuatroAcompañantesEsFalso() {
 		invitacion = new Invitacion(reunionChica, usuario1, 5)
-		reunionChica.agregarInvitacion(invitacion)
+		reunionChica.registrarInvitacionEnEvento(invitacion)
 
 		Assert.assertFalse(reunionChica.hayCapacidadDisponible(5))
+	}
+
+	@Test
+	def seisInvitadosSeInvitan4MasChequeo10PosiblesAsistentes() {
+		invitacion = new Invitacion(reunionChica, usuario1, 5)
+		reunionChica.registrarInvitacionEnEvento(invitacion)
+		reunionChica.crearInvitacionConAcompañantes(usuario1, 3)
+		Assert.assertEquals(10, reunionChica.cantidadPosiblesAsistentes(), 0)
+	}
+
+	@Test
+	def seisInvitadosSeInvitan5MasChequeo10PosiblesAsistentes() {
+		invitacion = new Invitacion(reunionChica, usuario1, 5)
+		reunionChica.registrarInvitacionEnEvento(invitacion)
+		reunionChica.crearInvitacionConAcompañantes(usuario1, 4)
+		Assert.assertEquals(6, reunionChica.cantidadPosiblesAsistentes(), 0)
 	}
 }
