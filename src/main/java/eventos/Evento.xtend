@@ -67,7 +67,7 @@ class EventoAbierto extends Evento {
 
 @Accessors
 class EventoCerrado extends Evento {
-	Set<Invitacion> Invitados = newHashSet // ver como pasar a Set
+	Set<Invitacion> invitados = newHashSet // ver como pasar a Set
 	Invitacion  nuevaInvitacion 
 	new(String unNombre, Usuario unOrganizador, Locacion unaLocacion, int unaCapacidadMaxima) {
 		super(unNombre, unOrganizador, unaLocacion)
@@ -94,7 +94,7 @@ class EventoCerrado extends Evento {
 	}
 
 	def registrarInvitacionEnEvento(Invitacion nuevaInvitacion) {
-		Invitados.add(nuevaInvitacion)
+		invitados.add(nuevaInvitacion)
 				
 	}
 	
@@ -105,6 +105,8 @@ class EventoCerrado extends Evento {
 		
 	}
 	def int cantidadPosiblesAsistentes() {
-		Invitados.fold(0)[acum, Invitados|acum + Invitados.cantidadDeAcompañantes + 1]
+		invitados.fold(0)[acum, invitados|acum + invitados.posiblesAsistentes( )]
 	}
+	
+
 }

@@ -47,4 +47,6 @@ class Usuario {
 			invitacion.aceptar(cantidadAcompañantes)
 	}
 
+		
+
 }

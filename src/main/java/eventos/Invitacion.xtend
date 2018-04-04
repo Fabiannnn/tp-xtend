@@ -10,7 +10,7 @@ class Invitacion {
 
 	boolean aceptada = false
 	boolean rechazada = false
-	int cantidadAcompañantesConfirmados = 0
+	int cantidadDeAcompañantesConfirmados = 0
 
 	new(EventoCerrado elEventoCerrado, Usuario elUsuario, int laCantidadDeAcompañantes) {
 		unEventoCerrado = elEventoCerrado
@@ -25,14 +25,18 @@ class Invitacion {
 
 	def aceptar(int unaCantidadDeAcompañantes) {
 		this.aceptada = true
-		cantidadDeAcompañantes = unaCantidadDeAcompañantes
+		cantidadDeAcompañantesConfirmados = unaCantidadDeAcompañantes
 	}
 
-//	def invitacionAceptada(Usuario elUsuario, int unaCantidadDeAcompañantesConfirmados) {
-//		if (this.unUsuario == elUsuario && unaCantidadDeAcompañantesConfirmados <= cantidadDeAcompañantes) {
-//			this.aceptada = true
-//			this.cantidadAcompañantesConfirmados = unaCantidadDeAcompañantesConfirmados
-//		}
-//	}
+	def posiblesAsistentes() {
+		if (aceptada) {
+			(cantidadDeAcompañantesConfirmados + 1)
+		} else if (rechazada) {
+			0
+		} else {
+			(cantidadDeAcompañantes + 1)
+		}
+
+	}
 
 }
