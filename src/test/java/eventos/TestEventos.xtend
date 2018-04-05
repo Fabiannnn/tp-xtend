@@ -17,8 +17,8 @@ class TestEventos {
 	def void init() {
 		salon_SM = new Locacion("San Martin", new Point(35, 45), 16)
 		usuario1 = new Usuario("Organizador1", "xx", LocalDate.of(2002, 05, 15), "donde vive", new Point(40, 50))
-		cumple = new EventoAbierto("Cumple de Algoritmos 2", usuario1, salon_SM)
-		reunionTrabajo = new EventoCerrado("Reunion proyecto", usuario1, salon_SM, 20)
+		cumple = new EventoAbierto("Cumple de Algoritmos 2", usuario1, salon_SM, LocalDate.of(2018, 05, 30), 17, 20.5)
+		reunionTrabajo = new EventoCerrado("Reunion proyecto", usuario1, salon_SM, LocalDate.of(2018, 04, 15), 20)
 		cumple.fechaDeInicio = LocalDateTime.of(2017, 08, 20, 8, 20)
 		cumple.fechaFinalizacion = LocalDateTime.of(2017, 08, 20, 9, 50)
 

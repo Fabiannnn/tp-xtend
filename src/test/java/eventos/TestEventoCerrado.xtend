@@ -9,6 +9,7 @@ import java.time.LocalDate
 
 class TestEventoCerrado {
 	EventoCerrado reunionChica
+	EventoCerrado otroEvento
 	Locacion salon_SM
 	Usuario usuario1
 	Usuario usuario2
@@ -19,7 +20,9 @@ class TestEventoCerrado {
 		salon_SM = new Locacion("San Martin", new Point(35, 45), 16)
 		usuario1 = new Usuario("PrimerUsuario", "xx", LocalDate.of(2002, 05, 15), "donde vive", new Point(40, 50))
 		usuario2 = new Usuario("SegundoUsuario", "xx", LocalDate.of(1974, 11, 03), "donde vive", new Point(45, 60))
-		reunionChica = new EventoCerrado("Reunion proyecto", usuario1, salon_SM, 10)
+		reunionChica = new EventoCerrado("Reunion proyecto", usuario1, salon_SM, LocalDate.of(2018, 04, 15), 10)
+		otroEvento = new EventoCerrado("Otra Reunion ", usuario1, salon_SM, LocalDate.of(2018, 04, 03), 10)
+
 	}
 
 	@Test
@@ -28,7 +31,7 @@ class TestEventoCerrado {
 	}
 
 	@Test
-	def cantidadPosiblesAsistentesEventoCerradoConUnInvitadoConOnceAcompañantes() {
+	def cantidadPosiblesAsistentesEventoCerradoConUnInvitadoConCincoAcompañantes() {
 		invitacion = new Invitacion(reunionChica, usuario1, 5)
 		reunionChica.registrarInvitacionEnEvento(invitacion)
 		Assert.assertEquals(6, reunionChica.cantidadPosiblesAsistentes(), 0)
@@ -85,5 +88,29 @@ class TestEventoCerrado {
 		reunionChica.registrarInvitacionEnEvento(invitacion)
 		invitacion.rechazar()
 		Assert.assertEquals(4, reunionChica.cantidadPosiblesAsistentes(), 0)
+	}
+
+	@Test
+	def seInvitan6_seQuiereAceptarYNoDejaPorFechaLimite() {
+		invitacion = new Invitacion(otroEvento, usuario1, 5)
+		otroEvento.registrarInvitacionEnEvento(invitacion)
+		usuario1.aceptarInvitacion(invitacion, 3)
+		Assert.assertFalse(invitacion.aceptada)
+	}
+
+	@Test
+	def seInvitan6_seQuiereRechazarYNoDejaPorFechaLimite() {
+		invitacion = new Invitacion(otroEvento, usuario1, 5)
+		otroEvento.registrarInvitacionEnEvento(invitacion)
+		usuario1.rechazarInvitacion(invitacion)
+		Assert.assertFalse(invitacion.rechazada)
+	}
+
+	@Test
+	def seisInvitadosSeQuierenInvitarDespuesFechaLimiteSeVerificaQueNoSeCreeLaInvitacion() {
+		invitacion = new Invitacion(otroEvento, usuario1, 5)
+		otroEvento.registrarInvitacionEnEvento(invitacion)
+		otroEvento.crearInvitacionConAcompañantes(usuario2, 3)
+		Assert.assertEquals(6, otroEvento.cantidadPosiblesAsistentes(), 0)
 	}
 }

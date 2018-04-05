@@ -1,17 +1,17 @@
 package eventos
 
 import org.eclipse.xtend.lib.annotations.Accessors
+import java.time.LocalDate
 
 @Accessors
 class Invitacion {
 	EventoCerrado unEventoCerrado
 	Usuario unUsuario
 	int cantidadDeAcompañantes
-
 	boolean aceptada = false
 	boolean rechazada = false
 	int cantidadDeAcompañantesConfirmados = 0
-
+		LocalDate today = LocalDate.now();
 	new(EventoCerrado elEventoCerrado, Usuario elUsuario, int laCantidadDeAcompañantes) {
 		unEventoCerrado = elEventoCerrado
 		unUsuario = elUsuario
@@ -20,6 +20,7 @@ class Invitacion {
 	}
 
 	def rechazar() {
+
 		this.rechazada = true
 	}
 
