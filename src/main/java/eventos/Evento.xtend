@@ -41,7 +41,7 @@ abstract class Evento {
 
 	def esUnFracaso() {}
 
-	def fechaAnteriorALaLimite() { today <= this.fechaLimiteConfirmacion }
+	def fechaAnteriorALaLimite() { today <= LocalDate.from(this.fechaLimiteConfirmacion) }
 
 }
 
@@ -62,7 +62,9 @@ class EventoAbierto extends Evento {
 	def comprarEntrada(Usuario elComprador) { // chequea condiciones
 		if ((elComprador.edad() > this.edadMinima) && this.fechaAnteriorALaLimite() && this.hayEntradasDisponibles()) {
 			generarEntrada(elComprador)
-		}
+		} else
+			elComprador.recibirMensaje("No se  cumplen las condiciones de compra de la entrada ")
+
 	}
 
 	def generarEntrada(Usuario elComprador) { // llega aca si las condiciones de compra se cumplen
@@ -90,6 +92,8 @@ class EventoAbierto extends Evento {
 		entradasVendidas.size() < this.capacidadMaxima()
 	}
 
+	override fechaAnteriorALaLimite() { today <= LocalDate.from(fechaDeInicio) }
+
 }
 
 @Accessors
@@ -111,8 +115,10 @@ class EventoCerrado extends Evento {
 			registrarInvitacionEnUsuario(nuevaInvitacion, elInvitado)
 
 		} else
-			println("...")
-	// ver como mandar string al organizador que no se mando la invitacion
+			this.organizador.recibirMensaje(
+				"No se  pudo generar la invitacion del evento " + this.nombre + "para el invitado " + elInvitado +
+					" con " + unaCantidadDeAcompañantes + " de acompañantes ")
+
 	}
 
 	def boolean hayCapacidadDisponible(int unaCantidadTotal) {

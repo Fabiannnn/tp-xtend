@@ -6,7 +6,6 @@ import java.time.Period
 
 @Accessors
 class Entrada {
-
 	EventoAbierto unEventoAbierto
 	Usuario unUsuario
 	boolean vigente = true
@@ -18,6 +17,7 @@ class Entrada {
 	}
 
 	def devolucionEntrada() {
+		
 		this.importeDevuelto = determinacionImporteDevolucion()
 		this.vigente = false
 
@@ -42,7 +42,7 @@ class Entrada {
 	}
 
 	def double diasHastaEvento() {
-		(Period.between(LocalDate.from(this.unEventoAbierto.fechaDeInicio), LocalDate.now())).getDays() as double
+		(Period.between(LocalDate.now(), LocalDate.from(this.unEventoAbierto.fechaDeInicio))).getDays() as double
 
 	}
 }

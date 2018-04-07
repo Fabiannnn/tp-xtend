@@ -3,9 +3,9 @@ package eventos
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-
 import org.uqbar.geodds.Point
 import java.time.LocalDate
+import java.time.Period
 
 class TestEventoCerrado {
 	EventoCerrado reunionChica
@@ -14,14 +14,18 @@ class TestEventoCerrado {
 	Usuario usuario1
 	Usuario usuario2
 	Invitacion invitacion
+	LocalDate today = LocalDate.now()
+	LocalDate hoyMasTresDias = today.plus(Period.ofDays(3))
+	LocalDate fechaVencida = today.plus(Period.ofDays(-1))
 
 	@Before
 	def void init() {
+
 		salon_SM = new Locacion("San Martin", new Point(35, 45), 16)
 		usuario1 = new Usuario("PrimerUsuario", "xx", LocalDate.of(2002, 05, 15), "donde vive", new Point(40, 50))
-		usuario2 = new Usuario("SegundoUsuario", "xx", LocalDate.of(1974, 11, 03), "donde vive", new Point(45, 60))
-		reunionChica = new EventoCerrado("Reunion proyecto", usuario1, salon_SM, LocalDate.of(2018, 04, 15), 10)
-		otroEvento = new EventoCerrado("Otra Reunion ", usuario1, salon_SM, LocalDate.of(2018, 04, 03), 10)
+		usuario2 = new Usuario("SegundoUsuario", "xx", LocalDate.of(1900, 04, 02), "donde vive", new Point(45, 60))
+		reunionChica = new EventoCerrado("Reunion proyecto", usuario1, salon_SM, hoyMasTresDias, 10)
+		otroEvento = new EventoCerrado("Otra Reunion ", usuario1, salon_SM, fechaVencida, 10)
 
 	}
 
@@ -95,7 +99,7 @@ class TestEventoCerrado {
 		invitacion = new Invitacion(otroEvento, usuario1, 5)
 		otroEvento.registrarInvitacionEnEvento(invitacion)
 		usuario1.aceptarInvitacion(invitacion, 3)
-		Assert.assertFalse(invitacion.aceptada)
+		Assert.assertNull(invitacion.aceptada)
 	}
 
 	@Test
@@ -103,7 +107,7 @@ class TestEventoCerrado {
 		invitacion = new Invitacion(otroEvento, usuario1, 5)
 		otroEvento.registrarInvitacionEnEvento(invitacion)
 		usuario1.rechazarInvitacion(invitacion)
-		Assert.assertFalse(invitacion.rechazada)
+		Assert.assertNull(invitacion.aceptada)
 	}
 
 	@Test
