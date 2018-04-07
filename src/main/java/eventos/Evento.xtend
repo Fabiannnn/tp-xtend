@@ -17,6 +17,14 @@ abstract class Evento {
 	int capacidadMaxima = 0
 	LocalDate fechaLimiteConfirmacion
 	LocalDate today = LocalDate.now();
+	new(String unNombre, Usuario unOrganizador, Locacion unaLocacion,LocalDateTime unaFechaInicio,LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion) {
+		this.nombre = unNombre
+		organizador = unOrganizador
+		locacion = unaLocacion
+		fechaDeInicio= unaFechaInicio
+		fechaFinalizacion= unaFechaFinalizacion
+		fechaLimiteConfirmacion = unaFechaLimiteConfirmacion
+	}
 
 	new(String unNombre, Usuario unOrganizador, Locacion unaLocacion, LocalDate unaFechaLimiteConfirmacion) {
 		this.nombre = unNombre
@@ -52,13 +60,17 @@ class EventoAbierto extends Evento {
 	Set<Entrada> entradasVendidas
 	Entrada nuevaEntrada
 
-	new(String unNombre, Usuario unOrganizador, Locacion unaLocacion, LocalDate unaFechaLimiteConfirmacion,
+	new(String unNombre, Usuario unOrganizador, Locacion unaLocacion, LocalDateTime unaFechaInicio,LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion,
 		int unaEdadMinima, double unPrecioEntrada) {
 		super(unNombre, unOrganizador, unaLocacion, unaFechaLimiteConfirmacion)
 		edadMinima = unaEdadMinima
 		precioEntrada = unPrecioEntrada
 	}
-
+	new(String unNombre, Usuario unOrganizador, Locacion unaLocacion,  LocalDate unaFechaLimiteConfirmacion, int unaEdadMinima, double unPrecioEntrada) {
+		super(unNombre, unOrganizador, unaLocacion, unaFechaLimiteConfirmacion)
+		edadMinima = unaEdadMinima
+		precioEntrada = unPrecioEntrada
+	}
 	def comprarEntrada(Usuario elComprador) { // chequea condiciones
 		if ((elComprador.edad() > this.edadMinima) && this.fechaAnteriorALaLimite() && this.hayEntradasDisponibles()) {
 			generarEntrada(elComprador)
@@ -101,12 +113,16 @@ class EventoCerrado extends Evento {
 	Set<Invitacion> invitados = newHashSet // ver como pasar a Set
 	Invitacion nuevaInvitacion
 
-	new(String unNombre, Usuario unOrganizador, Locacion unaLocacion, LocalDate unaFechaLimiteConfirmacion,
+	new(String unNombre, Usuario unOrganizador, Locacion unaLocacion,LocalDateTime unaFechaInicio,LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion,
 		int unaCapacidadMaxima) {
 		super(unNombre, unOrganizador, unaLocacion, unaFechaLimiteConfirmacion)
 		this.capacidadMaxima = unaCapacidadMaxima
 	}
-	
+		new(String unNombre, Usuario unOrganizador, Locacion unaLocacion, LocalDate unaFechaLimiteConfirmacion,
+		int unaCapacidadMaxima) {
+		super(unNombre, unOrganizador, unaLocacion, unaFechaLimiteConfirmacion)
+		this.capacidadMaxima = unaCapacidadMaxima
+	}
 	def crearInvitacionConAcompañantes(Usuario elInvitado, int unaCantidadDeAcompañantes) {
 		if (hayCapacidadDisponible(unaCantidadDeAcompañantes + 1) && fechaAnteriorALaLimite()) {
 
