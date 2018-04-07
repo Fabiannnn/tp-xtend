@@ -106,7 +106,7 @@ class EventoCerrado extends Evento {
 		super(unNombre, unOrganizador, unaLocacion, unaFechaLimiteConfirmacion)
 		this.capacidadMaxima = unaCapacidadMaxima
 	}
-
+	
 	def crearInvitacionConAcompañantes(Usuario elInvitado, int unaCantidadDeAcompañantes) {
 		if (hayCapacidadDisponible(unaCantidadDeAcompañantes + 1) && fechaAnteriorALaLimite()) {
 

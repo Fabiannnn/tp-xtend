@@ -16,6 +16,8 @@ class Entrada {
 		unUsuario = elUsuario
 	}
 
+
+// métodos relacionados con la devolución de entradas
 	def devolucionEntrada() {
 		
 		this.importeDevuelto = determinacionImporteDevolucion()
@@ -40,7 +42,6 @@ class Entrada {
 			((diasHastaEvento() - 1.0) * 10.0 + 20.0)
 		}
 	}
-
 	def double diasHastaEvento() {
 		(Period.between(LocalDate.now(), LocalDate.from(this.unEventoAbierto.fechaDeInicio))).getDays() as double
 

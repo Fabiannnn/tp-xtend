@@ -19,6 +19,7 @@ class Invitacion {
 
 	}
 
+
 	def rechazar() {
 
 		this.aceptada = false

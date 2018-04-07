@@ -20,7 +20,7 @@ class Usuario {
 	Set<Invitacion> invitaciones = newHashSet
 	Set<String> mensajesInvitaciones = newHashSet
 	Set<Entrada> entradaComprada = newHashSet
-	LocalDate today = LocalDate.now();
+	LocalDate today = LocalDate.now()
 
 	new(String unNombreYApellido, String unEMail, LocalDate unaFechaDeNacimiento, String unaDireccion,
 		Point unaCoordenada) {
@@ -31,10 +31,7 @@ class Usuario {
 		this.coordenadasDireccion = unaCoordenada
 
 	}
-
-	def edad() {
-		Period.between(fechaDeNacimiento, today).getYears
-	}
+ //Métodos relacionados con Invitaciones a Eventos Cerrados
 
 	def recibirInvitacion(Invitacion invitacion) {
 		this.invitaciones.add(invitacion)
@@ -54,7 +51,12 @@ class Usuario {
 			invitacion.unEventoCerrado.fechaAnteriorALaLimite()){
 			invitacion.aceptar(cantidadAcompañantes)}
 	}
-
+ //Métodos relacionados con Entradas  a Eventos Abiertos
+ 
+	def edad() {
+		Period.between(fechaDeNacimiento, today).getYears
+	}
+	
 	def devolverEntrada(Entrada entrada){
 		if (entrada.unEventoAbierto.fechaAnteriorALaLimite()){
 			entrada.devolucionEntrada()
