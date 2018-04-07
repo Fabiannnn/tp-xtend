@@ -21,6 +21,7 @@ class Usuario {
 	Set<String> mensajesInvitaciones = newHashSet
 	Set<Entrada> entradaComprada = newHashSet
 	LocalDate today = LocalDate.now();
+	TipoUsuario tipoDeUsuario
 
 	new(String unNombreYApellido, String unEMail, LocalDate unaFechaDeNacimiento, String unaDireccion,
 		Point unaCoordenada) {
@@ -61,4 +62,67 @@ class Usuario {
 		}
 	}
 
+}
+
+@Accessors
+abstract class TipoUsuario {
+	int cantidadEventosSimultaneos
+	int cantidadEventosMensuales
+	int cantidadMaximaDeInvitacionesPorEvento
+	Set<Evento> eventos = newHashSet
+
+	new(int unaCantidadDeEventosSimultaneos) {
+		cantidadEventosSimultaneos = unaCantidadDeEventosSimultaneos
+	}
+
+	def organizarEvento() {
+	}
+
+	def entregarInvitacion() {
+	}
+}
+
+@Accessors
+class Free extends TipoUsuario {
+
+	new(int unaCantidadDeEventosSimultaneos, int unaCantidadDeEventosMensuales, int unaCantidadMaximaDeInvitaciones) {
+		super(1)
+		this.cantidadEventosMensuales = 3
+		this.cantidadMaximaDeInvitacionesPorEvento = 50
+	}
+
+	override organizarEvento() {
+	}
+
+	override entregarInvitacion() {
+	}
+
+}
+
+@Accessors
+class Amateur extends TipoUsuario {
+	new(int unaCantidadDeEventosSimultaneos, int unaCantidadMaximaDeInvitaciones) {
+		super(5)
+		this.cantidadMaximaDeInvitacionesPorEvento = 50
+	}
+
+	override organizarEvento() {
+	}
+
+	override entregarInvitacion() {
+	}
+
+}
+
+@Accessors
+class Profesional extends TipoUsuario {
+	new(int unaCantidadDeEventosSimultaneos) {
+		super(5)
+	}
+
+	override organizarEvento() {
+	}
+
+	override entregarInvitacion() {
+	}
 }
