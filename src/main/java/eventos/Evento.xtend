@@ -16,7 +16,9 @@ abstract class Evento {
 	Locacion locacion
 	int capacidadMaxima = 0
 	LocalDate fechaLimiteConfirmacion
-	LocalDate today = LocalDate.now();
+	LocalDate today = LocalDate.now()
+	boolean cancelado=false
+	boolean postergado =false
 	new(String unNombre, Usuario unOrganizador, Locacion unaLocacion,LocalDateTime unaFechaInicio,LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion) {
 		this.nombre = unNombre
 		organizador = unOrganizador
@@ -44,7 +46,7 @@ abstract class Evento {
 	def double distancia(Point ubicacion) {
 		locacion.distancia(ubicacion)
 	}
-
+	def cancelarEvento(){}
 	def esExitoso() {}
 
 	def esUnFracaso() {}
@@ -95,6 +97,11 @@ class EventoAbierto extends Evento {
 		elComprador.entradaComprada.add(nuevaEntrada)
 
 	}
+	//el organizador manda la orden a determinado evento si esta autorizado a cancelarla
+	override cancelarEvento(){
+		entradasVendidas.forall[ mensajesYDevolucionEntradasPorCancelacion() ]
+		
+	}
 
 	override capacidadMaxima() {
 		locacion.capacidadMaxima()
@@ -110,7 +117,7 @@ class EventoAbierto extends Evento {
 
 @Accessors
 class EventoCerrado extends Evento {
-	Set<Invitacion> invitados = newHashSet // ver como pasar a Set
+	Set<Invitacion> invitados = newHashSet
 	Invitacion nuevaInvitacion
 
 	new(String unNombre, Usuario unOrganizador, Locacion unaLocacion,LocalDateTime unaFechaInicio,LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion,

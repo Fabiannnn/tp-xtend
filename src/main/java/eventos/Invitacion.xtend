@@ -44,10 +44,10 @@ class Invitacion {
 	
 	//faltaLaDecisiondea quien mandar el mensaje creo que debe venir desde el evento
 	def NotificacionAInvitadosDeCancelacio(){
-		this.unUsuario.mensajesInvitaciones.add("El Evento "+this.unEventoCerrado+" fue cancelado")
+		this.unUsuario.mensajesGenerales.add("El Evento "+this.unEventoCerrado+" fue cancelado")
 	}
 	def NotificacionAInvitadosDePostergacion(LocalDateTime nuevaFechaInicio,LocalDateTime nuevaFechaFinalizacion, LocalDate NuevaFechaLimiteConfirmacion){
-		this.unUsuario.mensajesInvitaciones.add("El Evento "+this.unEventoCerrado+" fue Postergado.  Las nueva fechas son, Inicio "+ nuevaFechaInicio +" Finalizacion: "+nuevaFechaFinalizacion+", Confirmacion: "+ NuevaFechaLimiteConfirmacion)
+		this.unUsuario.mensajesGenerales.add("El Evento "+this.unEventoCerrado+" fue Postergado.  Las nueva fechas son, Inicio "+ nuevaFechaInicio +" Finalizacion: "+nuevaFechaFinalizacion+", Confirmacion: "+ NuevaFechaLimiteConfirmacion)
 	}
 
 }

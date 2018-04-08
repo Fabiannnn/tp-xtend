@@ -16,18 +16,24 @@ class Entrada {
 		unUsuario = elUsuario
 	}
 
-
 // métodos relacionados con la devolución de entradas
 	def devolucionEntrada() {
-		
+
 		this.importeDevuelto = determinacionImporteDevolucion()
 		this.vigente = false
 
 	}
-	//desdelacancelaciondeeventos debe llamarse indicando la entrada
-	def devolucionEntradaPorCancelacion(){
-		this.importeDevuelto= unEventoAbierto.precioEntrada
-		vigente=false
+
+	// desdelacancelaciondeeventos debe llamarse indicando la entrada
+	def devolucionEntradaImporteTotalPorCancelacion() {
+		this.importeDevuelto = unEventoAbierto.precioEntrada
+		vigente = false
+	}
+
+	def mensajesYDevolucionEntradasPorCancelacion() {
+		this.unUsuario.mensajesGenerales.add(
+			"El Evento " + this.unEventoAbierto + " fue cancelado. El importe de la entrada le fue devuelto")
+		devolucionEntradaImporteTotalPorCancelacion()
 	}
 
 	def double determinacionImporteDevolucion() {
@@ -47,6 +53,7 @@ class Entrada {
 			((diasHastaEvento() - 1.0) * 10.0 + 20.0)
 		}
 	}
+
 	def double diasHastaEvento() {
 		(Period.between(LocalDate.now(), LocalDate.from(this.unEventoAbierto.fechaDeInicio))).getDays() as double
 

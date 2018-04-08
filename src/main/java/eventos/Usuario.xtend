@@ -21,7 +21,7 @@ class Usuario {
 	Set<Usuario> amigos = newHashSet
 	double radioDeCercania
 	Set<Invitacion> invitaciones = newHashSet
-	Set<String> mensajesInvitaciones = newHashSet
+	Set<String> mensajesGenerales = newHashSet//paraInvitaciones cancelaciones postergaciones
 	Set<Entrada> entradaComprada = newHashSet
 	LocalDate today = LocalDate.now()
 	TipoDeUsuario tipoDeUsuario
@@ -44,7 +44,7 @@ class Usuario {
 	}
 
 	def recibirMensaje(String string) {
-		this.mensajesInvitaciones.add(string)
+		this.mensajesGenerales.add(string)
 	}
 
 	def rechazarInvitacion(Invitacion invitacion) {
