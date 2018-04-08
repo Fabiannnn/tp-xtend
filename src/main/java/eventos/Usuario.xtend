@@ -23,19 +23,8 @@ class Usuario {
 	Set<Entrada> entradaComprada = newHashSet
 	LocalDate today = LocalDate.now()
 	TipoDeUsuario tipoDeUsuario
-	Set<Evento> eventosOrganizados
+	Set<EventoCerrado> eventosOrganizados= newHashSet
 
-	/* 	new(String unNombreYApellido, String unEMail, LocalDate unaFechaDeNacimiento, String unaDireccion,  Point unaCoordenada) {
-	 * 		nombreYApellido = unNombreYApellido
-	 * 		eMail = unEMail
-	 * 		fechaDeNacimiento = unaFechaDeNacimiento
-	 * 		direccion = unaDireccion
-
-	 * 		coordenadasDireccion = unaCoordenada
-
-	 * 	}
-	 */
-	// este segundo constructor esta incompleto por ahora se deja para test
 	new(String unNombreYApellido, String unEMail, LocalDate unaFechaDeNacimiento, String unaDireccion,
 		Point unaCoordenada) {
 		this.nombreYApellido = unNombreYApellido
@@ -77,59 +66,59 @@ class Usuario {
 			entrada.devolucionEntrada()
 		}
 	}
+	def void setUsuarioFree(){tipoDeUsuario = new UsuarioFree}
+//		def void setUsuarioAmateur(){tipoDeUsuario = new UsuarioAmateur}
+//			def void setUsuarioProfesionale(){tipoDeUsuario = new UsuarioProfesional}
 
 }
 
 interface TipoDeUsuario {
 
-	def puedoOrganizarElEventoAbierto() {
-	}
+	def boolean puedoOrganizarElEventoAbierto()
 
-	def puedoOrganizarElEventoCerrado(Usuario unUsuario, LocalDateTime unInicioEvento,
-		LocalDateTime unaFinalizacionEvento, int unaCapacidadTotal) {
-	}
+	def boolean puedoOrganizarElEventoCerrado(Usuario unUsuario, LocalDateTime unInicioEvento,
+		LocalDateTime unaFinalizacionEvento, int unaCapacidadTotal)
 
-	def entregarInvitacion() {
-	}
+	def boolean entregarInvitacion()
 }
 
 @Accessors
-class Free implements TipoDeUsuario {
+class UsuarioFree implements TipoDeUsuario {
 
 	val limiteEventosSimultaneos = 1
 	val maximoPersonasPorEventoCerrado = 50
 	val cantidadMaximaEventosMensuales = 3
 
-	override puedoOrganizarElEventoAbierto() { false }
+	override boolean puedoOrganizarElEventoAbierto() { false }
 
-	override puedoOrganizarElEventoCerrado(Usuario unUsuario, LocalDateTime unInicioEvento,
+	override boolean puedoOrganizarElEventoCerrado(Usuario unUsuario, LocalDateTime unInicioEvento,
 		LocalDateTime unaFinalizacionEvento, int unaCapacidadTotal) {
 		noSuperaElLimiteDeEventosSimultaneos(unUsuario) && noSuperaCapacidadTipoUsuario(unaCapacidadTotal) &&
 			noSuperaLimiteMensualDeEventos(unUsuario, unInicioEvento, unaFinalizacionEvento)
 	}
 
-	def noSuperaElLimiteDeEventosSimultaneos(Usuario unUsuario) {
+	override boolean entregarInvitacion() {
+		false
+	}
+
+	def boolean noSuperaElLimiteDeEventosSimultaneos(Usuario unUsuario) {
 		unUsuario.eventosOrganizados.filter[evento|evento.fechaFinalizacion > LocalDateTime.now()].size() <
 			limiteEventosSimultaneos
 
 	}
 
-	def noSuperaCapacidadTipoUsuario(int unaCapacidadTotal) {
+	def boolean noSuperaCapacidadTipoUsuario(int unaCapacidadTotal) {
 		unaCapacidadTotal <= maximoPersonasPorEventoCerrado
 	}
 
-	def noSuperaLimiteMensualDeEventos(Usuario unUsuario, LocalDateTime unInicioEvento,
+	def boolean noSuperaLimiteMensualDeEventos(Usuario unUsuario, LocalDateTime unInicioEvento,
 		LocalDateTime unaFinalizacionEvento) {
 		(noSuperaElLimite(unUsuario, unInicioEvento) && noSuperaElLimite(unUsuario, unaFinalizacionEvento))
 	}
 
-	def noSuperaElLimite(Usuario unUsuario, LocalDateTime unaFecha) {
-		unUsuario.eventosOrganizados.filter[evento|evento.fechaDeInicio.month == unaFecha.month].size() >
+	def boolean noSuperaElLimite(Usuario unUsuario, LocalDateTime unaFecha) {
+		unUsuario.eventosOrganizados.filter[evento|evento.fechaDeInicio.month == unaFecha.month].size() <
 			cantidadMaximaEventosMensuales
-	}
-
-	override entregarInvitacion() {
-		false
 	}
 
 }
