@@ -17,24 +17,25 @@ abstract class Evento {
 	int capacidadMaxima = 0
 	LocalDate fechaLimiteConfirmacion
 	LocalDate today = LocalDate.now()
-	boolean cancelado=false
-	boolean postergado =false
-	new(String unNombre, Usuario unOrganizador, Locacion unaLocacion,LocalDateTime unaFechaInicio,LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion) {
+	boolean cancelado = false
+	boolean postergado = false
+
+	new(String unNombre, Usuario unOrganizador, Locacion unaLocacion, LocalDateTime unaFechaInicio,
+		LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion) {
 		this.nombre = unNombre
 		organizador = unOrganizador
 		locacion = unaLocacion
-		fechaDeInicio= unaFechaInicio
-		fechaFinalizacion= unaFechaFinalizacion
+		fechaDeInicio = unaFechaInicio
+		fechaFinalizacion = unaFechaFinalizacion
 		fechaLimiteConfirmacion = unaFechaLimiteConfirmacion
 	}
 
-	new(String unNombre, Usuario unOrganizador, Locacion unaLocacion, LocalDate unaFechaLimiteConfirmacion) {
-		this.nombre = unNombre
-		organizador = unOrganizador
-		locacion = unaLocacion
-		fechaLimiteConfirmacion = unaFechaLimiteConfirmacion
-	}
-
+	/*	new(String unNombre, Usuario unOrganizador, Locacion unaLocacion, LocalDate unaFechaLimiteConfirmacion) {
+	 * 		this.nombre = unNombre
+	 * 		organizador = unOrganizador
+	 * 		locacion = unaLocacion
+	 * 		fechaLimiteConfirmacion = unaFechaLimiteConfirmacion
+	 }*/
 	def capacidadMaxima() {
 		capacidadMaxima
 	}
@@ -46,7 +47,9 @@ abstract class Evento {
 	def double distancia(Point ubicacion) {
 		locacion.distancia(ubicacion)
 	}
-	def cancelarEvento(){}
+
+	def void cancelarEvento() {}
+
 	def esExitoso() {}
 
 	def esUnFracaso() {}
@@ -62,18 +65,22 @@ class EventoAbierto extends Evento {
 	Set<Entrada> entradasVendidas
 	Entrada nuevaEntrada
 
-	new(String unNombre, Usuario unOrganizador, Locacion unaLocacion, LocalDateTime unaFechaInicio,LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion,
-		int unaEdadMinima, double unPrecioEntrada) {
-		super(unNombre, unOrganizador, unaLocacion, unaFechaLimiteConfirmacion)
+	new(String unNombre, Usuario unOrganizador, Locacion unaLocacion, LocalDateTime unaFechaInicio,
+		LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion, int unaEdadMinima,
+		double unPrecioEntrada) {
+		super(unNombre, unOrganizador, unaLocacion, unaFechaInicio, unaFechaFinalizacion, unaFechaLimiteConfirmacion)
 		edadMinima = unaEdadMinima
 		precioEntrada = unPrecioEntrada
 	}
-	new(String unNombre, Usuario unOrganizador, Locacion unaLocacion,  LocalDate unaFechaLimiteConfirmacion, int unaEdadMinima, double unPrecioEntrada) {
-		super(unNombre, unOrganizador, unaLocacion, unaFechaLimiteConfirmacion)
-		edadMinima = unaEdadMinima
-		precioEntrada = unPrecioEntrada
-	}
-	def comprarEntrada(Usuario elComprador) { // chequea condiciones
+
+	/*new(String unNombre, Usuario unOrganizador, Locacion unaLocacion, LocalDate unaFechaLimiteConfirmacion,
+	 * 	int unaEdadMinima, double unPrecioEntrada) {
+	 * 	super(unNombre, unOrganizador, unaLocacion, unaFechaLimiteConfirmacion)
+	 * 	edadMinima = unaEdadMinima
+	 * 	precioEntrada = unPrecioEntrada
+	 * }
+	 */
+	def void comprarEntrada(Usuario elComprador) { // chequea condiciones
 		if ((elComprador.edad() > this.edadMinima) && this.fechaAnteriorALaLimite() && this.hayEntradasDisponibles()) {
 			generarEntrada(elComprador)
 		} else
@@ -97,10 +104,11 @@ class EventoAbierto extends Evento {
 		elComprador.entradaComprada.add(nuevaEntrada)
 
 	}
-	//el organizador manda la orden a determinado evento si esta autorizado a cancelarla
-	override cancelarEvento(){
-		entradasVendidas.forall[ mensajesYDevolucionEntradasPorCancelacion() ]
-		
+
+	// el organizador manda la orden a determinado evento si esta autorizado a cancelarla
+	override void cancelarEvento() {
+		entradasVendidas.forall[mensajesYDevolucionEntradasPorCancelacion()]
+		cancelado = true
 	}
 
 	override capacidadMaxima() {
@@ -120,16 +128,12 @@ class EventoCerrado extends Evento {
 	Set<Invitacion> invitados = newHashSet
 	Invitacion nuevaInvitacion
 
-	new(String unNombre, Usuario unOrganizador, Locacion unaLocacion,LocalDateTime unaFechaInicio,LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion,
-		int unaCapacidadMaxima) {
-		super(unNombre, unOrganizador, unaLocacion, unaFechaLimiteConfirmacion)
+	new(String unNombre, Usuario unOrganizador, Locacion unaLocacion, LocalDateTime unaFechaInicio,
+		LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion, int unaCapacidadMaxima) {
+		super(unNombre, unOrganizador, unaLocacion, unaFechaInicio, unaFechaFinalizacion, unaFechaLimiteConfirmacion)
 		this.capacidadMaxima = unaCapacidadMaxima
 	}
-		new(String unNombre, Usuario unOrganizador, Locacion unaLocacion, LocalDate unaFechaLimiteConfirmacion,
-		int unaCapacidadMaxima) {
-		super(unNombre, unOrganizador, unaLocacion, unaFechaLimiteConfirmacion)
-		this.capacidadMaxima = unaCapacidadMaxima
-	}
+
 	def crearInvitacionConAcompañantes(Usuario elInvitado, int unaCantidadDeAcompañantes) {
 		if (hayCapacidadDisponible(unaCantidadDeAcompañantes + 1) && fechaAnteriorALaLimite()) {
 
@@ -164,4 +168,7 @@ class EventoCerrado extends Evento {
 		invitados.fold(0)[acum, invitados|acum + invitados.posiblesAsistentes()]
 	}
 
+	def int cantidadDeInvitacionesDadas() {
+		invitados.size() // si son invitaciones totales sin generar nuevas invitaciones por rechazos
+	}
 }

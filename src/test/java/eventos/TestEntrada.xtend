@@ -18,9 +18,7 @@ class TestEntrada {
 	def void init() {
 		salon_SM = new Locacion("San Martin", new Point(35, 45), 16)
 		usuario1 = new Usuario("Organizador1", "xx", LocalDate.of(2002, 05, 15), "donde vive", new Point(40, 50))
-		cumple = new EventoAbierto("Cumple de Algoritmos 2", usuario1, salon_SM, LocalDate.of(2018, 04, 17), 17, 100)
-		cumple.fechaDeInicio =LocalDateTime.now().plus(Period.ofDays(25))
-		cumple.fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(26))
+		cumple = new EventoAbierto("Cumple de Algoritmos 2", usuario1, salon_SM, LocalDateTime.now().plus(Period.ofDays(25)), LocalDateTime.now().plus(Period.ofDays(26)), LocalDate.of(2018, 04, 17), 17, 100)
 		entradaPrueba = new Entrada(cumple, usuario1)
 	}
 

@@ -8,7 +8,6 @@ import java.time.Period
 import java.time.LocalDateTime
 
 //import java.time.LocalDateTime
-
 @Accessors
 class Usuario {
 	String nombreDeUsuario
@@ -21,11 +20,13 @@ class Usuario {
 	Set<Usuario> amigos = newHashSet
 	double radioDeCercania
 	Set<Invitacion> invitaciones = newHashSet
-	Set<String> mensajesGenerales = newHashSet//paraInvitaciones cancelaciones postergaciones
+	Set<String> mensajesGenerales = newHashSet // paraInvitaciones cancelaciones postergaciones
 	Set<Entrada> entradaComprada = newHashSet
 	LocalDate today = LocalDate.now()
 	TipoDeUsuario tipoDeUsuario
-	Set<EventoCerrado> eventosOrganizados = newHashSet
+	Set<EventoCerrado> eventosCerradosOrganizados = newHashSet
+	Set<EventoAbierto> eventosAbiertoOrganizados = newHashSet
+	Set<Evento> eventosOrganizados = newHashSet
 
 	new(String unNombreYApellido, String unEMail, LocalDate unaFechaDeNacimiento, String unaDireccion,
 		Point unaCoordenada) {
@@ -38,9 +39,13 @@ class Usuario {
 
 	/*Falta ver como el usuaria organiza un evento cerrado o abierto consultando previamente segun tipo de usuario */
 	// Métodos relacionados con Invitaciones a Eventos Cerrados
-	
 	def recibirInvitacion(Invitacion invitacion) {
 		this.invitaciones.add(invitacion)
+	}
+
+	def crearSetEventosTotal() {
+		eventosOrganizados.addAll(eventosCerradosOrganizados)
+		eventosOrganizados.addAll(eventosAbiertoOrganizados)
 	}
 
 	def recibirMensaje(String string) {
@@ -59,9 +64,19 @@ class Usuario {
 		}
 	}
 
+	def invitarAUnEventoCerrado(EventoCerrado unEventoCerrado, Usuario elInvitado, int unaCantidadDeAcompañantes) {
+		if (tipoDeUsuario.sePuedeEntregarInvitacion(unEventoCerrado)) {
+			unEventoCerrado.crearInvitacionConAcompañantes(elInvitado, unaCantidadDeAcompañantes)
+		}
+	}
+
 	// Métodos relacionados con Entradas  a Eventos Abiertos
 	def edad() {
 		Period.between(fechaDeNacimiento, today).getYears
+	}
+
+	def comprarEntradaAUnEventoAbierto(EventoAbierto unEventoAbierto) {
+		unEventoAbierto.comprarEntrada(this)
 	}
 
 	def devolverEntrada(Entrada entrada) {
@@ -70,7 +85,32 @@ class Usuario {
 		}
 	}
 
+	// organizacion de eventos
+	def organizarEventoAbierto(String unNombre, Usuario unOrganizador, Locacion unaLocacion,
+		LocalDateTime unaFechaInicio, LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion,
+		int unaEdadMinima, double unPrecioEntrada) {
+		if (tipoDeUsuario.puedoOrganizarElEventoAbierto(unNombre, unOrganizador, unaLocacion, unaFechaInicio,
+			unaFechaFinalizacion, unaFechaLimiteConfirmacion, unaEdadMinima, unPrecioEntrada)) {
 
+			eventosAbiertoOrganizados.add(
+				new EventoAbierto(unNombre, unOrganizador, unaLocacion, unaFechaInicio, unaFechaFinalizacion,
+					unaFechaLimiteConfirmacion, unaEdadMinima, unPrecioEntrada))
+		}
+	}
+
+	def organizarEventoCerrado(String unNombre, Usuario unOrganizador, Locacion unaLocacion,
+		LocalDateTime unaFechaInicio, LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion,
+		int unaCapacidadMaxima) {
+		if (tipoDeUsuario.puedoOrganizarElEventoCerrado(unOrganizador, unaFechaInicio, unaFechaFinalizacion,
+			unaCapacidadMaxima)) {
+
+			eventosCerradosOrganizados.add(
+				new EventoCerrado(unNombre, unOrganizador, unaLocacion, unaFechaInicio, unaFechaFinalizacion,
+					unaFechaLimiteConfirmacion, unaCapacidadMaxima))
+
+		}
+
+	}
 
 	def void setUsuarioFree() { tipoDeUsuario = new UsuarioFree }
 
@@ -78,8 +118,7 @@ class Usuario {
 
 	def void setUsuarioProfesional() { tipoDeUsuario = new UsuarioProfesional }
 
-
-def agregarAmigoALaLista(Usuario unUsuario, Usuario unAmigo){
+	def agregarAmigoALaLista(Usuario unUsuario, Usuario unAmigo) {
 		amigos.add(unAmigo)
 	}
 
@@ -87,14 +126,16 @@ def agregarAmigoALaLista(Usuario unUsuario, Usuario unAmigo){
 
 interface TipoDeUsuario {
 
-	def boolean puedoOrganizarElEventoAbierto()
+	def boolean puedoOrganizarElEventoAbierto(String unNombre, Usuario unOrganizador, Locacion unaLocacion,
+		LocalDateTime unaFechaInicio, LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion,
+		int unaEdadMinima, double unPrecioEntrada)
+
+	def boolean puedeCancelarPostergarEventos()
 
 	def boolean puedoOrganizarElEventoCerrado(Usuario unUsuario, LocalDateTime unInicioEvento,
 		LocalDateTime unaFinalizacionEvento, int unaCapacidadTotal)
 
-	def boolean sePuedeEntregarInvitacion(Usuario unUsuario, EventoCerrado unEvento, Invitacion invitados)
-
-	def boolean cancelarPostergarEventos()
+	def boolean sePuedeEntregarInvitacion(EventoCerrado unEvento)
 
 }
 
@@ -104,8 +145,14 @@ class UsuarioFree implements TipoDeUsuario {
 	val limiteEventosSimultaneos = 1
 	val maximoPersonasPorEventoCerrado = 50
 	val cantidadMaximaEventosMensuales = 3
+	boolean puedoOrganizarElEventoAbierto = false
+	boolean puedeCancelarPostergarEventos = false
 
-	override boolean puedoOrganizarElEventoAbierto() { false }
+	override boolean puedoOrganizarElEventoAbierto(String unNombre, Usuario unOrganizador, Locacion unaLocacion,
+		LocalDateTime unaFechaInicio, LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion,
+		int unaEdadMinima, double unPrecioEntrada) { puedoOrganizarElEventoAbierto }
+
+	override boolean puedeCancelarPostergarEventos() { puedeCancelarPostergarEventos }
 
 	override boolean puedoOrganizarElEventoCerrado(Usuario unUsuario, LocalDateTime unInicioEvento,
 		LocalDateTime unaFinalizacionEvento, int unaCapacidadTotal) {
@@ -113,15 +160,12 @@ class UsuarioFree implements TipoDeUsuario {
 			noSuperaLimiteMensualDeEventos(unUsuario, unInicioEvento, unaFinalizacionEvento)
 	}
 
-	override boolean sePuedeEntregarInvitacion(Usuario unUsuario, EventoCerrado unEvento, Invitacion invitados) {
+	override boolean sePuedeEntregarInvitacion(EventoCerrado unEvento) {
 		true
 	}
 
-	override boolean cancelarPostergarEventos() {
-		false
-	}
-
 	def boolean noSuperaElLimiteDeEventosSimultaneos(Usuario unUsuario) {
+		unUsuario.crearSetEventosTotal()
 		unUsuario.eventosOrganizados.filter[evento|evento.fechaFinalizacion > LocalDateTime.now()].size() <
 			limiteEventosSimultaneos
 	}
@@ -136,6 +180,7 @@ class UsuarioFree implements TipoDeUsuario {
 	}
 
 	def boolean noSuperaElLimite(Usuario unUsuario, LocalDateTime unaFecha) {
+		unUsuario.crearSetEventosTotal()
 		unUsuario.eventosOrganizados.filter[evento|evento.fechaDeInicio.month == unaFecha.month].size() <
 			cantidadMaximaEventosMensuales
 	}
@@ -147,23 +192,29 @@ class UsuarioAmateur implements TipoDeUsuario {
 
 	val limiteEventosSimultaneos = 5
 	val maximoInvitacionesEventoCerrado = 50
+	boolean puedoOrganizarElEventoAbierto = true
 
-	override boolean puedoOrganizarElEventoAbierto() { true }
+	boolean puedeCancelarPostergarEventos = true
+
+	override boolean puedoOrganizarElEventoAbierto(String unNombre, Usuario unOrganizador, Locacion unaLocacion,
+		LocalDateTime unaFechaInicio, LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion,
+		int unaEdadMinima, double unPrecioEntrada) {
+		puedoOrganizarElEventoAbierto && noSuperaElLimiteDeEventosSimultaneos(unOrganizador)
+	}
+
+	override boolean puedeCancelarPostergarEventos() { puedeCancelarPostergarEventos }
 
 	override boolean puedoOrganizarElEventoCerrado(Usuario unUsuario, LocalDateTime unInicioEvento,
 		LocalDateTime unaFinalizacionEvento, int unaCapacidadTotal) {
 		noSuperaElLimiteDeEventosSimultaneos(unUsuario)
 	}
 
-	override boolean sePuedeEntregarInvitacion(Usuario unUsuario, EventoCerrado unEvento, Invitacion invitados) {
-		unEvento.invitados.size() < maximoInvitacionesEventoCerrado
-	}
-
-	override boolean cancelarPostergarEventos() {
-		true
+	override boolean sePuedeEntregarInvitacion(EventoCerrado unEventoCerrado) {
+		unEventoCerrado.cantidadDeInvitacionesDadas() < maximoInvitacionesEventoCerrado
 	}
 
 	def boolean noSuperaElLimiteDeEventosSimultaneos(Usuario unUsuario) {
+		unUsuario.crearSetEventosTotal()
 		unUsuario.eventosOrganizados.filter[evento|evento.fechaFinalizacion > LocalDateTime.now()].size() <
 			limiteEventosSimultaneos
 	}
@@ -173,19 +224,24 @@ class UsuarioAmateur implements TipoDeUsuario {
 class UsuarioProfesional implements TipoDeUsuario {
 
 	val cantidadMaximaEventosMensuales = 20
+	boolean puedoOrganizarElEventoAbierto = true
+	boolean puedeCancelarPostergarEventos = true
 
-	override boolean puedoOrganizarElEventoAbierto() { true }
+	override boolean puedoOrganizarElEventoAbierto(String unNombre, Usuario unOrganizador, Locacion unaLocacion,
+		LocalDateTime unaFechaInicio, LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion,
+		int unaEdadMinima, double unPrecioEntrada) {
+		puedoOrganizarElEventoAbierto && noSuperaElLimiteDeEventosMensuales(unOrganizador, unaFechaInicio,
+			unaFechaFinalizacion)
+	}
+
+	override boolean puedeCancelarPostergarEventos() { puedeCancelarPostergarEventos }
 
 	override boolean puedoOrganizarElEventoCerrado(Usuario unUsuario, LocalDateTime unInicioEvento,
 		LocalDateTime unaFinalizacionEvento, int unaCapacidadTotal) {
 		noSuperaElLimiteDeEventosMensuales(unUsuario, unInicioEvento, unaFinalizacionEvento)
 	}
 
-	override boolean sePuedeEntregarInvitacion(Usuario unUsuario, EventoCerrado unEvento, Invitacion invitados) {
-		true
-	}
-
-	override boolean cancelarPostergarEventos() {
+	override boolean sePuedeEntregarInvitacion(EventoCerrado unEvento) {
 		true
 	}
 
@@ -195,6 +251,7 @@ class UsuarioProfesional implements TipoDeUsuario {
 	}
 
 	def boolean noSuperaElLimite(Usuario unUsuario, LocalDateTime unaFecha) {
+		unUsuario.crearSetEventosTotal()
 		unUsuario.eventosOrganizados.filter[evento|evento.fechaDeInicio.month == unaFecha.month].size() <
 			cantidadMaximaEventosMensuales
 	}

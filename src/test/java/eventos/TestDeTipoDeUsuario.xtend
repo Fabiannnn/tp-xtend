@@ -44,7 +44,7 @@ class TestDeTipoDeUsuario {
 
 	@Test
 	def unUsuarioFreeQueNoTieneEventosOrganizadosNoPuedeOrganizarEventoAbierto() {
-		Assert.assertFalse(usuario1.tipoDeUsuario.puedoOrganizarElEventoAbierto())
+		Assert.assertFalse(usuarioFree.puedoOrganizarElEventoAbierto)
 	}
 
 	@Test
