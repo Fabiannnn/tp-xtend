@@ -2,6 +2,7 @@ package eventos
 
 import org.eclipse.xtend.lib.annotations.Accessors
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Accessors
 class Invitacion {
@@ -39,6 +40,14 @@ class Invitacion {
 			(cantidadDeAcompañantes + 1)
 		}
 
+	}
+	
+	//faltaLaDecisiondea quien mandar el mensaje creo que debe venir desde el evento
+	def NotificacionAInvitadosDeCancelacio(){
+		this.unUsuario.mensajesInvitaciones.add("El Evento "+this.unEventoCerrado+" fue cancelado")
+	}
+	def NotificacionAInvitadosDePostergacion(LocalDateTime nuevaFechaInicio,LocalDateTime nuevaFechaFinalizacion, LocalDate NuevaFechaLimiteConfirmacion){
+		this.unUsuario.mensajesInvitaciones.add("El Evento "+this.unEventoCerrado+" fue Postergado.  Las nueva fechas son, Inicio "+ nuevaFechaInicio +" Finalizacion: "+nuevaFechaFinalizacion+", Confirmacion: "+ NuevaFechaLimiteConfirmacion)
 	}
 
 }

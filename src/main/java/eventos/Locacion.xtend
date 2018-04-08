@@ -20,6 +20,10 @@ class Locacion {
 		punto.distance(otroPunto)
 	}
 
+	def estaDentroDelRadioDeCercania(Point otroPunto, double radioCercania) {
+		distancia(otroPunto) <= radioCercania
+	}
+
 	def capacidadMaxima() {
 		Math.floor(superficie * personasPorMetroCuadrado) as int
 	}

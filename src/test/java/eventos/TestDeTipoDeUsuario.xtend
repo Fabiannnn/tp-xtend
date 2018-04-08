@@ -27,6 +27,8 @@ class TestDeTipoDeUsuario {
 	def void init() {
 
 		salon_SM = new Locacion("San Martin", new Point(35, 45), 16)
+		
+		
 		usuario1 = new Usuario("PrimerUsuario", "xx", LocalDate.of(2002, 05, 15), "donde vive", new Point(40, 50))
 		usuario2 = new Usuario("SegundoUsuario", "xx", LocalDate.of(1900, 04, 02), "donde vive", new Point(45, 60))
 		reunionChica = new EventoCerrado("Reunion proyecto", usuario1, salon_SM,

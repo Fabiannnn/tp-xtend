@@ -24,6 +24,11 @@ class Entrada {
 		this.vigente = false
 
 	}
+	//desdelacancelaciondeeventos debe llamarse indicando la entrada
+	def devolucionEntradaPorCancelacion(){
+		this.importeDevuelto= unEventoAbierto.precioEntrada
+		vigente=false
+	}
 
 	def double determinacionImporteDevolucion() {
 		this.unEventoAbierto.precioEntrada * porcentajeDevolucion() / 100
