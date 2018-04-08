@@ -37,7 +37,7 @@ class TestDeTipoDeUsuario {
 			LocalDateTime.now().plus(Period.ofDays(3)), LocalDateTime.now().plus(Period.ofDays(4)), hoyMasTresDias, 20)
 		usuarioFree = new UsuarioFree()
 		usuario1.setUsuarioFree()
-//		usuario2.eventosOrganizados.add(reunionChica)
+	//	usuario2.eventosOrganizados.add(reunionChica)
 	}
 
 	@Test
