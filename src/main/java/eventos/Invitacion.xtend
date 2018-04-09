@@ -19,7 +19,6 @@ class Invitacion {
 		cantidadDeAcompañantes = laCantidadDeAcompañantes
 	}
 
-
 	def rechazar() {
 		this.aceptada = false
 	}
@@ -28,29 +27,35 @@ class Invitacion {
 		this.aceptada = true
 		cantidadDeAcompañantesConfirmados = unaCantidadDeAcompañantes
 	}
+
 	def aceptarMasivamente() {
 		this.aceptada = true
 		cantidadDeAcompañantesConfirmados = cantidadDeAcompañantes
 	}
+
 	def posiblesAsistentes() {
-		if (aceptada===true) {
+		if (aceptada === true) {
 			(cantidadDeAcompañantesConfirmados + 1)
-		} else if (aceptada===false) {
+		} else if (aceptada === false) {
 			0
-		} else if (aceptada===null){
+		} else if (aceptada === null) {
 			(cantidadDeAcompañantes + 1)
 		}
 
 	}
-	
-	//faltaLaDecisiondea quien manda el mensaje creo que debe venir desde el evento
-	def notificacionAInvitadosDeCancelacion(){
-		this.unUsuario.mensajesGenerales.add("El Evento "+this.unEventoCerrado+" fue cancelado")
-		aceptada=false
+
+	// faltaLaDecisiondea quien manda el mensaje creo que debe venir desde el evento
+	def notificacionAInvitadosDeCancelacion() {
+		this.unUsuario.mensajesGenerales.add("El Evento " + this.unEventoCerrado + " fue cancelado")
+		aceptada = false
 	}
-	def NotificacionAInvitadosDePostergacion(LocalDateTime nuevaFechaInicio,LocalDateTime nuevaFechaFinalizacion, LocalDate NuevaFechaLimiteConfirmacion){
-		this.unUsuario.mensajesGenerales.add("El Evento "+this.unEventoCerrado+" fue Postergado.  Las nueva fechas son, Inicio "+ nuevaFechaInicio +" Finalizacion: "+nuevaFechaFinalizacion+", Confirmacion: "+ NuevaFechaLimiteConfirmacion)
-	
+
+	def NotificacionAInvitadosDePostergacion(LocalDateTime nuevaFechaInicio, LocalDateTime nuevaFechaFinalizacion,
+		LocalDate NuevaFechaLimiteConfirmacion) {
+		this.unUsuario.mensajesGenerales.add(
+			"El Evento " + this.unEventoCerrado + " fue Postergado.  Las nueva fechas son, Inicio " + nuevaFechaInicio +
+				" Finalizacion: " + nuevaFechaFinalizacion + ", Confirmacion: " + NuevaFechaLimiteConfirmacion)
+
 	}
 
 }

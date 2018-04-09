@@ -23,7 +23,8 @@ class Entrada {
 	}
 
 	def void mensajesYDevolucionEntradasPorCancelacion() {
-		unUsuario.mensajesGenerales.add("El Evento " + this.unEventoAbierto + " fue cancelado. El importe de la entrada le fue devuelto")
+		unUsuario.mensajesGenerales.add("El Evento " + this.unEventoAbierto +
+			" fue cancelado. El importe de la entrada le fue devuelto")
 		vigente = false
 		devolucionEntradaImporteTotal()
 	}
@@ -50,7 +51,7 @@ class Entrada {
 	def double determinacionImporteDevolucion() { unEventoAbierto.precioEntrada * porcentajeDevolucion() / 100 }
 
 	def porcentajeDevolucion() {
-		Math.min(porcentajeDevolucionSinLimite(), 80.0) 
+		Math.min(porcentajeDevolucionSinLimite(), 80.0)
 	}
 
 	def porcentajeDevolucionSinLimite() {

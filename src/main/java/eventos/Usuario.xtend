@@ -169,20 +169,19 @@ invitaciones.filter(invitacion | invitacion.aceptada===null).forEach[invitacion|
 		else{ }
 	}
 	
-def antisocialRechazaInvitacion(Invitacion invitacion){
-	val cantidadAmigosParaComparar = 1
-		if(!esDentroDelRadioDeCercania(invitacion) || (!elOrganizadorEsAmigo(invitacion) && asistenMasDeCantidadDeterminadaDeAmigos( invitacion,  cantidadAmigosParaComparar) )){
-			invitacion.rechazar( )
-		}
-}
-def noAntisocialRechazaInvitacion(Invitacion invitacion){
-		val cantidadAmigosParaComparar = 0
-	if (!esDentroDelRadioDeCercania(invitacion) && asistenMasDeCantidadDeterminadaDeAmigos( invitacion,  cantidadAmigosParaComparar) ){
-		invitacion.rechazar()
+	def antisocialRechazaInvitacion(Invitacion invitacion){
+		val cantidadAmigosParaComparar = 1
+			if(!esDentroDelRadioDeCercania(invitacion) || (!elOrganizadorEsAmigo(invitacion) && asistenMasDeCantidadDeterminadaDeAmigos( invitacion,  cantidadAmigosParaComparar) )){
+				invitacion.rechazar( )
+			}
 	}
-}
-
-
+	
+	def noAntisocialRechazaInvitacion(Invitacion invitacion){
+			val cantidadAmigosParaComparar = 0
+		if (!esDentroDelRadioDeCercania(invitacion) && asistenMasDeCantidadDeterminadaDeAmigos( invitacion,  cantidadAmigosParaComparar) ){
+			invitacion.rechazar()
+		}
+	}
 
 	def void setUsuarioFree() { tipoDeUsuario = new UsuarioFree }
 
