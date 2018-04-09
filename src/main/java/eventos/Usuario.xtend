@@ -134,9 +134,9 @@ invitaciones.filter(invitacion | invitacion.aceptada===null).forEach[invitacion|
 	}
 
 	def voyAAceptarla(Invitacion invitacion) {
-
+	val cantidadAmigosParaComparar = 4
 		if (elOrganizadorEsAmigo(invitacion) || esDentroDelRadioDeCercania(invitacion) ||
-			asistenMasDeCantidadDeterminadaDeAmigos(invitacion)) {
+			asistenMasDeCantidadDeterminadaDeAmigos(invitacion, cantidadAmigosParaComparar)) {
 			invitacion.aceptarMasivamente()
 		}
 
@@ -146,8 +146,8 @@ invitaciones.filter(invitacion | invitacion.aceptada===null).forEach[invitacion|
 		amigos.contains(invitacion.unEventoCerrado.organizador)
 	}
 
-	def asistenMasDeCantidadDeterminadaDeAmigos(Invitacion invitacion) {
-		val cantidadAmigosParaComparar = 4
+	def asistenMasDeCantidadDeterminadaDeAmigos(Invitacion invitacion, int cantidadAmigosParaComparar) {
+
 		cantidadDeAmigosInvitados(invitacion) > cantidadAmigosParaComparar
 	}
 
@@ -160,6 +160,29 @@ invitaciones.filter(invitacion | invitacion.aceptada===null).forEach[invitacion|
 	def esDentroDelRadioDeCercania(Invitacion invitacion) {
 		invitacion.unEventoCerrado.locacion.estaDentroDelRadioDeCercania(coordenadasDireccion, radioDeCercania)
 	}
+	def rechazoMasivo(){invitaciones.filter(invitacion | invitacion.aceptada===null).forEach[invitacion|this.voyARechazarla(invitacion)]}
+	
+	def voyARechazarla(Invitacion invitacion){
+		if (esAntisocial){antisocialRechazaInvitacion(invitacion)
+			
+		}
+		else{ }
+	}
+	
+def antisocialRechazaInvitacion(Invitacion invitacion){
+	val cantidadAmigosParaComparar = 1
+		if(!esDentroDelRadioDeCercania(invitacion) || (!elOrganizadorEsAmigo(invitacion) && asistenMasDeCantidadDeterminadaDeAmigos( invitacion,  cantidadAmigosParaComparar) )){
+			invitacion.rechazar( )
+		}
+}
+def noAntisocialRechazaInvitacion(Invitacion invitacion){
+		val cantidadAmigosParaComparar = 0
+	if (!esDentroDelRadioDeCercania(invitacion) && asistenMasDeCantidadDeterminadaDeAmigos( invitacion,  cantidadAmigosParaComparar) ){
+		invitacion.rechazar()
+	}
+}
+
+
 
 	def void setUsuarioFree() { tipoDeUsuario = new UsuarioFree }
 
