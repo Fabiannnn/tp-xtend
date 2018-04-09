@@ -141,13 +141,21 @@ class EventoAbierto extends Evento {
 	override capacidadMaxima() {
 		locacion.capacidadMaxima()
 	}
-
+	
 	def boolean hayEntradasDisponibles() {
 		entradasVendidas.size() < this.capacidadMaxima()
 	}
 
 	override fechaAnteriorALaLimite() { today <= LocalDate.from(fechaDeInicio) }
-	
+	override esExitoso(){
+		(!this.cancelado  && !this.postergado	 && vendidasMasDel90())
+	}
+def vendidasMasDel90(){
+	entradasVendidas.filter[entradas | entradas.vigente===true].size()/entradasVendidas.size() >=0.9
+}
+override esUnFracaso(){
+		entradasVendidas.filter[entradas | entradas.vigente===true].size()/capacidadMaxima() <0.5
+}
 
 }
 
@@ -212,4 +220,16 @@ override postergarElEvento(LocalDateTime nuevaFechaHoraInicio){
 	 super.postergarElEvento( nuevaFechaHoraInicio)
 	invitados.forall[invitacion | invitacion.NotificacionAInvitadosDePostergacion(fechaDeInicio,fechaFinalizacion,fechaLimiteConfirmacion)]
 	}
+override esExitoso(){
+		!this.cancelado  && alMenos80Aceptadas()
+	}
+def alMenos80Aceptadas(){
+	invitados.filter[invitacion | invitacion.aceptada===true].size()/ invitados.size() >= 0.8
+}
+override esUnFracaso(){
+		!this.cancelado  && LocalDateTime.now().isAfter(fechaFinalizacion) && menosDe50Aceptadas()
+	}
+def menosDe50Aceptadas(){
+	invitados.filter[invitacion | invitacion.aceptada!==false].size()/ invitados.size()< 0.5
+}
 }
