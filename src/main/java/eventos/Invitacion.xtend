@@ -28,7 +28,10 @@ class Invitacion {
 		this.aceptada = true
 		cantidadDeAcompañantesConfirmados = unaCantidadDeAcompañantes
 	}
-
+	def aceptarMasivamente() {
+		this.aceptada = true
+		cantidadDeAcompañantesConfirmados = cantidadDeAcompañantes
+	}
 	def posiblesAsistentes() {
 		if (aceptada===true) {
 			(cantidadDeAcompañantesConfirmados + 1)

@@ -22,6 +22,7 @@ class Usuario {
 	Set<Invitacion> invitaciones = newHashSet
 	Set<String> mensajesGenerales = newHashSet // paraInvitaciones cancelaciones postergaciones
 	Set<Entrada> entradaComprada = newHashSet
+	Set<Usuario> amigosEnComun = newHashSet
 	LocalDate today = LocalDate.now()
 	TipoDeUsuario tipoDeUsuario
 	Set<EventoCerrado> eventosCerradosOrganizados = newHashSet
@@ -111,19 +112,54 @@ class Usuario {
 		}
 
 	}
-def cancelarUnEvento(Evento unEvento){
-		if (tipoDeUsuario.puedeCancelarPostergarEventos()){
+
+	def cancelarUnEvento(Evento unEvento) {
+		if (tipoDeUsuario.puedeCancelarPostergarEventos()) {
 			unEvento.cancelarElEvento()
 		}
-	
-	}
-	def postergarUnEvento(Evento unEvento, LocalDateTime nuevaFechaHoraInicio){
-		if (tipoDeUsuario.puedeCancelarPostergarEventos()){
-			unEvento.postergarElEvento(nuevaFechaHoraInicio)
-		}
-	
+
 	}
 
+	def postergarUnEvento(Evento unEvento, LocalDateTime nuevaFechaHoraInicio) {
+		if (tipoDeUsuario.puedeCancelarPostergarEventos()) {
+			unEvento.postergarElEvento(nuevaFechaHoraInicio)
+		}
+
+	}
+
+	def aceptacionMasiva() {
+
+invitaciones.filter(invitacion | invitacion.aceptada===null).forEach[invitacion|this.voyAAceptarla(invitacion)]
+
+	}
+
+	def voyAAceptarla(Invitacion invitacion) {
+
+		if (elOrganizadorEsAmigo(invitacion) || esDentroDelRadioDeCercania(invitacion) ||
+			asistenMasDeCantidadDeterminadaDeAmigos(invitacion)) {
+			invitacion.aceptarMasivamente()
+		}
+
+	} 
+
+	def elOrganizadorEsAmigo(Invitacion invitacion) {
+		amigos.contains(invitacion.unEventoCerrado.organizador)
+	}
+
+	def asistenMasDeCantidadDeterminadaDeAmigos(Invitacion invitacion) {
+		val cantidadAmigosParaComparar = 4
+		cantidadDeAmigosInvitados(invitacion) > cantidadAmigosParaComparar
+	}
+
+	def cantidadDeAmigosInvitados(Invitacion invitacion) {
+		amigosEnComun = amigos
+		amigosEnComun.retainAll(invitacion.unEventoCerrado.invitados)
+		amigosEnComun.size()
+	}
+
+	def esDentroDelRadioDeCercania(Invitacion invitacion) {
+		invitacion.unEventoCerrado.locacion.estaDentroDelRadioDeCercania(coordenadasDireccion, radioDeCercania)
+	}
 
 	def void setUsuarioFree() { tipoDeUsuario = new UsuarioFree }
 
@@ -134,11 +170,6 @@ def cancelarUnEvento(Evento unEvento){
 	def agregarAmigoALaLista(Usuario unUsuario, Usuario unAmigo) {
 		amigos.add(unAmigo)
 	}
-
-
-
-
-
 
 }
 
