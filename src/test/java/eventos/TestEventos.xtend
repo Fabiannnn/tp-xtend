@@ -23,7 +23,6 @@ class TestEventos {
 		reunionTrabajo = new EventoCerrado("Reunion proyecto", usuario1, salon_SM, hoyMasTres, hoyMasCinco,LocalDate.of(2018, 04, 15), 20)
 		cumple.fechaDeInicio = LocalDateTime.of(2017, 08, 20, 8, 20)
 		cumple.fechaFinalizacion = LocalDateTime.of(2017, 08, 20, 9, 50)
-
 	}
 
 	@Test

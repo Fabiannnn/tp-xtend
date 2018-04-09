@@ -3,6 +3,7 @@ package eventos
 import org.eclipse.xtend.lib.annotations.Accessors
 import java.time.LocalDate
 import java.time.Period
+import java.time.LocalDateTime
 
 @Accessors
 class Entrada {
@@ -17,33 +18,39 @@ class Entrada {
 	}
 
 // desdelacancelaciondeeventos debe llamarse indicando la entrada
-	def devolucionEntradaImporteTotalPorCancelacion() {
+	def void devolucionEntradaImporteTotal() {
 		this.importeDevuelto = unEventoAbierto.precioEntrada
-		vigente = false
 	}
 
-	def mensajesYDevolucionEntradasPorCancelacion() {
-		this.unUsuario.mensajesGenerales.add(
-			"El Evento " + this.unEventoAbierto + " fue cancelado. El importe de la entrada le fue devuelto")
-		devolucionEntradaImporteTotalPorCancelacion()
+	def void mensajesYDevolucionEntradasPorCancelacion() {
+		unUsuario.mensajesGenerales.add("El Evento " + this.unEventoAbierto + " fue cancelado. El importe de la entrada le fue devuelto")
+		vigente = false
+		devolucionEntradaImporteTotal()
 	}
+
+	def mensajesPorPostergacion(LocalDateTime nuevaFechaInicio, LocalDateTime nuevaFechaFinalizacion,
+		LocalDate NuevaFechaLimiteConfirmacion) {
+		this.unUsuario.mensajesGenerales.add(
+			"El Evento " + this.unEventoAbierto + " fue Postergado.  Las nueva fechas son, Inicio " + nuevaFechaInicio +
+				" Finalizacion: " + nuevaFechaFinalizacion + ", Confirmacion: " + NuevaFechaLimiteConfirmacion +
+				". La entrada podrá ser devuelta al 100%")
+
+	}
+
 // métodos relacionados con la devolución de entradas
 	def devolucionEntrada() {
-
-		this.importeDevuelto = determinacionImporteDevolucion()
 		this.vigente = false
+		if (unEventoAbierto.postergado == true) {
+			devolucionEntradaImporteTotal()
+		} else {
+			importeDevuelto = determinacionImporteDevolucion()
+		}
+	}
 
-	}
-	def double determinacionImporteDevolucion() {
-		this.unEventoAbierto.precioEntrada * porcentajeDevolucion() / 100
-	}
+	def double determinacionImporteDevolucion() { unEventoAbierto.precioEntrada * porcentajeDevolucion() / 100 }
 
 	def porcentajeDevolucion() {
-		if (this.porcentajeDevolucionSinLimite() > 80.0) {
-			80.0
-		} else {
-			this.porcentajeDevolucionSinLimite()
-		}
+		Math.min(porcentajeDevolucionSinLimite(), 80.0) 
 	}
 
 	def porcentajeDevolucionSinLimite() {

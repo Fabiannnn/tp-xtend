@@ -6,6 +6,7 @@ import java.time.Duration
 import org.uqbar.geodds.Point
 import java.time.LocalDate
 import java.util.Set
+import java.time.Period
 
 @Accessors
 abstract class Evento {
@@ -44,11 +45,13 @@ abstract class Evento {
 		Duration.between(fechaDeInicio, fechaFinalizacion).getSeconds() / 3600.0
 	}
 
+	def void cancelarElEvento() {
+	}
+
 	def double distancia(Point ubicacion) {
 		locacion.distancia(ubicacion)
 	}
 
-	def void cancelarEvento() {}
 
 	def esExitoso() {}
 
@@ -56,7 +59,25 @@ abstract class Evento {
 
 	def fechaAnteriorALaLimite() { today <= LocalDate.from(this.fechaLimiteConfirmacion) }
 
+	def  void postergarElEvento(LocalDateTime nuevaFechaHoraInicio) {
+
+		postergado = true
+		cambiarFechasEvento(nuevaFechaHoraInicio)
+
+	}
+
+	def cambiarFechasEvento(LocalDateTime nuevaFechaHoraInicio) {
+		val difTiempo = calcularDiferenciaTiempo(nuevaFechaHoraInicio)
+		fechaDeInicio.plusHours(difTiempo)
+		fechaFinalizacion.plusHours(difTiempo)
+		fechaLimiteConfirmacion.plusDays((difTiempo / 24) as int)
+	}
+
+	def calcularDiferenciaTiempo(LocalDateTime nuevaFechaHoraInicio) {
+		Duration.between(fechaDeInicio, nuevaFechaHoraInicio).toHours()
+	}
 }
+
 
 @Accessors
 class EventoAbierto extends Evento {
@@ -106,11 +127,17 @@ class EventoAbierto extends Evento {
 	}
 
 	// el organizador manda la orden a determinado evento si esta autorizado a cancelarla
-	override void cancelarEvento() {
-		entradasVendidas.forall[mensajesYDevolucionEntradasPorCancelacion()]
+	override  cancelarElEvento() {
 		cancelado = true
+		entradasVendidas.forEach[entrada | entrada.mensajesYDevolucionEntradasPorCancelacion()]
+
 	}
 
+	override postergarElEvento(LocalDateTime nuevaFechaHoraInicio){
+	 super.postergarElEvento( nuevaFechaHoraInicio)
+	entradasVendidas.forall[invitacion | invitacion.mensajesPorPostergacion(fechaDeInicio,fechaFinalizacion,fechaLimiteConfirmacion)]
+	}
+	
 	override capacidadMaxima() {
 		locacion.capacidadMaxima()
 	}
@@ -120,6 +147,7 @@ class EventoAbierto extends Evento {
 	}
 
 	override fechaAnteriorALaLimite() { today <= LocalDate.from(fechaDeInicio) }
+	
 
 }
 
@@ -170,5 +198,18 @@ class EventoCerrado extends Evento {
 
 	def int cantidadDeInvitacionesDadas() {
 		invitados.size() // si son invitaciones totales sin generar nuevas invitaciones por rechazos
+	}
+	override cancelarElEvento(){
+		cancelado = true
+		NotificarAInvitadosQueNoRechazaron()
+		
+	}
+	def NotificarAInvitadosQueNoRechazaron(){
+		invitados.filter[invitados | invitados.aceptada != false].forall[invitacion | invitacion.notificacionAInvitadosDeCancelacion()]
+	}
+	
+override postergarElEvento(LocalDateTime nuevaFechaHoraInicio){
+	 super.postergarElEvento( nuevaFechaHoraInicio)
+	invitados.forall[invitacion | invitacion.NotificacionAInvitadosDePostergacion(fechaDeInicio,fechaFinalizacion,fechaLimiteConfirmacion)]
 	}
 }

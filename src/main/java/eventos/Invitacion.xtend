@@ -17,12 +17,10 @@ class Invitacion {
 		unEventoCerrado = elEventoCerrado
 		unUsuario = elUsuario
 		cantidadDeAcompañantes = laCantidadDeAcompañantes
-
 	}
 
 
 	def rechazar() {
-
 		this.aceptada = false
 	}
 
@@ -42,12 +40,14 @@ class Invitacion {
 
 	}
 	
-	//faltaLaDecisiondea quien mandar el mensaje creo que debe venir desde el evento
-	def NotificacionAInvitadosDeCancelacio(){
+	//faltaLaDecisiondea quien manda el mensaje creo que debe venir desde el evento
+	def notificacionAInvitadosDeCancelacion(){
 		this.unUsuario.mensajesGenerales.add("El Evento "+this.unEventoCerrado+" fue cancelado")
+		aceptada=false
 	}
 	def NotificacionAInvitadosDePostergacion(LocalDateTime nuevaFechaInicio,LocalDateTime nuevaFechaFinalizacion, LocalDate NuevaFechaLimiteConfirmacion){
 		this.unUsuario.mensajesGenerales.add("El Evento "+this.unEventoCerrado+" fue Postergado.  Las nueva fechas son, Inicio "+ nuevaFechaInicio +" Finalizacion: "+nuevaFechaFinalizacion+", Confirmacion: "+ NuevaFechaLimiteConfirmacion)
+	
 	}
 
 }

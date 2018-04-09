@@ -111,6 +111,19 @@ class Usuario {
 		}
 
 	}
+def cancelarUnEvento(Evento unEvento){
+		if (tipoDeUsuario.puedeCancelarPostergarEventos()){
+			unEvento.cancelarElEvento()
+		}
+	
+	}
+	def postergarUnEvento(Evento unEvento, LocalDateTime nuevaFechaHoraInicio){
+		if (tipoDeUsuario.puedeCancelarPostergarEventos()){
+			unEvento.postergarElEvento(nuevaFechaHoraInicio)
+		}
+	
+	}
+
 
 	def void setUsuarioFree() { tipoDeUsuario = new UsuarioFree }
 
@@ -121,6 +134,11 @@ class Usuario {
 	def agregarAmigoALaLista(Usuario unUsuario, Usuario unAmigo) {
 		amigos.add(unAmigo)
 	}
+
+
+
+
+
 
 }
 
