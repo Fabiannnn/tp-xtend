@@ -127,10 +127,9 @@ class EventoAbierto extends Evento {
 	}
 
 	// el organizador manda la orden a determinado evento si esta autorizado a cancelarla
-	override  cancelarElEvento() {
+	override void cancelarElEvento() {
 		cancelado = true
 		entradasVendidas.forEach[entrada | entrada.mensajesYDevolucionEntradasPorCancelacion()]
-
 	}
 
 	override postergarElEvento(LocalDateTime nuevaFechaHoraInicio){
@@ -207,11 +206,12 @@ class EventoCerrado extends Evento {
 	def int cantidadDeInvitacionesDadas() {
 		invitados.size() // si son invitaciones totales sin generar nuevas invitaciones por rechazos
 	}
+	
 	override cancelarElEvento(){
 		cancelado = true
 		NotificarAInvitadosQueNoRechazaron()
-		
 	}
+	
 	def NotificarAInvitadosQueNoRechazaron(){
 		invitados.filter[invitados | invitados.aceptada != false].forall[invitacion | invitacion.notificacionAInvitadosDeCancelacion()]
 	}
