@@ -131,7 +131,7 @@ class Usuario {
 		val cantidadAmigosParaComparar = 4
 		if (elOrganizadorEsAmigo(invitacion) || esDentroDelRadioDeCercania(invitacion) ||
 			asistenMasDeCantidadDeterminadaDeAmigos(invitacion, cantidadAmigosParaComparar)) {
-			invitacion.aceptarMasivamente()
+			invitacion.aceptar((invitacion.cantidadDeAcompañantes))
 		}
 	} 
 	def crearSetEventosTotal() {

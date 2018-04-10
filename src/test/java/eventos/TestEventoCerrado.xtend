@@ -25,7 +25,7 @@ class TestEventoCerrado {
 	def void init() {
 
 		salon_SM = new Locacion("San Martin", new Point(35, 45), 16)
-		usuario1 = new Usuario("PrimerUsuario", "xx", LocalDate.of(2002, 05, 15), "donde vive", new Point(40, 50))
+		usuario1 = new Usuario("PrimerUsuario", "xx", LocalDate.of(2002, 05, 15), "donde vive", new Point(60, 80))
 		usuario2 = new Usuario("SegundoUsuario", "xx", LocalDate.of(1900, 04, 02), "donde vive", new Point(45, 60))
 		reunionChica = new EventoCerrado("Reunion proyecto", usuario1, salon_SM, hoyMasTres, hoyMasCinco,
 			hoyMasTresDias, 10)
@@ -120,5 +120,12 @@ class TestEventoCerrado {
 		otroEvento.registrarInvitacionEnEvento(invitacion)
 		otroEvento.crearInvitacionConAcompañantes(usuario2, 3)
 		Assert.assertEquals(6, otroEvento.cantidadPosiblesAsistentes(), 0)
+	}
+		@Test
+	def seInvitanAUsuario1_Usuario1hacerechazoMasivoPosiblesAsistentesEs0() {
+		invitacion = new Invitacion(otroEvento, usuario1, 5)
+		usuario1.radioDeCercania =0.3
+		usuario1.rechazoMasivo()
+		Assert.assertEquals(0,otroEvento.cantidadPosiblesAsistentes(),0)
 	}
 }

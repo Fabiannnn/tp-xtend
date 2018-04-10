@@ -28,10 +28,10 @@ class Invitacion {
 		cantidadDeAcompañantesConfirmados = unaCantidadDeAcompañantes
 	}
 
-	def aceptarMasivamente() {
-		this.aceptada = true
-		cantidadDeAcompañantesConfirmados = cantidadDeAcompañantes
-	}
+//	def aceptarMasivamente() {
+//		this.aceptada = true
+//		cantidadDeAcompañantesConfirmados = cantidadDeAcompañantes
+//	}
 
 	def posiblesAsistentes() {
 		if (aceptada === true) {
@@ -44,7 +44,7 @@ class Invitacion {
 
 	}
 
-	// faltaLaDecisiondea quien manda el mensaje creo que debe venir desde el evento
+	// Metodos de notificacion de cancelacion y postergacion de eventos
 	def notificacionAInvitadosDeCancelacion() {
 		this.unUsuario.mensajesGenerales.add("El Evento " + this.unEventoCerrado + " fue cancelado")
 		aceptada = false

@@ -17,16 +17,17 @@ class Entrada {
 		unUsuario = elUsuario
 	}
 
-// desdelacancelaciondeeventos debe llamarse indicando la entrada
-	def void devolucionEntradaImporteTotal() {
-		this.importeDevuelto = unEventoAbierto.precioEntrada
-	}
+// Metodos para devolucion de entradas,   por cancelación o postergacin
 
 	def void mensajesYDevolucionEntradasPorCancelacion() {
 		unUsuario.mensajesGenerales.add("El Evento " + this.unEventoAbierto +
 			" fue cancelado. El importe de la entrada le fue devuelto")
 		vigente = false
 		devolucionEntradaImporteTotal()
+	}
+	
+	def void devolucionEntradaImporteTotal() {
+		this.importeDevuelto = unEventoAbierto.precioEntrada
 	}
 
 	def mensajesPorPostergacion(LocalDateTime nuevaFechaInicio, LocalDateTime nuevaFechaFinalizacion,
@@ -38,7 +39,7 @@ class Entrada {
 
 	}
 
-// métodos relacionados con la devolución de entradas
+// Métodos relacionados con la devolución de entradas generales
 	def devolucionEntrada() {
 		this.vigente = false
 		if (unEventoAbierto.postergado == true) {
