@@ -322,25 +322,4 @@ class TestDeTipoDeUsuario {
 		}	
 	}
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	
-}
+

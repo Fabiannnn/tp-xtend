@@ -38,15 +38,9 @@ class Usuario {
 		this.coordenadasDireccion = unaCoordenada
 	}
 
-	/*Falta ver como el usuaria organiza un evento cerrado o abierto consultando previamente segun tipo de usuario */
 	// Métodos relacionados con Invitaciones a Eventos Cerrados
 	def recibirInvitacion(Invitacion invitacion) {
 		this.invitaciones.add(invitacion)
-	}
-
-	def crearSetEventosTotal() {
-		eventosOrganizados.addAll(eventosCerradosOrganizados)
-		eventosOrganizados.addAll(eventosAbiertoOrganizados)
 	}
 
 	def recibirMensaje(String string) {
@@ -86,13 +80,12 @@ class Usuario {
 		}
 	}
 
-	// organizacion de eventos
+	// Métodos relacionados  organizacion de eventos
 	def organizarEventoAbierto(String unNombre, Usuario unOrganizador, Locacion unaLocacion,
 		LocalDateTime unaFechaInicio, LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion,
 		int unaEdadMinima, double unPrecioEntrada) {
 		if (tipoDeUsuario.puedoOrganizarElEventoAbierto(unNombre, unOrganizador, unaLocacion, unaFechaInicio,
 			unaFechaFinalizacion, unaFechaLimiteConfirmacion, unaEdadMinima, unPrecioEntrada)) {
-
 			eventosAbiertoOrganizados.add(
 				new EventoAbierto(unNombre, unOrganizador, unaLocacion, unaFechaInicio, unaFechaFinalizacion,
 					unaFechaLimiteConfirmacion, unaEdadMinima, unPrecioEntrada))
@@ -104,15 +97,19 @@ class Usuario {
 		int unaCapacidadMaxima) {
 		if (tipoDeUsuario.puedoOrganizarElEventoCerrado(unOrganizador, unaFechaInicio, unaFechaFinalizacion,
 			unaCapacidadMaxima)) {
-
 			eventosCerradosOrganizados.add(
 				new EventoCerrado(unNombre, unOrganizador, unaLocacion, unaFechaInicio, unaFechaFinalizacion,
 					unaFechaLimiteConfirmacion, unaCapacidadMaxima))
-
 		}
-
 	}
-
+	def agregarAmigoALaLista(Usuario unUsuario, Usuario unAmigo) {
+		amigos.add(unAmigo)
+	}
+	
+	def boolean agregarEventoCerrado(EventoCerrado unEventoCerrado) {
+		if (tipoDeUsuario.puedoOrganizarElEventoCerrado(unEventoCerrado.getOrganizador(), unEventoCerrado.fechaDeInicio, unEventoCerrado.fechaFinalizacion, unEventoCerrado.getCapacidadMaxima)
+		) {eventosCerradosOrganizados.add(unEventoCerrado)}
+	}
 	def cancelarUnEvento(Evento unEvento) {
 		if (tipoDeUsuario.puedeCancelarEventos()) {
 			unEvento.cancelarElEvento()
@@ -125,22 +122,22 @@ class Usuario {
 		}
 
 	}
-
+// Métodos relacionados con Aceptacion y rechazo masivos
 	def aceptacionMasiva() {
-
-invitaciones.filter(invitacion | invitacion.aceptada===null).forEach[invitacion|this.voyAAceptarla(invitacion)]
-
+		invitaciones.filter(invitacion | invitacion.aceptada===null).forEach[invitacion|this.voyAAceptarla(invitacion)]
 	}
 
 	def voyAAceptarla(Invitacion invitacion) {
-	val cantidadAmigosParaComparar = 4
+		val cantidadAmigosParaComparar = 4
 		if (elOrganizadorEsAmigo(invitacion) || esDentroDelRadioDeCercania(invitacion) ||
 			asistenMasDeCantidadDeterminadaDeAmigos(invitacion, cantidadAmigosParaComparar)) {
 			invitacion.aceptarMasivamente()
 		}
-
 	} 
-
+	def crearSetEventosTotal() {
+		eventosOrganizados.addAll(eventosCerradosOrganizados)
+		eventosOrganizados.addAll(eventosAbiertoOrganizados)
+	}
 	def elOrganizadorEsAmigo(Invitacion invitacion) {
 		amigos.contains(invitacion.unEventoCerrado.organizador)
 	}
@@ -163,9 +160,8 @@ invitaciones.filter(invitacion | invitacion.aceptada===null).forEach[invitacion|
 	
 	def voyARechazarla(Invitacion invitacion){
 		if (esAntisocial){antisocialRechazaInvitacion(invitacion)
-			
 		}
-		else{ }
+		else{noAntisocialRechazaInvitacion(invitacion) }//Agregué lo que está dentro del corchete
 	}
 	
 	def antisocialRechazaInvitacion(Invitacion invitacion){
@@ -174,28 +170,20 @@ invitaciones.filter(invitacion | invitacion.aceptada===null).forEach[invitacion|
 				invitacion.rechazar( )
 			}
 	}
-	
 	def noAntisocialRechazaInvitacion(Invitacion invitacion){
 			val cantidadAmigosParaComparar = 0
 		if (!esDentroDelRadioDeCercania(invitacion) && asistenMasDeCantidadDeterminadaDeAmigos( invitacion,  cantidadAmigosParaComparar) ){
 			invitacion.rechazar()
 		}
 	}
-
+// Seteo de tipo de usuarios
 	def void setUsuarioFree() { tipoDeUsuario = new UsuarioFree }
 
 	def void setUsuarioAmateur() { tipoDeUsuario = new UsuarioAmateur }
 
 	def void setUsuarioProfesional() { tipoDeUsuario = new UsuarioProfesional }
 
-	def agregarAmigoALaLista(Usuario unUsuario, Usuario unAmigo) {
-		amigos.add(unAmigo)
-	}
-	
-	def boolean agregarEventoCerrado(EventoCerrado unEventoCerrado) {
-		if(tipoDeUsuario.puedoOrganizarElEventoCerrado(unEventoCerrado.getOrganizador(), unEventoCerrado.fechaDeInicio, unEventoCerrado.fechaFinalizacion, unEventoCerrado.getCapacidadMaxima)
-		) {eventosCerradosOrganizados.add(unEventoCerrado)}
-	}
+
 
 }
 
