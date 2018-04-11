@@ -20,7 +20,7 @@ class Entrada {
 // Metodos para devolucion de entradas,   por cancelación o postergacin
 
 	def void mensajesYDevolucionEntradasPorCancelacion() {
-		unUsuario.mensajesGenerales.add("El Evento " + this.unEventoAbierto +
+		unUsuario.recibirMensaje("El Evento " + this.unEventoAbierto +
 			" fue cancelado. El importe de la entrada le fue devuelto")
 		vigente = false
 		devolucionEntradaImporteTotal()
@@ -32,7 +32,7 @@ class Entrada {
 
 	def mensajesPorPostergacion(LocalDateTime nuevaFechaInicio, LocalDateTime nuevaFechaFinalizacion,
 		LocalDate NuevaFechaLimiteConfirmacion) {
-		this.unUsuario.mensajesGenerales.add(
+		unUsuario.recibirMensaje(
 			"El Evento " + this.unEventoAbierto + " fue Postergado.  Las nueva fechas son, Inicio " + nuevaFechaInicio +
 				" Finalizacion: " + nuevaFechaFinalizacion + ", Confirmacion: " + NuevaFechaLimiteConfirmacion +
 				". La entrada podrá ser devuelta al 100%")

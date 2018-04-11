@@ -26,7 +26,7 @@ class TestEventoCerrado {
 
 		salon_SM = new Locacion("San Martin", new Point(35, 45), 16)
 		usuario1 = new Usuario("PrimerUsuario", "xx", LocalDate.of(2002, 05, 15), "donde vive", new Point(60, 80))
-		usuario2 = new Usuario("SegundoUsuario", "xx", LocalDate.of(1900, 04, 02), "donde vive", new Point(45, 60))
+		usuario2 = new Usuario("SegundoUsuario", "xx", LocalDate.of(1900, 04, 02), "donde vive", new Point(34, 45))
 		reunionChica = new EventoCerrado("Reunion proyecto", usuario1, salon_SM, hoyMasTres, hoyMasCinco,
 			hoyMasTresDias, 10)
 		otroEvento = new EventoCerrado("Otra Reunion ", usuario1, salon_SM, hoyMasTres, hoyMasCinco, fechaVencida, 10)
@@ -121,11 +121,65 @@ class TestEventoCerrado {
 		otroEvento.crearInvitacionConAcompañantes(usuario2, 3)
 		Assert.assertEquals(6, otroEvento.cantidadPosiblesAsistentes(), 0)
 	}
-		@Test
-	def seInvitanAUsuario1_Usuario1hacerechazoMasivoPosiblesAsistentesEs0() {
+
+
+//Test para chequear aceptacion y rechazo masivo
+	@Test
+	def seInvitanAUsuario1_Usuario1haceRechazoMasivoPosiblesAsistentesEs0() {
 		invitacion = new Invitacion(otroEvento, usuario1, 5)
-		usuario1.radioDeCercania =0.3
+		usuario1.radioDeCercania = 0.3
 		usuario1.rechazoMasivo()
-		Assert.assertEquals(0,otroEvento.cantidadPosiblesAsistentes(),0)
+		Assert.assertEquals(0, otroEvento.cantidadPosiblesAsistentes(), 0)
 	}
-}
+
+
+	@Test
+	def seInvitanAUsuario1_con3AcompañantesUsuario1hacerAceptacionMasivaPosiblesAsistentesEs0() {
+		invitacion = new Invitacion(otroEvento, usuario1, 3)
+		usuario1.radioDeCercania = 3
+		usuario1.aceptacionMasiva()
+		Assert.assertEquals(0, otroEvento.cantidadPosiblesAsistentes(), 0)
+	}
+	
+		@Test
+	def seInvitanAUsuario1_con3AcompañantesUsuario1EsAmigoDelOrganizadorTrue() {
+		invitacion = new Invitacion(reunionChica, usuario2, 3)
+		usuario2.agregarAmigoALaLista(usuario1)		
+		usuario2.aceptacionMasiva()
+		Assert.assertTrue(usuario2.elOrganizadorEsAmigo(invitacion))
+	}	
+	
+		@Test
+	def seInvitaAlUsuario2_con3AcompañantesUsuario1EsAmigoDelOrganizadorDebeAceptarMasivamente() {
+		invitacion = new Invitacion(reunionChica, usuario2, 3)
+		usuario2.radioDeCercania =0
+		usuario2.agregarAmigoALaLista(usuario1)		
+		usuario2.voyAAceptarla(invitacion)//AceptaPorAmigoOrganizador
+		Assert.assertEquals(3, invitacion.cantidadDeAcompañantesConfirmados ,0)
+	}	
+		@Test
+	def seInvitanAUsuario2_con3AcompañantesUsuario2hacerAceptacionMasivaAcompComfirmados3() {
+		invitacion = new Invitacion(otroEvento, usuario2, 3)
+		usuario2.radioDeCercania = 3000000.00//acepta por radio de cercania
+		usuario2.voyAAceptarla(invitacion)
+		Assert.assertEquals(3,invitacion.cantidadDeAcompañantesConfirmados,0)
+	}
+			@Test
+	def pruebaDeAceptarInvitacionDirectaPasandoLaInvitacion() {
+		invitacion = new Invitacion(otroEvento, usuario2, 3)
+		invitacion.aceptar(invitacion.cantidadDeAcompañantes)
+		Assert.assertEquals(3,invitacion.cantidadDeAcompañantesConfirmados, 0)
+	}
+//				@Test
+//	def 1amigoMasyAceptaMasivamente() {
+//		otroEvento.crearInvitacion(usuario2, 3)
+//		invitacion.aceptar(invitacion.cantidadDeAcompañantes)
+//		Assert.assertEquals(3,invitacion.cantidadDeAcompañantesConfirmados, 0)
+//	}
+}			
+
+
+
+
+
+

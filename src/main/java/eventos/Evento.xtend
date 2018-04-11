@@ -10,16 +10,17 @@ import java.time.Period
 
 @Accessors
 abstract class Evento {
+	
 	String nombre
 	Usuario organizador
 	LocalDateTime fechaDeInicio
 	LocalDateTime fechaFinalizacion
 	Locacion locacion
-	int capacidadMaxima = 0
 	LocalDate fechaLimiteConfirmacion
-	LocalDate today = LocalDate.now()
 	boolean cancelado = false
 	boolean postergado = false
+	
+	LocalDate today = LocalDate.now()
 
 	new(String unNombre, Usuario unOrganizador, Locacion unaLocacion, LocalDateTime unaFechaInicio,
 		LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion) {
@@ -37,16 +38,13 @@ abstract class Evento {
 	 * 		locacion = unaLocacion
 	 * 		fechaLimiteConfirmacion = unaFechaLimiteConfirmacion
 	 }*/
-	def capacidadMaxima() {
-		capacidadMaxima
-	}
+	abstract def int capacidadMaxima()
 
 	def double duracion() {
 		Duration.between(fechaDeInicio, fechaFinalizacion).getSeconds() / 3600.0
 	}
 
-	def void cancelarElEvento() {
-	}
+	abstract def void cancelarElEvento()
 
 	def double distancia(Point ubicacion) {
 		locacion.distancia(ubicacion)
@@ -57,7 +55,9 @@ abstract class Evento {
 
 	def esUnFracaso() {}
 
-	def fechaAnteriorALaLimite() { today <= LocalDate.from(this.fechaLimiteConfirmacion) }
+	def fechaAnteriorALaLimite() { 
+		today <= LocalDate.from(this.fechaLimiteConfirmacion)
+	}
 
 	def  void postergarElEvento(LocalDateTime nuevaFechaHoraInicio) {
 
@@ -84,7 +84,6 @@ class EventoAbierto extends Evento {
 	int edadMinima
 	double precioEntrada
 	Set<Entrada> entradasVendidas
-	Entrada nuevaEntrada
 
 	new(String unNombre, Usuario unOrganizador, Locacion unaLocacion, LocalDateTime unaFechaInicio,
 		LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion, int unaEdadMinima,
@@ -110,20 +109,17 @@ class EventoAbierto extends Evento {
 	}
 
 	def generarEntrada(Usuario elComprador) { // llega aca si las condiciones de compra se cumplen
-		nuevaEntrada = new Entrada(this, elComprador)
+		val nuevaEntrada = new Entrada(this, elComprador)
 		registrarCompraEnEvento(nuevaEntrada)
 		registrarCompraEnUsuario(nuevaEntrada, elComprador)
-
 	}
 
 	def registrarCompraEnEvento(Entrada nuevaEntrada) {
 		entradasVendidas.add(nuevaEntrada)
-
 	}
 
 	def registrarCompraEnUsuario(Entrada nuevaEntrada, Usuario elComprador) {
 		elComprador.entradaComprada.add(nuevaEntrada)
-
 	}
 
 	// el organizador manda la orden a determinado evento si esta autorizado a cancelarla
@@ -133,8 +129,8 @@ class EventoAbierto extends Evento {
 	}
 
 	override postergarElEvento(LocalDateTime nuevaFechaHoraInicio){
-	 super.postergarElEvento( nuevaFechaHoraInicio)
-	entradasVendidas.forall[invitacion | invitacion.mensajesPorPostergacion(fechaDeInicio,fechaFinalizacion,fechaLimiteConfirmacion)]
+	 	super.postergarElEvento( nuevaFechaHoraInicio)
+		entradasVendidas.forall[invitacion | invitacion.mensajesPorPostergacion(fechaDeInicio,fechaFinalizacion,fechaLimiteConfirmacion)]
 	}
 	
 	override capacidadMaxima() {
@@ -146,22 +142,27 @@ class EventoAbierto extends Evento {
 	}
 
 	override fechaAnteriorALaLimite() { today <= LocalDate.from(fechaDeInicio) }
+	
 	override esExitoso(){
-		(!this.cancelado  && !this.postergado	 && vendidasMasDel90())
+		(!this.cancelado  && !this.postergado && vendidasMasDel90())
 	}
-def vendidasMasDel90(){
-	entradasVendidas.filter[entradas | entradas.vigente===true].size()/entradasVendidas.size() >=0.9
-}
-override esUnFracaso(){
+	
+	def vendidasMasDel90(){
+		entradasVendidas.filter[entradas | entradas.vigente===true].size()/entradasVendidas.size() >=0.9
+	}
+	override esUnFracaso(){
 		entradasVendidas.filter[entradas | entradas.vigente===true].size()/capacidadMaxima() <0.5
-}
+	}
 
 }
 
 @Accessors
 class EventoCerrado extends Evento {
+	
 	Set<Invitacion> invitados = newHashSet
-	Invitacion nuevaInvitacion
+	Set<Usuario> invitadosDelEvento = newHashSet
+	int capacidadMaxima = 0
+	
 
 	new(String unNombre, Usuario unOrganizador, Locacion unaLocacion, LocalDateTime unaFechaInicio,
 		LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion, int unaCapacidadMaxima) {
@@ -172,8 +173,9 @@ class EventoCerrado extends Evento {
 	def crearInvitacionConAcompañantes(Usuario elInvitado, int unaCantidadDeAcompañantes) {
 		if (hayCapacidadDisponible(unaCantidadDeAcompañantes + 1) && fechaAnteriorALaLimite()) {
 
-			nuevaInvitacion = new Invitacion(this, elInvitado, unaCantidadDeAcompañantes)
+			var nuevaInvitacion = new Invitacion(this, elInvitado, unaCantidadDeAcompañantes)
 			registrarInvitacionEnEvento(nuevaInvitacion)
+			actualizarListadeUsuariosInvitados(nuevaInvitacion)
 			registrarInvitacionEnUsuario(nuevaInvitacion, elInvitado)
 
 		} else
@@ -211,6 +213,15 @@ class EventoCerrado extends Evento {
 		cancelado = true
 		NotificarAInvitadosQueNoRechazaron()
 	}
+	
+	def actualizarListadeUsuariosInvitados(Invitacion invitacion){
+		invitadosDelEvento.add(invitacion.unUsuario)
+	}
+	
+	override capacidadMaxima() {
+		capacidadMaxima
+	}
+	
 	
 	def NotificarAInvitadosQueNoRechazaron(){
 		invitados.filter[invitados | invitados.aceptada != false].forall[invitacion | invitacion.notificacionAInvitadosDeCancelacion()]

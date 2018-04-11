@@ -25,6 +25,7 @@ class Usuario {
 	Set<Usuario> amigosEnComun = newHashSet
 	LocalDate today = LocalDate.now()
 	TipoDeUsuario tipoDeUsuario
+
 	Set<EventoCerrado> eventosCerradosOrganizados = newHashSet
 	Set<EventoAbierto> eventosAbiertoOrganizados = newHashSet
 	Set<Evento> eventosOrganizados = newHashSet
@@ -40,11 +41,11 @@ class Usuario {
 
 	// Métodos relacionados con Invitaciones a Eventos Cerrados
 	def recibirInvitacion(Invitacion invitacion) {
-		this.invitaciones.add(invitacion)
+		invitaciones.add(invitacion)
 	}
 
 	def recibirMensaje(String string) {
-		this.mensajesGenerales.add(string)
+		mensajesGenerales.add(string)
 	}
 
 	def rechazarInvitacion(Invitacion invitacion) {
@@ -102,7 +103,7 @@ class Usuario {
 					unaFechaLimiteConfirmacion, unaCapacidadMaxima))
 		}
 	}
-	def agregarAmigoALaLista(Usuario unUsuario, Usuario unAmigo) {
+	def agregarAmigoALaLista( Usuario unAmigo) {
 		amigos.add(unAmigo)
 	}
 	
@@ -131,7 +132,7 @@ class Usuario {
 		val cantidadAmigosParaComparar = 4
 		if (elOrganizadorEsAmigo(invitacion) || esDentroDelRadioDeCercania(invitacion) ||
 			asistenMasDeCantidadDeterminadaDeAmigos(invitacion, cantidadAmigosParaComparar)) {
-			invitacion.aceptar((invitacion.cantidadDeAcompañantes))
+			invitacion.aceptar(invitacion.cantidadDeAcompañantes)
 		}
 	} 
 	def crearSetEventosTotal() {
@@ -149,7 +150,7 @@ class Usuario {
 
 	def cantidadDeAmigosInvitados(Invitacion invitacion) {
 		amigosEnComun = amigos
-		amigosEnComun.retainAll(invitacion.unEventoCerrado.invitados)
+		amigosEnComun.retainAll(invitacion.unEventoCerrado.invitadosDelEvento)
 		amigosEnComun.size()
 	}
 
