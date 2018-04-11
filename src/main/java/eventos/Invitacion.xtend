@@ -11,7 +11,6 @@ class Invitacion {
 	int cantidadDeAcompañantes
 	Boolean aceptada = null
 	int cantidadDeAcompañantesConfirmados = 0
-	LocalDate today = LocalDate.now();
 
 	new(EventoCerrado elEventoCerrado, Usuario elUsuario, int laCantidadDeAcompañantes) {
 		unEventoCerrado = elEventoCerrado
@@ -55,7 +54,6 @@ class Invitacion {
 		this.unUsuario.mensajesGenerales.add(
 			"El Evento " + this.unEventoCerrado + " fue Postergado.  Las nueva fechas son, Inicio " + nuevaFechaInicio +
 				" Finalizacion: " + nuevaFechaFinalizacion + ", Confirmacion: " + NuevaFechaLimiteConfirmacion)
-
 	}
 
 }

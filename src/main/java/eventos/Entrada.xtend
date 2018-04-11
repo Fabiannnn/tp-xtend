@@ -36,12 +36,11 @@ class Entrada {
 			"El Evento " + this.unEventoAbierto + " fue Postergado.  Las nueva fechas son, Inicio " + nuevaFechaInicio +
 				" Finalizacion: " + nuevaFechaFinalizacion + ", Confirmacion: " + NuevaFechaLimiteConfirmacion +
 				". La entrada podrá ser devuelta al 100%")
-
 	}
 
 // Métodos relacionados con la devolución de entradas generales
 	def devolucionEntrada() {
-		this.vigente = false
+		vigente = false
 		if (unEventoAbierto.postergado == true) {
 			devolucionEntradaImporteTotal()
 		} else {
@@ -62,7 +61,6 @@ class Entrada {
 	}
 
 	def double diasHastaEvento() {
-		(Period.between(LocalDate.now(), LocalDate.from(this.unEventoAbierto.fechaDeInicio))).getDays() as double
-
+		(Period.between(LocalDate.now(), LocalDate.from(unEventoAbierto.fechaDeInicio))).getDays() as double
 	}
 }
