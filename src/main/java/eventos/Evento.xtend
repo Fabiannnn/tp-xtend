@@ -1,15 +1,15 @@
 package eventos
 
-import org.eclipse.xtend.lib.annotations.Accessors
-import java.time.LocalDateTime
 import java.time.Duration
-import org.uqbar.geodds.Point
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.Set
-
+import org.eclipse.xtend.lib.annotations.Accessors
+import org.uqbar.geodds.Point
 
 @Accessors
 abstract class Evento {
+	
 	String nombre
 	Usuario organizador
 	LocalDateTime fechaDeInicio
@@ -19,21 +19,18 @@ abstract class Evento {
 	boolean cancelado = false
 	boolean postergado = false
 	
+	abstract def boolean esUnFracaso()
 	abstract def int capacidadMaxima()
+	abstract def void cancelarElEvento()
+	abstract def boolean esExitoso()
 	
 	def double duracion() {
 		Duration.between(fechaDeInicio, fechaFinalizacion).getSeconds() / 3600.0
 	}
 
-	abstract def void cancelarElEvento()
-
 	def double distancia(Point ubicacion) {
 		locacion.distancia(ubicacion)
 	}
-
-	abstract def boolean esExitoso()
-
-	abstract def boolean esUnFracaso()
 
 	def fechaAnteriorALaLimite() { 
 		LocalDate.now() <= LocalDate.from(this.fechaLimiteConfirmacion)
@@ -59,6 +56,7 @@ abstract class Evento {
 
 @Accessors
 class EventoAbierto extends Evento {
+	
 	int edadMinima
 	double precioEntrada
 	Set<Entrada> entradasVendidas
@@ -66,7 +64,9 @@ class EventoAbierto extends Evento {
 	def void comprarEntrada(Usuario elComprador) { // chequea condiciones
 		if ((elComprador.edad() > this.edadMinima) && this.fechaAnteriorALaLimite() && this.hayEntradasDisponibles()) {
 			generarEntrada(elComprador)
-		} else elComprador.recibirMensaje("No se  cumplen las condiciones de compra de la entrada ")
+		} else {
+			elComprador.recibirMensaje("No se  cumplen las condiciones de compra de la entrada ")
+		}
 	}
 
 	def generarEntrada(Usuario elComprador) { // llega aca si las condiciones de compra se cumplen
@@ -102,19 +102,21 @@ class EventoAbierto extends Evento {
 		entradasVendidas.size() < this.capacidadMaxima()
 	}
 
-	override fechaAnteriorALaLimite() { LocalDate.now() <= LocalDate.from(fechaDeInicio) }
+	override fechaAnteriorALaLimite() { 
+		LocalDate.now() <= LocalDate.from(fechaDeInicio)
+	}
 	
 	override esExitoso(){
-		(!this.cancelado  && !this.postergado && ventaExitosa())
+		!this.cancelado  && !this.postergado && ventaExitosa()
 	}
 	
 	def ventaExitosa(){
-		val coefExito=0.9
+		val coefExito=0.9 //RAG: es necesaria esta variable?
 		entradasVendidas.filter[entradas | entradas.vigente===true].size()/entradasVendidas.size() >= coefExito
 	}
 	
 	override esUnFracaso(){
-		val coefFracaso=0.5
+		val coefFracaso=0.5 //RAG: es necesaria esta variable? 
 		entradasVendidas.filter[entradas | entradas.vigente===true].size()/capacidadMaxima() < coefFracaso
 	}
 
@@ -126,7 +128,8 @@ class EventoCerrado extends Evento {
 	Set<Invitacion> invitados = newHashSet
 	Set<Usuario> invitadosDelEvento = newHashSet
 	int capacidadMaxima = 0
-
+	
+	//RAG: no es necesario aclarar que es con acompañantes. Podría llamarse crearInvitacion() o invitar()
 	def crearInvitacionConAcompañantes(Usuario elInvitado, int unaCantidadDeAcompañantes) {
 		if (hayCapacidadDisponible(unaCantidadDeAcompañantes + 1) && fechaAnteriorALaLimite()) {
 			var nuevaInvitacion = new Invitacion(this, elInvitado, unaCantidadDeAcompañantes)
@@ -146,10 +149,11 @@ class EventoCerrado extends Evento {
 	def registrarInvitacionEnEvento(Invitacion nuevaInvitacion) {
 		invitados.add(nuevaInvitacion)
 	}
-
+	
 	def registrarInvitacionEnUsuario(Invitacion nuevaInvitacion, Usuario elInvitado) {
 		elInvitado.recibirInvitacion(nuevaInvitacion)
-		elInvitado.recibirMensaje("Fuiste invitado a" + this.nombre + ", con " + nuevaInvitacion.cantidadDeAcompañantes)
+		elInvitado.recibirMensaje("Fuiste invitado a" + this.nombre + ", con " + nuevaInvitacion.cantidadDeAcompañantes) 
+		//RAG: esta última línea debería estar dentro de recibirInvitacion() en Usuario
 	}
 
 	def int cantidadPosiblesAsistentes() {
@@ -173,13 +177,14 @@ class EventoCerrado extends Evento {
 		capacidadMaxima
 	}
 	
+	//RAG: por qué con mayúscula?
 	def NotificarAInvitadosQueNoRechazaron(){
 		invitados.filter[invitados | invitados.aceptada != false].forall[invitacion | invitacion.notificacionAInvitadosDeCancelacion()]
 	}
 	
 	override postergarElEvento(LocalDateTime nuevaFechaHoraInicio){
-	 super.postergarElEvento( nuevaFechaHoraInicio)
-	invitados.forall[invitacion | invitacion.NotificacionAInvitadosDePostergacion(fechaDeInicio,fechaFinalizacion,fechaLimiteConfirmacion)]
+	 	super.postergarElEvento( nuevaFechaHoraInicio)
+		invitados.forall[invitacion | invitacion.NotificacionAInvitadosDePostergacion(fechaDeInicio,fechaFinalizacion,fechaLimiteConfirmacion)]
 	}
 
 	override esExitoso(){
@@ -187,8 +192,8 @@ class EventoCerrado extends Evento {
 	}
 
 	def asistenciaExitosa(){
-	val coefExito=0.8 
-	invitados.filter[invitacion | invitacion.aceptada===true].size()/ invitados.size() >= coefExito
+		val coefExito=0.8 
+		invitados.filter[invitacion | invitacion.aceptada===true].size()/ invitados.size() >= coefExito
 	}
 
 	override esUnFracaso(){
@@ -196,8 +201,8 @@ class EventoCerrado extends Evento {
 	}
 
 	def asistenciaFracaso(){
-	val coefFracaso =0.5
-	invitados.filter[invitacion | invitacion.aceptada!==false].size()/ invitados.size()< coefFracaso
+		val coefFracaso =0.5
+		invitados.filter[invitacion | invitacion.aceptada!==false].size()/ invitados.size()< coefFracaso
 	}
 
 }
