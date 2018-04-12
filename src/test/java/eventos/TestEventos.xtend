@@ -16,16 +16,44 @@ class TestEventos {
 
 	@Before
 	def void init() {
-		salon_SM = new Locacion("San Martin", new Point(35, 45), 16)
-		usuario1 = new Usuario("Organizador1", "xx", LocalDate.of(2002, 05, 15), "donde vive", new Point(40, 50))
-		cumple = new EventoAbierto("Cumple de Algoritmos 2", usuario1, salon_SM, LocalDateTime.now().plus(Period.ofDays(3)), LocalDateTime.now().plus(Period.ofDays(5)),
-			LocalDate.of(2018, 05, 30), 17, 20.5)
-		reunionTrabajo = new EventoCerrado("Reunion proyecto", usuario1, salon_SM, LocalDateTime.now().plus(Period.ofDays(3)), LocalDateTime.now().plus(Period.ofDays(5)),
-			LocalDate.of(2018, 04, 15), 20)
-		cumple.fechaDeInicio = LocalDateTime.of(2017, 08, 20, 8, 20)
-		cumple.fechaFinalizacion = LocalDateTime.of(2017, 08, 20, 9, 50)
+	
+		salon_SM = new Locacion=>[
+			nombreLugar = "San Martin"
+			punto = new Point(35, 45)
+			superficie = 16
+		]
+		usuario1 = new Usuario=>[
+			nombreDeUsuario = "Organizador1"
+			fechaDeNacimiento = LocalDate.of(2002, 05, 15)
+			coordenadasDireccion = new Point(40, 50)
+		]
+			
+		cumple = new EventoAbierto =>[ 
+			nombre = "Cumple de Algoritmos 2"
+			organizador = usuario1
+			locacion = salon_SM
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(5))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(6))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(3))	
+		]
+				
+		cumple = new EventoAbierto =>[ 
+		//	nombre = "Cumple de Algoritmos 2"
+			organizador = usuario1
+			locacion = salon_SM
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(5))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(6))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(3))	
+		]
+			
+		reunionTrabajo = new EventoCerrado=>[ 
+			organizador = usuario1
+			locacion = salon_SM
+			capacidadMaxima = 20
+		]
 	}
-
+	
+// Se chequea la determinación de capacidad del evento según sea Evento Cerrado o Abierto
 	@Test
 	def void capacidadSanMartinEnEventoCerrado_20persona() {
 		Assert.assertEquals(20, reunionTrabajo.capacidadMaxima(), 0)
@@ -36,9 +64,10 @@ class TestEventos {
 		Assert.assertEquals(12, cumple.capacidadMaxima(), 0)
 	}
 
+// Testeo duración de evento y método de distancia
 	@Test
-	def void testDuracionDelCumple300() {
-		Assert.assertEquals(1.5, cumple.duracion(), 0)
+	def void testDuracionDelCumple24horas() {
+		Assert.assertEquals(24, cumple.duracion(), 0)
 	}
 
 	@Test
@@ -50,7 +79,7 @@ class TestEventos {
 	@Test
 	def void testDistanciaASanMartin_Xmas10_Ymenos10_resultadoAproximado1400() {
 		val estoyAca = new Point(45, 35)
-		Assert.assertEquals(1400.0, cumple.distancia(estoyAca), 100.0)
+		Assert.assertEquals(1400.0, cumple.distancia(estoyAca), 10.0)
 	}
 
 }

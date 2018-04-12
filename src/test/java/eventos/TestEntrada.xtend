@@ -16,11 +16,27 @@ class TestEntrada {
 
 	@Before
 	def void init() {
-		salon_SM = new Locacion("San Martin", new Point(35, 45), 16)
-		usuario1 = new Usuario("Organizador1", "xx", LocalDate.of(2002, 05, 15), "donde vive", new Point(40, 50))
-		cumple = new EventoAbierto("Cumple de Algoritmos 2", usuario1, salon_SM,
-			LocalDateTime.now().plus(Period.ofDays(25)), LocalDateTime.now().plus(Period.ofDays(26)),
-			LocalDate.of(2018, 04, 17), 17, 100)
+		salon_SM = new Locacion=>[
+			nombreLugar = "San Martin"
+			punto = new Point(35, 45)
+			superficie = 16
+		]
+		usuario1 = new Usuario=>[
+			nombreDeUsuario = "Organizador1"
+			fechaDeNacimiento = LocalDate.of(2002, 05, 15)
+			coordenadasDireccion = new Point(40, 50)
+		]
+			
+		cumple = new EventoAbierto =>[ 
+			organizador = usuario1
+			locacion = salon_SM
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(25))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(26))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(7))	
+			edadMinima = 17
+			precioEntrada = 100
+		]
+
 		entradaPrueba = new Entrada(cumple, usuario1)
 	}
 

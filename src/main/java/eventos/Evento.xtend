@@ -19,16 +19,6 @@ abstract class Evento {
 	boolean cancelado = false
 	boolean postergado = false
 	
-	new(String unNombre, Usuario unOrganizador, Locacion unaLocacion, LocalDateTime unaFechaInicio,
-		LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion) {
-		this.nombre = unNombre
-		organizador = unOrganizador
-		locacion = unaLocacion
-		fechaDeInicio = unaFechaInicio
-		fechaFinalizacion = unaFechaFinalizacion
-		fechaLimiteConfirmacion = unaFechaLimiteConfirmacion
-	}
-
 	abstract def int capacidadMaxima()
 	
 	def double duracion() {
@@ -72,15 +62,6 @@ class EventoAbierto extends Evento {
 	int edadMinima
 	double precioEntrada
 	Set<Entrada> entradasVendidas
-
-	new(String unNombre, Usuario unOrganizador, Locacion unaLocacion, LocalDateTime unaFechaInicio,
-		LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion, int unaEdadMinima,
-		double unPrecioEntrada) {
-		super(unNombre, unOrganizador, unaLocacion, unaFechaInicio, unaFechaFinalizacion, unaFechaLimiteConfirmacion)
-		edadMinima = unaEdadMinima
-		precioEntrada = unPrecioEntrada
-	}
-
 
 	def void comprarEntrada(Usuario elComprador) { // chequea condiciones
 		if ((elComprador.edad() > this.edadMinima) && this.fechaAnteriorALaLimite() && this.hayEntradasDisponibles()) {
@@ -145,12 +126,6 @@ class EventoCerrado extends Evento {
 	Set<Invitacion> invitados = newHashSet
 	Set<Usuario> invitadosDelEvento = newHashSet
 	int capacidadMaxima = 0
-
-	new(String unNombre, Usuario unOrganizador, Locacion unaLocacion, LocalDateTime unaFechaInicio,
-		LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion, int unaCapacidadMaxima) {
-		super(unNombre, unOrganizador, unaLocacion, unaFechaInicio, unaFechaFinalizacion, unaFechaLimiteConfirmacion)
-		this.capacidadMaxima = unaCapacidadMaxima
-	}
 
 	def crearInvitacionConAcompañantes(Usuario elInvitado, int unaCantidadDeAcompañantes) {
 		if (hayCapacidadDisponible(unaCantidadDeAcompañantes + 1) && fechaAnteriorALaLimite()) {

@@ -25,15 +25,6 @@ class Usuario {
 	TipoDeUsuario tipoDeUsuario
 	Set<Evento> eventosOrganizados = newHashSet
 
-	new(String unNombreYApellido, String unEMail, LocalDate unaFechaDeNacimiento, String unaDireccion,
-		Point unaCoordenada) {
-		this.nombreYApellido = unNombreYApellido
-		this.eMail = unEMail
-		this.fechaDeNacimiento = unaFechaDeNacimiento
-		this.direccion = unaDireccion
-		this.coordenadasDireccion = unaCoordenada
-	}
-
 	// Métodos relacionados con Invitaciones a Eventos Cerrados
 	def recibirInvitacion(Invitacion invitacion) {
 		invitaciones.add(invitacion)
@@ -83,8 +74,17 @@ class Usuario {
 		if (tipoDeUsuario.puedoOrganizarElEventoAbierto(unNombre, unOrganizador, unaLocacion, unaFechaInicio,
 			unaFechaFinalizacion, unaFechaLimiteConfirmacion, unaEdadMinima, unPrecioEntrada)) {
 			eventosOrganizados.add(
-				new EventoAbierto(unNombre, unOrganizador, unaLocacion, unaFechaInicio, unaFechaFinalizacion,
-					unaFechaLimiteConfirmacion, unaEdadMinima, unPrecioEntrada))
+				new EventoAbierto =>[
+					nombre = unNombre
+					organizador = unOrganizador
+					locacion = unaLocacion
+					fechaDeInicio = unaFechaInicio
+					fechaFinalizacion = unaFechaFinalizacion
+					fechaLimiteConfirmacion = unaFechaLimiteConfirmacion
+					edadMinima = unaEdadMinima
+					precioEntrada = unPrecioEntrada
+					]
+					) 
 		}
 	}
 
@@ -94,8 +94,16 @@ class Usuario {
 		if (tipoDeUsuario.puedoOrganizarElEventoCerrado(unOrganizador, unaFechaInicio, unaFechaFinalizacion,
 			unaCapacidadMaxima)) {
 			eventosOrganizados.add(
-				new EventoCerrado(unNombre, unOrganizador, unaLocacion, unaFechaInicio, unaFechaFinalizacion,
-					unaFechaLimiteConfirmacion, unaCapacidadMaxima))
+				new EventoCerrado=>[
+					nombre = unNombre
+					organizador = unOrganizador
+					locacion = unaLocacion
+					fechaDeInicio = unaFechaInicio
+					fechaFinalizacion = unaFechaFinalizacion
+					fechaLimiteConfirmacion = unaFechaLimiteConfirmacion
+					capacidadMaxima = unaCapacidadMaxima
+					]
+					)
 		}
 	}
 	def agregarAmigoALaLista( Usuario unAmigo) {

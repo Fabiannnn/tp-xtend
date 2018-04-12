@@ -15,11 +15,7 @@ class TestDeTipoDeUsuario {
 	Locacion salon_SM
 	Usuario usuario1
 	Usuario usuario2
-	LocalDate hoyMasTresDias = LocalDate.now().plus(Period.ofDays(3))
-	LocalDate fechaVencida = LocalDate.now().plus(Period.ofDays(-1))
 	UsuarioFree usuarioFree
-
-	// mis variables para los tests
 	Usuario unUsuario
 	EventoCerrado primerEvento
 	EventoCerrado segundoEvento
@@ -33,37 +29,116 @@ class TestDeTipoDeUsuario {
 
 	@Before
 	def void init() {
-		salon_SM = new Locacion("San Martin", new Point(35, 45), 16)
-		usuario1 = new Usuario("PrimerUsuario", "xx", LocalDate.of(2002, 05, 15), "donde vive", new Point(40, 50))
-		usuario2 = new Usuario("SegundoUsuario", "xx", LocalDate.of(1900, 04, 02), "donde vive", new Point(45, 60))
-		reunionChica = new EventoCerrado("Reunion proyecto", usuario1, salon_SM,
-			LocalDateTime.now().plus(Period.ofDays(3)), LocalDateTime.now().plus(Period.ofDays(4)), hoyMasTresDias, 10)
-		otroEvento = new EventoCerrado("Otra Reunion ", usuario2, salon_SM, LocalDateTime.of(2018, 04, 1, 8, 20),
-			LocalDateTime.of(2018, 04, 20, 8, 20), fechaVencida, 50)
-		reunionGrande = new EventoCerrado("Reunion proyecto", usuario1, salon_SM,
-			LocalDateTime.now().plus(Period.ofDays(3)), LocalDateTime.now().plus(Period.ofDays(4)), hoyMasTresDias, 20)
+
+		salon_SM = new Locacion => [
+			nombreLugar = "San Martin"
+			punto = new Point(35, 45)
+			superficie = 16
+		]
+
+		usuario1 = new Usuario => [
+			nombreDeUsuario = "PrimerUsuario"
+			fechaDeNacimiento = LocalDate.of(2002, 05, 15)
+			coordenadasDireccion = new Point(40, 50)
+		]
+
+		usuario2 = new Usuario => [
+			nombreDeUsuario = "SegundoUssuario"
+			fechaDeNacimiento = LocalDate.of(1900, 04, 02)
+			coordenadasDireccion = new Point(45, 60)
+		]
+
+		reunionChica = new EventoCerrado => [
+			nombre = "Reunion Proyecto"
+			organizador = usuario1
+			locacion = salon_SM
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(3))
+			capacidadMaxima = 10
+		]
+		otroEvento = new EventoCerrado => [
+			nombre = "Otra Reunion "
+			organizador = usuario2
+			locacion = salon_SM
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(-1))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(1))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(-1))
+			capacidadMaxima = 50
+		]
+		reunionGrande = new EventoCerrado => [
+			nombre = "Reunion++ "
+			organizador = usuario1
+			locacion = salon_SM
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(3))
+			capacidadMaxima = 20
+		]
 		usuarioFree = new UsuarioFree()
 		usuario1.setUsuarioFree()
-		// usuario2.eventosOrganizados.add(reunionChica)
-		// mis variables para los tests
-		unUsuario = new Usuario("unUsuario", "xx", LocalDate.of(2002, 05, 15), "donde vive", new Point(40, 50))
-		primerEvento = new EventoCerrado("Reunion proyecto", unUsuario, salon_SM,
-			LocalDateTime.now().plus(Period.ofDays(3)), LocalDateTime.now().plus(Period.ofDays(4)), hoyMasTresDias, 10)
 
-		segundoEvento = new EventoCerrado("Reunion proyecto", unUsuario, salon_SM,
-			LocalDateTime.now().plus(Period.ofDays(3)), LocalDateTime.now().plus(Period.ofDays(4)), hoyMasTresDias, 10)
+// mis variables para los tests
+		unUsuario = new Usuario => [
+			nombreDeUsuario = "Usuario"
+			fechaDeNacimiento = LocalDate.of(2002, 05, 15)
+			coordenadasDireccion = new Point(40, 50)
+		]
+		primerEvento = new EventoCerrado => [
+			nombre = "Reunion Proyecto"
+			organizador = unUsuario
+			locacion = salon_SM
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(3))
+			capacidadMaxima = 10
+		]
+		segundoEvento = new EventoCerrado => [
+			nombre = "Reunion Proyecto"
+			organizador = unUsuario
+			locacion = salon_SM
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(3))
+			capacidadMaxima = 10
+		]
+		tercerEvento = new EventoCerrado => [
+			nombre = "Reunion Proyecto"
+			organizador = unUsuario
+			locacion = salon_SM
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(3))
+			capacidadMaxima = 10
+		]
+		cuartoEvento = new EventoCerrado => [
+			nombre = "Reunion Proyecto"
+			organizador = unUsuario
+			locacion = salon_SM
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(3))
+			capacidadMaxima = 10
+		]
 
-		tercerEvento = new EventoCerrado("Reunion proyecto", unUsuario, salon_SM,
-			LocalDateTime.now().plus(Period.ofDays(3)), LocalDateTime.now().plus(Period.ofDays(4)), hoyMasTresDias, 10)
-
-		cuartoEvento = new EventoCerrado("Reunion proyecto", unUsuario, salon_SM,
-			LocalDateTime.now().plus(Period.ofDays(3)), LocalDateTime.now().plus(Period.ofDays(4)), hoyMasTresDias, 10)
-
-		quintoEvento = new EventoCerrado("Reunion proyecto", unUsuario, salon_SM,
-			LocalDateTime.now().plus(Period.ofDays(3)), LocalDateTime.now().plus(Period.ofDays(4)), hoyMasTresDias, 10)
-
-		sextoEvento = new EventoCerrado("Reunion proyecto", unUsuario, salon_SM,
-			LocalDateTime.now().plus(Period.ofDays(3)), LocalDateTime.now().plus(Period.ofDays(4)), hoyMasTresDias, 10)
+		quintoEvento = new EventoCerrado => [
+			nombre = "Reunion Proyecto"
+			organizador = unUsuario
+			locacion = salon_SM
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(3))
+			capacidadMaxima = 10
+		]
+		sextoEvento = new EventoCerrado => [
+			nombre = "Reunion Proyecto"
+			organizador = unUsuario
+			locacion = salon_SM
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(3))
+			capacidadMaxima = 10
+		]
 	}
 
 	@Test
@@ -167,12 +242,9 @@ class TestDeTipoDeUsuario {
 	def void unUsuarioFreeNoPuedeOrganizarMasDeUnEventoCerradoEnSimultaneo() {
 		unUsuario.setUsuarioFree()
 		unUsuario.agregarEventoCerrado(primerEvento)
-		Assert.assertFalse(unUsuario.tipoDeUsuario.puedoOrganizarElEventoCerrado(
-			unUsuario,
-			LocalDateTime.now().plus(Period.ofDays(3)),
-			LocalDateTime.now().plus(Period.ofDays(4)),
-			50
-		))
+		Assert.assertFalse(
+			unUsuario.tipoDeUsuario.puedoOrganizarElEventoCerrado(unUsuario, LocalDateTime.now().plus(Period.ofDays(3)),
+				LocalDateTime.now().plus(Period.ofDays(4)), 50))
 	}
 
 	// Free: un máximo de 3 eventos mensuales
@@ -243,9 +315,15 @@ class TestDeTipoDeUsuario {
 	def void unUsuarioProfesionalPuedeOrganizarHasta20EventosAlMes() {
 		unUsuario.setUsuarioProfesional()
 		for (contador = 0; contador < cantMaxDeEventos; contador = contador + 1) {
-			unUsuario.agregarEventoCerrado(
-				new EventoCerrado("Reunion proyecto", unUsuario, salon_SM, LocalDateTime.now().plus(Period.ofDays(3)),
-					LocalDateTime.now().plus(Period.ofDays(4)), hoyMasTresDias, 10))
+			unUsuario.agregarEventoCerrado(new EventoCerrado => [
+				nombre = "Otra Reunion "
+				organizador = unUsuario
+				locacion = salon_SM
+				fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
+				fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
+				fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(3))
+				capacidadMaxima = 100
+			])
 		}
 		Assert.assertFalse(
 			unUsuario.tipoDeUsuario.puedoOrganizarElEventoCerrado(unUsuario, LocalDateTime.now().plus(Period.ofDays(3)),

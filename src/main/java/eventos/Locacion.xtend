@@ -9,12 +9,12 @@ class Locacion {
 	Point punto
 	double superficie
 	val personasPorMetroCuadrado = 0.8
-
-	new(String unNombreLugar, Point unPunto, double unaSuperficie) {
-		nombreLugar = unNombreLugar
-		punto = unPunto
-		superficie = unaSuperficie
-	}
+//
+//	new(String unNombreLugar, Point unPunto, double unaSuperficie) {
+//		nombreLugar = unNombreLugar
+//		punto = unPunto
+//		superficie = unaSuperficie
+//	}
 
 	def double distancia(Point otroPunto) {
 		punto.distance(otroPunto)
