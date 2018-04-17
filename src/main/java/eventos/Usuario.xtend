@@ -13,11 +13,11 @@ class Usuario {
 	String nombreYApellido
 	String eMail
 	LocalDate fechaDeNacimiento
-	String direccion // es necesario??
 	Point coordenadasDireccion
 	boolean esAntisocial
 	Set<Usuario> amigos = newHashSet
 	double radioDeCercania
+	double saldoCuenta = 0.0 //esto se agrego segun issue 8
 	Set<Invitacion> invitaciones = newHashSet
 	Set<String> mensajesGenerales = newHashSet // paraInvitaciones cancelaciones postergaciones
 	Set<Entrada> entradaComprada = newHashSet
@@ -35,12 +35,12 @@ class Usuario {
 	}
 
 	def rechazarInvitacion(Invitacion invitacion) {
-		if (this.equals(invitacion.unUsuario) && invitacion.unEventoCerrado.fechaAnteriorALaLimite())
+		if (equals(invitacion.unUsuario) && invitacion.unEventoCerrado.fechaAnteriorALaLimite())
 			invitacion.rechazar()
 	}
 
 	def aceptarInvitacion(Invitacion invitacion, int cantidadAcompañantes) {
-		if (this.equals(invitacion.unUsuario) && (invitacion.cantidadDeAcompañantes >= cantidadAcompañantes) &&
+		if (equals(invitacion.unUsuario) && (invitacion.cantidadDeAcompañantes >= cantidadAcompañantes) &&
 			invitacion.unEventoCerrado.fechaAnteriorALaLimite()) {
 			invitacion.aceptar(cantidadAcompañantes)
 		}
@@ -211,17 +211,14 @@ class UsuarioFree implements TipoDeUsuario {
 	val limiteEventosSimultaneos = 1
 	val maximoPersonasPorEventoCerrado = 50
 	val cantidadMaximaEventosMensuales = 3
-	boolean puedoOrganizarElEventoAbierto = false
-	boolean puedePostergarEventos = false
-	boolean puedeCancelarEventos = false
 
 	override boolean puedoOrganizarElEventoAbierto(String unNombre, Usuario unOrganizador, Locacion unaLocacion,
 		LocalDateTime unaFechaInicio, LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion,
-		int unaEdadMinima, double unPrecioEntrada) { puedoOrganizarElEventoAbierto }
+		int unaEdadMinima, double unPrecioEntrada) { false }
 
-	override boolean puedePostergarEventos() { puedePostergarEventos }
+	override boolean puedePostergarEventos() { false }
 
-	override boolean puedeCancelarEventos() { puedeCancelarEventos }
+	override boolean puedeCancelarEventos() { false }
 
 	override boolean puedoOrganizarElEventoCerrado(Usuario unUsuario, LocalDateTime unInicioEvento,
 		LocalDateTime unaFinalizacionEvento, int unaCapacidadTotal) {
@@ -260,8 +257,6 @@ class UsuarioAmateur implements TipoDeUsuario {
 	val limiteEventosSimultaneos = 5
 	val maximoInvitacionesEventoCerrado = 50
 	boolean puedoOrganizarElEventoAbierto = true
-	boolean puedePostergarEventos = true
-	boolean puedeCancelarEventos = true
 
 	override boolean puedoOrganizarElEventoAbierto(String unNombre, Usuario unOrganizador, Locacion unaLocacion,
 		LocalDateTime unaFechaInicio, LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion,
@@ -269,9 +264,9 @@ class UsuarioAmateur implements TipoDeUsuario {
 		puedoOrganizarElEventoAbierto && noSuperaElLimiteDeEventosSimultaneos(unOrganizador)
 	}
 
-	override boolean puedePostergarEventos() { puedePostergarEventos }
+	override boolean puedePostergarEventos() { true }
 
-	override boolean puedeCancelarEventos() { puedeCancelarEventos }
+	override boolean puedeCancelarEventos() { true }
 
 	override boolean puedoOrganizarElEventoCerrado(Usuario unUsuario, LocalDateTime unInicioEvento,
 		LocalDateTime unaFinalizacionEvento, int unaCapacidadTotal) {
@@ -292,19 +287,16 @@ class UsuarioAmateur implements TipoDeUsuario {
 class UsuarioProfesional implements TipoDeUsuario {
 
 	val cantidadMaximaEventosMensuales = 20
-	boolean puedoOrganizarElEventoAbierto = true
-	boolean puedeCancelarPostergarEventos = true
 
 	override boolean puedoOrganizarElEventoAbierto(String unNombre, Usuario unOrganizador, Locacion unaLocacion,
 		LocalDateTime unaFechaInicio, LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion,
 		int unaEdadMinima, double unPrecioEntrada) {
-		puedoOrganizarElEventoAbierto && noSuperaElLimiteDeEventosMensuales(unOrganizador, unaFechaInicio,
-			unaFechaFinalizacion)
+		noSuperaElLimiteDeEventosMensuales(unOrganizador, unaFechaInicio, unaFechaFinalizacion)
 	}
 
-	override boolean puedePostergarEventos() { puedePostergarEventos }
+	override boolean puedePostergarEventos() { true }
 	
-	override boolean puedeCancelarEventos() { puedeCancelarEventos }
+	override boolean puedeCancelarEventos() { true }
 
 	override boolean puedoOrganizarElEventoCerrado(Usuario unUsuario, LocalDateTime unInicioEvento,
 		LocalDateTime unaFinalizacionEvento, int unaCapacidadTotal) {

@@ -64,9 +64,10 @@ class EventoAbierto extends Evento {
 	Set<Entrada> entradasVendidas
 
 	def void comprarEntrada(Usuario elComprador) { // chequea condiciones
-		if ((elComprador.edad() > this.edadMinima) && this.fechaAnteriorALaLimite() && this.hayEntradasDisponibles()) {
+		if ((elComprador.edad() > edadMinima) && fechaAnteriorALaLimite() && hayEntradasDisponibles()) {
 			generarEntrada(elComprador)
-		} else elComprador.recibirMensaje("No se  cumplen las condiciones de compra de la entrada ")
+		} 
+		//si no se cumple tira una excepcion ver test
 	}
 
 	def generarEntrada(Usuario elComprador) { // llega aca si las condiciones de compra se cumplen
@@ -86,7 +87,7 @@ class EventoAbierto extends Evento {
 	// el organizador manda la orden a determinado evento si esta autorizado a cancelarla
 	override void cancelarElEvento() {
 		cancelado = true
-		entradasVendidas.forEach[entrada | entrada.mensajesYDevolucionEntradasPorCancelacion()]
+		entradasVendidas.forEach[entrada | entrada.cancelacionDeEvento()]
 	}
 
 	override postergarElEvento(LocalDateTime nuevaFechaHoraInicio){
@@ -99,13 +100,13 @@ class EventoAbierto extends Evento {
 	}
 	
 	def boolean hayEntradasDisponibles() {
-		entradasVendidas.size() < this.capacidadMaxima()
+		entradasVendidas.size() < capacidadMaxima()
 	}
 
 	override fechaAnteriorALaLimite() { LocalDate.now() <= LocalDate.from(fechaDeInicio) }
 	
 	override esExitoso(){
-		(!this.cancelado  && !this.postergado && ventaExitosa())
+		(!cancelado  && !postergado && ventaExitosa())
 	}
 	
 	def ventaExitosa(){
@@ -133,10 +134,11 @@ class EventoCerrado extends Evento {
 			registrarInvitacionEnEvento(nuevaInvitacion)
 			actualizarListadeUsuariosInvitados(nuevaInvitacion)
 			registrarInvitacionEnUsuario(nuevaInvitacion, elInvitado)
-		} else
-			this.organizador.recibirMensaje(
-				"No se  pudo generar la invitacion del evento " + this.nombre + "para el invitado " + elInvitado +
-					" con " + unaCantidadDeAcompañantes + " de acompañantes ")
+		} // si no se cumple tira una excepcion ver test
+// else
+//			this.organizador.recibirMensaje(
+//				"No se  pudo generar la invitacion del evento " + this.nombre + "para el invitado " + elInvitado +
+//					" con " + unaCantidadDeAcompañantes + " de acompañantes ")
 	}
 
 	def boolean hayCapacidadDisponible(int unaCantidadTotal) {
@@ -183,7 +185,7 @@ class EventoCerrado extends Evento {
 	}
 
 	override esExitoso(){
-		!this.cancelado  && asistenciaExitosa()
+		!cancelado  && asistenciaExitosa()
 	}
 
 	def asistenciaExitosa(){
@@ -192,7 +194,7 @@ class EventoCerrado extends Evento {
 	}
 
 	override esUnFracaso(){
-		!this.cancelado  && LocalDateTime.now().isAfter(fechaFinalizacion) && asistenciaFracaso()
+		!cancelado  && LocalDateTime.now().isAfter(fechaFinalizacion) && asistenciaFracaso()
 	}
 
 	def asistenciaFracaso(){

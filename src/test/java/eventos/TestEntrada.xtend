@@ -53,7 +53,7 @@ class TestEntrada {
 	@Test
 	def void devolverEntradaConMuchosDiasAnticipacionChequeoPImporteDevuel80() {
 		entradaPrueba.devolucionEntrada()
-		Assert.assertEquals(80.0, entradaPrueba.importeDevuelto, 0)
+		Assert.assertEquals(80.0, usuario1.saldoCuenta , 0)
 	}
 
 	@Test

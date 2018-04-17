@@ -143,7 +143,10 @@ class TestDeTipoDeUsuario {
 
 	@Test
 	def unUsuarioFreeQueNoTieneEventosOrganizadosNoPuedeOrganizarEventoAbierto() {
-		Assert.assertFalse(usuarioFree.puedoOrganizarElEventoAbierto)
+		Assert.assertFalse(
+			usuarioFree.puedoOrganizarElEventoAbierto("RR", usuario1, salon_SM,
+				LocalDateTime.now().plus(Period.ofDays(3)), LocalDateTime.now().plus(Period.ofDays(5)),
+				LocalDate.now().plus(Period.ofDays(3)), 10, 7))
 	}
 
 	@Test
@@ -210,7 +213,10 @@ class TestDeTipoDeUsuario {
 	@Test
 	def void unUsuarioFreeNoPuedeOrganizarUnEventoAbierto() {
 		unUsuario.setUsuarioFree()
-		Assert.assertFalse(usuarioFree.puedoOrganizarElEventoAbierto)
+		Assert.assertFalse(
+			usuarioFree.puedoOrganizarElEventoAbierto("RR", usuario1, salon_SM,
+				LocalDateTime.now().plus(Period.ofDays(3)), LocalDateTime.now().plus(Period.ofDays(5)),
+				LocalDate.now().plus(Period.ofDays(3)), 10, 7))
 	}
 
 	// Free: Pueden invitar hasta 50 personas por evento
@@ -315,15 +321,17 @@ class TestDeTipoDeUsuario {
 	def void unUsuarioProfesionalPuedeOrganizarHasta20EventosAlMes() {
 		unUsuario.setUsuarioProfesional()
 		for (contador = 0; contador < cantMaxDeEventos; contador = contador + 1) {
-			unUsuario.agregarEventoCerrado(new EventoCerrado => [
-				nombre = "Otra Reunion "
-				organizador = unUsuario
-				locacion = salon_SM
-				fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
-				fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
-				fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(3))
-				capacidadMaxima = 100
-			])
+			unUsuario.agregarEventoCerrado(
+				new EventoCerrado => [
+					nombre = "Otra Reunion "
+					organizador = unUsuario
+					locacion = salon_SM
+					fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
+					fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
+					fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(3))
+					capacidadMaxima = 100
+				]
+			)
 		}
 		Assert.assertFalse(
 			unUsuario.tipoDeUsuario.puedoOrganizarElEventoCerrado(unUsuario, LocalDateTime.now().plus(Period.ofDays(3)),

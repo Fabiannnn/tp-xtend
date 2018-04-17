@@ -19,7 +19,7 @@ class Entrada {
 
 // Metodos para devolucion de entradas,   por cancelación o postergacin
 
-	def void mensajesYDevolucionEntradasPorCancelacion() {
+	def void cancelacionDeEvento() {
 		unUsuario.recibirMensaje("El Evento " + this.unEventoAbierto +
 			" fue cancelado. El importe de la entrada le fue devuelto")
 		vigente = false
@@ -27,7 +27,7 @@ class Entrada {
 	}
 	
 	def void devolucionEntradaImporteTotal() {
-		this.importeDevuelto = unEventoAbierto.precioEntrada
+		unUsuario.saldoCuenta = unUsuario.saldoCuenta + unEventoAbierto.precioEntrada
 	}
 
 	def mensajesPorPostergacion(LocalDateTime nuevaFechaInicio, LocalDateTime nuevaFechaFinalizacion,
@@ -44,7 +44,7 @@ class Entrada {
 		if (unEventoAbierto.postergado == true) {
 			devolucionEntradaImporteTotal()
 		} else {
-			importeDevuelto = determinacionImporteDevolucion()
+			unUsuario.saldoCuenta = unUsuario.saldoCuenta + determinacionImporteDevolucion()
 		}
 	}
 
