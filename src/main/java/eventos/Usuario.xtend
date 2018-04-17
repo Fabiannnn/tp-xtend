@@ -9,6 +9,7 @@ import java.time.LocalDateTime
 
 @Accessors
 class Usuario {
+	
 	String nombreDeUsuario
 	String nombreYApellido
 	String eMail
@@ -19,11 +20,12 @@ class Usuario {
 	double radioDeCercania
 	double saldoCuenta = 0.0 //esto se agrego segun issue 8
 	Set<Invitacion> invitaciones = newHashSet
-	Set<String> mensajesGenerales = newHashSet // paraInvitaciones cancelaciones postergaciones
+	Set<String> mensajesGenerales = newHashSet // paraInvitaciones cancelaciones postergaciones | RAG: Por qué no notificaciones?
 	Set<Entrada> entradaComprada = newHashSet
-	Set<Usuario> amigosEnComun = newHashSet
 	TipoDeUsuario tipoDeUsuario
 	Set<Evento> eventosOrganizados = newHashSet
+
+	Set<Usuario> amigosEnComun = newHashSet
 
 	// Métodos relacionados con Invitaciones a Eventos Cerrados
 	def recibirInvitacion(Invitacion invitacion) {
@@ -34,6 +36,7 @@ class Usuario {
 		mensajesGenerales.add(string)
 	}
 
+	//RAG: faltaría una abstracción en invitación para no tener que hacer "invitacion.unEventoCerrado.fechaAnteriorALaLimite()"
 	def rechazarInvitacion(Invitacion invitacion) {
 		if (equals(invitacion.unUsuario) && invitacion.unEventoCerrado.fechaAnteriorALaLimite())
 			invitacion.rechazar()
@@ -83,8 +86,8 @@ class Usuario {
 					fechaLimiteConfirmacion = unaFechaLimiteConfirmacion
 					edadMinima = unaEdadMinima
 					precioEntrada = unPrecioEntrada
-					]
-					) 
+				]
+			) 
 		}
 	}
 
@@ -106,14 +109,17 @@ class Usuario {
 					)
 		}
 	}
+	
 	def agregarAmigoALaLista( Usuario unAmigo) {
 		amigos.add(unAmigo)
 	}
 	
+	//RAG: Este método no se usa
 	def agregarEventoCerrado(EventoCerrado unEventoCerrado) {
 		if (tipoDeUsuario.puedoOrganizarElEventoCerrado(unEventoCerrado.getOrganizador(), unEventoCerrado.fechaDeInicio, unEventoCerrado.fechaFinalizacion, unEventoCerrado.getCapacidadMaxima)
 		) {eventosOrganizados.add(unEventoCerrado)}
 	}
+	
 	def cancelarUnEvento(Evento unEvento) {
 		if (tipoDeUsuario.puedeCancelarEventos()) {
 			unEvento.cancelarElEvento()
@@ -126,11 +132,13 @@ class Usuario {
 		}
 
 	}
-// Métodos relacionados con Aceptacion y rechazo masivos
+	
+	// Métodos relacionados con Aceptacion y rechazo masivos
 	def aceptacionMasiva() {
 		invitaciones.filter(invitacion | invitacion.aceptada===null).forEach[invitacion|this.voyAAceptarla(invitacion)]
 	}
-
+	
+	//RAG: nombre raro. Podría ser aceptarSiCorresponde()
 	def voyAAceptarla(Invitacion invitacion) {
 		val cantidadAmigosParaComparar = 4
 		if (elOrganizadorEsAmigo(invitacion) || esDentroDelRadioDeCercania(invitacion) ||
@@ -152,17 +160,24 @@ class Usuario {
 		amigosEnComun.retainAll(invitacion.unEventoCerrado.invitadosDelEvento)
 		amigosEnComun.size()
 	}
-
+	
+	//RAG: Demasiadas indirecciones, faltan abstracciones en el medio
 	def esDentroDelRadioDeCercania(Invitacion invitacion) {
 		invitacion.unEventoCerrado.locacion.estaDentroDelRadioDeCercania(coordenadasDireccion, radioDeCercania)
 	}
 	
-	def rechazoMasivo(){invitaciones.filter(invitacion | invitacion.aceptada===null).forEach[invitacion|this.voyARechazarla(invitacion)]}
+	def rechazoMasivo(){
+		invitaciones.filter(invitacion | invitacion.aceptada===null).forEach[
+			invitacion | this.voyARechazarla(invitacion)
+		]
+	}
 	
-	def voyARechazarla(Invitacion invitacion){
-		if (esAntisocial){antisocialRechazaInvitacion(invitacion)
+	def voyARechazarla(Invitacion invitacion) {
+		if(esAntisocial) {
+			antisocialRechazaInvitacion(invitacion)
+		} else {
+			noAntisocialRechazaInvitacion(invitacion)
 		}
-		else{noAntisocialRechazaInvitacion(invitacion) }//Agregué lo que está dentro del corchete
 	}
 	
 	def antisocialRechazaInvitacion(Invitacion invitacion){
@@ -173,18 +188,24 @@ class Usuario {
 	}
 	
 	def noAntisocialRechazaInvitacion(Invitacion invitacion){
-			val cantidadAmigosParaComparar = 0
+		val cantidadAmigosParaComparar = 0
 		if (!esDentroDelRadioDeCercania(invitacion) && asistenMasDeCantidadDeterminadaDeAmigos( invitacion,  cantidadAmigosParaComparar) ){
 			invitacion.rechazar()
 		}
 	}
 
 // Seteo de tipo de usuarios
-	def void setUsuarioFree() { tipoDeUsuario = new UsuarioFree }
+	def void setUsuarioFree() { 
+		tipoDeUsuario = new UsuarioFree
+	}
 
-	def void setUsuarioAmateur() { tipoDeUsuario = new UsuarioAmateur }
+	def void setUsuarioAmateur() { 
+		tipoDeUsuario = new UsuarioAmateur
+	}
 
-	def void setUsuarioProfesional() { tipoDeUsuario = new UsuarioProfesional }
+	def void setUsuarioProfesional() { 
+		tipoDeUsuario = new UsuarioProfesional
+	}
 
 }
 

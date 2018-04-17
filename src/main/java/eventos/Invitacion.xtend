@@ -6,6 +6,7 @@ import java.time.LocalDateTime
 
 @Accessors
 class Invitacion {
+	
 	EventoCerrado unEventoCerrado
 	Usuario unUsuario
 	int cantidadDeAcompañantes
@@ -27,11 +28,6 @@ class Invitacion {
 		cantidadDeAcompañantesConfirmados = unaCantidadDeAcompañantes
 	}
 
-//	def aceptarMasivamente() {
-//		this.aceptada = true
-//		cantidadDeAcompañantesConfirmados = cantidadDeAcompañantes
-//	}
-
 	def posiblesAsistentes() {
 		if (aceptada === true) {
 			(cantidadDeAcompañantesConfirmados + 1)
@@ -44,11 +40,13 @@ class Invitacion {
 	}
 
 	// Metodos de notificacion de cancelacion y postergacion de eventos
+	//RAG: el .add debe estar encapsulado en Usuario
 	def notificacionAInvitadosDeCancelacion() {
 		this.unUsuario.mensajesGenerales.add("El Evento " + this.unEventoCerrado + " fue cancelado")
 		aceptada = false
 	}
-
+	
+	//RAG: el .add debe estar encapsulado en Usuario. Por qué en mayúscula?
 	def NotificacionAInvitadosDePostergacion(LocalDateTime nuevaFechaInicio, LocalDateTime nuevaFechaFinalizacion,
 		LocalDate NuevaFechaLimiteConfirmacion) {
 		this.unUsuario.mensajesGenerales.add(

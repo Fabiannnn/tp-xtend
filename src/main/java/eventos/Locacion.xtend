@@ -5,6 +5,7 @@ import org.uqbar.geodds.Point
 
 @Accessors
 class Locacion {
+
 	String nombreLugar
 	Point punto
 	double superficie
