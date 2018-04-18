@@ -7,6 +7,8 @@ import org.uqbar.geodds.Point
 import java.time.LocalDate
 import java.time.Period
 import java.time.LocalDateTime
+import excepciones.NoSePuedeInvitarException
+
 
 class TestEventoCerrado {
 	EventoCerrado reunionChica
@@ -31,6 +33,7 @@ class TestEventoCerrado {
 		usuario2 = new Usuario => [
 			fechaDeNacimiento = LocalDate.of(1900, 04, 02)
 			coordenadasDireccion = new Point(34, 45)
+			esAntisocial=false
 		]
 		reunionChica = new EventoCerrado => [
 			organizador = usuario1
@@ -57,14 +60,14 @@ class TestEventoCerrado {
 	}
 
 	@Test
-	def cantidadPosiblesAsistentesEventoCerradoConUnInvitadoConCincoAcompañantes() {
+	def cantidadPosiblesAsistentesEventoCerradoConUnInvitadoConCincoAcompanantes() {
 		invitacion = new Invitacion(reunionChica, usuario1, 5)
 		reunionChica.registrarInvitacionEnEvento(invitacion)
 		Assert.assertEquals(6, reunionChica.cantidadPosiblesAsistentes(), 0)
 	}
 
 	@Test
-	def hayCapacidadDisponibleParaOtroInvitadoConTresAcompañantesEsFalso() {
+	def hayCapacidadDisponibleParaOtroInvitadoConTresAcompanantesEsFalso() {
 		invitacion = new Invitacion(reunionChica, usuario1, 5)
 		reunionChica.registrarInvitacionEnEvento(invitacion)
 
@@ -72,7 +75,7 @@ class TestEventoCerrado {
 	}
 
 	@Test
-	def hayCapacidadDisponibleParaOtroInvitadoConCuatroAcompañantesEsFalso() {
+	def hayCapacidadDisponibleParaOtroInvitadoConCuatroAcompanantesEsFalso() {
 		invitacion = new Invitacion(reunionChica, usuario1, 5)
 		reunionChica.registrarInvitacionEnEvento(invitacion)
 
@@ -83,30 +86,30 @@ class TestEventoCerrado {
 	def seisInvitadosSeInvitan4MasChequeo10PosiblesAsistentes() {
 		invitacion = new Invitacion(reunionChica, usuario1, 5)
 		reunionChica.registrarInvitacionEnEvento(invitacion)
-		reunionChica.crearInvitacionConAcompañantes(usuario1, 3)
+		reunionChica.crearInvitacionConAcompanantes(usuario1, 3)
 		Assert.assertEquals(10, reunionChica.cantidadPosiblesAsistentes(), 0)
 	}
 
-	@Test
-	def seisInvitadosSeInvitan5MasChequeo10PosiblesAsistentes() {
-		invitacion = new Invitacion(reunionChica, usuario1, 5)
-		reunionChica.registrarInvitacionEnEvento(invitacion)
-		reunionChica.crearInvitacionConAcompañantes(usuario1, 4)
-		Assert.assertEquals(6, reunionChica.cantidadPosiblesAsistentes(), 0) // por que no acepto la segunda invitacion
-	}
+//	@Test
+//	def seisInvitadosSeInvitan5MasChequeo10PosiblesAsistentes() {
+//		invitacion = new Invitacion(reunionChica, usuario1, 5)
+//		reunionChica.registrarInvitacionEnEvento(invitacion)
+//		reunionChica.crearInvitacionConAcompanantes(usuario1, 4)
+//		Assert.assertEquals(6, reunionChica.cantidadPosiblesAsistentes(), 0) // por que no acepto la segunda invitacion
+//	}
 
 	@Test
-	def seisInvitadosSeInvitan4Mas_deLaPrimerInvitacionSeConfirman3AcompañantesChequeo8PosiblesAsistentes() {
+	def seisInvitadosSeInvitan4Mas_deLaPrimerInvitacionSeConfirman3AcompanantesChequeo8PosiblesAsistentes() {
 		invitacion = new Invitacion(reunionChica, usuario1, 5)
 		reunionChica.registrarInvitacionEnEvento(invitacion)
 		invitacion.aceptar(3)
 		invitacion = new Invitacion(reunionChica, usuario2, 3)
-		reunionChica.crearInvitacionConAcompañantes(usuario2, 3)
+		reunionChica.crearInvitacionConAcompanantes(usuario2, 3)
 		Assert.assertEquals(8, reunionChica.cantidadPosiblesAsistentes(), 0)
 	}
 
 	@Test
-	def seisInvitadosSeInvitan4Mas_deLaPrimerInvitacionSeConfirman3Acompañantes_laSegundaSeRechaza_Chequeo4PosiblesAsistentes() {
+	def seisInvitadosSeInvitan4Mas_deLaPrimerInvitacionSeConfirman3Acompanantes_laSegundaSeRechaza_Chequeo4PosiblesAsistentes() {
 		invitacion = new Invitacion(reunionChica, usuario1, 5)
 		reunionChica.registrarInvitacionEnEvento(invitacion)
 		invitacion.aceptar(3)
@@ -132,12 +135,11 @@ class TestEventoCerrado {
 		Assert.assertNull(invitacion.aceptada)
 	}
 
-	@Test
-	def seisInvitadosSeQuierenInvitarDespuesFechaLimiteSeVerificaQueNoSeCreeLaInvitacion() {
+	@Test (expected=NoSePuedeInvitarException)
+	def ExcepcionSeisInvitadosSeQuierenInvitarDespuesFechaLimiteSeVerificaLaExcepcion() {
 		invitacion = new Invitacion(otroEvento, usuario1, 5)
 		otroEvento.registrarInvitacionEnEvento(invitacion)
-		otroEvento.crearInvitacionConAcompañantes(usuario2, 3)
-		Assert.assertEquals(6, otroEvento.cantidadPosiblesAsistentes(), 0)
+		otroEvento.crearInvitacionConAcompanantes(usuario2, 3)	
 	}
 
 //Test para chequear aceptacion y rechazo masivo
@@ -150,7 +152,7 @@ class TestEventoCerrado {
 	}
 
 	@Test
-	def seInvitanAUsuario1_con3AcompañantesUsuario1hacerAceptacionMasivaPosiblesAsistentesEs0() {
+	def seInvitanAUsuario1_con3AcompanantesUsuario1hacerAceptacionMasivaPosiblesAsistentesEs0() {
 		invitacion = new Invitacion(otroEvento, usuario1, 3)
 		usuario1.radioDeCercania = 3
 		usuario1.aceptacionMasiva()
@@ -158,7 +160,7 @@ class TestEventoCerrado {
 	}
 
 	@Test
-	def seInvitanAUsuario1_con3AcompañantesUsuario1EsAmigoDelOrganizadorTrue() {
+	def seInvitanAUsuario1_con3AcompanantesUsuario1EsAmigoDelOrganizadorTrue() {
 		invitacion = new Invitacion(reunionChica, usuario2, 3)
 		usuario2.agregarAmigoALaLista(usuario1)
 		usuario2.aceptacionMasiva()
@@ -166,32 +168,37 @@ class TestEventoCerrado {
 	}
 
 	@Test
-	def seInvitaAlUsuario2_con3AcompañantesUsuario1EsAmigoDelOrganizadorDebeAceptarMasivamente() {
+	def seInvitaAlUsuario2_con3AcompanantesUsuario1EsAmigoDelOrganizadorDebeAceptarMasivamente() {
 		invitacion = new Invitacion(reunionChica, usuario2, 3)
 		usuario2.radioDeCercania = 0
 		usuario2.agregarAmigoALaLista(usuario1)
-		usuario2.voyAAceptarla(invitacion) // AceptaPorAmigoOrganizador
-		Assert.assertEquals(3, invitacion.cantidadDeAcompañantesConfirmados, 0)
+		usuario2.aceptarSiCorresponde(invitacion) // AceptaPorAmigoOrganizador
+		Assert.assertEquals(3, invitacion.cantidadDeAcompanantesConfirmados, 0)
 	}
 
 	@Test
-	def seInvitanAUsuario2_con3AcompañantesUsuario2hacerAceptacionMasivaAcompConfirmados3() {
+	def seInvitanAUsuario2_con3AcompanantesUsuario2hacerAceptacionMasivaAcompConfirmados3() {
 		invitacion = new Invitacion(otroEvento, usuario2, 3)
 		usuario2.radioDeCercania = 3000000.00 // acepta por radio de cercania
-		usuario2.voyAAceptarla(invitacion)
-		Assert.assertEquals(3, invitacion.cantidadDeAcompañantesConfirmados, 0)
+		usuario2.aceptarSiCorresponde(invitacion)
+		Assert.assertEquals(3, invitacion.cantidadDeAcompanantesConfirmados, 0)
 	}
 
 	@Test
 	def pruebaDeAceptarInvitacionDirectaPasandoLaInvitacion() {
 		invitacion = new Invitacion(otroEvento, usuario2, 3)
-		invitacion.aceptar(invitacion.cantidadDeAcompañantes)
-		Assert.assertEquals(3, invitacion.cantidadDeAcompañantesConfirmados, 0)
+		invitacion.aceptar(invitacion.cantidadDeAcompanantes)
+		Assert.assertEquals(3, invitacion.cantidadDeAcompanantesConfirmados, 0)
 	}
-//				@Test
-//	def 1amigoMasyAceptaMasivamente() {
-//		otroEvento.crearInvitacion(usuario2, 3)
-//		invitacion.aceptar(invitacion.cantidadDeAcompañantes)
-//		Assert.assertEquals(3,invitacion.cantidadDeAcompañantesConfirmados, 0)
-//	}
+
+//	@Test
+//	def unAmigoMasyAceptaMasivamente() {
+//		invitacion = new Invitacion(otroEvento, usuario2, 3)
+//		otroEvento.crearInvitacionConAcompanantes(usuario2, 3)
+//		usuario2.agregarAmigoALaLista(usuario1)
+//		usuario2.aceptacionMasiva()
+//		Assert.assertNull(invitacion.aceptada)
+//	}	
+//	
 }
+	

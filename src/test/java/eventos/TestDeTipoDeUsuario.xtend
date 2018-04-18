@@ -223,24 +223,28 @@ class TestDeTipoDeUsuario {
 	@Test
 	def void unUsuarioFreePuedeOrganizarUnEventoCerradoCon50Personas() {
 		unUsuario.setUsuarioFree()
-		Assert.assertTrue(unUsuario.tipoDeUsuario.puedoOrganizarElEventoCerrado(
-			unUsuario,
-			LocalDateTime.now().plus(Period.ofDays(3)),
-			LocalDateTime.now().plus(Period.ofDays(4)),
-			50
-		))
+		Assert.assertTrue(
+			unUsuario.tipoDeUsuario.puedoOrganizarElEventoCerrado(
+				unUsuario,
+				LocalDateTime.now().plus(Period.ofDays(3)),
+				LocalDateTime.now().plus(Period.ofDays(4)),
+				50
+			)
+		)
 	}
 
 	// Free: Pueden invitar hasta 50 personas por evento
 	@Test
 	def void unUsuarioFreeNoPuedeOrganizarUnEventoCerradoCon51Personas() {
 		unUsuario.setUsuarioFree()
-		Assert.assertFalse(unUsuario.tipoDeUsuario.puedoOrganizarElEventoCerrado(
-			unUsuario,
-			LocalDateTime.now().plus(Period.ofDays(3)),
-			LocalDateTime.now().plus(Period.ofDays(4)),
-			51
-		))
+		Assert.assertFalse(
+			unUsuario.tipoDeUsuario.puedoOrganizarElEventoCerrado(
+				unUsuario,
+				LocalDateTime.now().plus(Period.ofDays(3)),
+				LocalDateTime.now().plus(Period.ofDays(4)),
+				51
+			)
+		)
 	}
 
 	// Free: Solo pueden organizar un evento a la vez

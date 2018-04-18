@@ -11,7 +11,6 @@ class Entrada {
 	EventoAbierto unEventoAbierto
 	Usuario unUsuario
 	boolean vigente = true
-	double importeDevuelto = 0
 
 	new(EventoAbierto elEventoAbierto, Usuario elUsuario) {
 		unEventoAbierto = elEventoAbierto
@@ -22,7 +21,7 @@ class Entrada {
 
 
 	def void cancelacionDeEvento() {
-		unUsuario.recibirMensaje("El Evento " + this.unEventoAbierto +
+		unUsuario.agregarMensaje("El Evento " + this.unEventoAbierto +
 			" fue cancelado. El importe de la entrada le fue devuelto")
 		vigente = false
 		devolucionEntradaImporteTotal()
@@ -34,7 +33,7 @@ class Entrada {
 
 	def mensajesPorPostergacion(LocalDateTime nuevaFechaInicio, LocalDateTime nuevaFechaFinalizacion,
 		LocalDate NuevaFechaLimiteConfirmacion) {
-		unUsuario.recibirMensaje(
+		unUsuario.agregarMensaje(
 			"El Evento " + this.unEventoAbierto + " fue Postergado.  Las nueva fechas son, Inicio " + nuevaFechaInicio +
 				" Finalizacion: " + nuevaFechaFinalizacion + ", Confirmacion: " + NuevaFechaLimiteConfirmacion +
 				". La entrada podrá ser devuelta al 100%")
@@ -46,11 +45,11 @@ class Entrada {
 		if (unEventoAbierto.postergado == true) {
 			devolucionEntradaImporteTotal()
 		} else {
-			unUsuario.saldoCuenta = unUsuario.saldoCuenta + determinacionImporteDevolucion()
+			unUsuario.saldoCuenta = unUsuario.saldoCuenta + getImporteDevolucion()
 		}
 	}
 
-	def double determinacionImporteDevolucion() { 
+	def double getImporteDevolucion() { 
 		unEventoAbierto.precioEntrada * porcentajeDevolucion() / 100
 	}
 

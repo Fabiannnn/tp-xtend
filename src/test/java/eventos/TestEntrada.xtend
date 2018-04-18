@@ -47,7 +47,7 @@ class TestEntrada {
 
 	@Test
 	def void devolverEntradaConMuchosDiasAnticipacionChequeoPImporteIgual80() {
-		Assert.assertEquals(80.0, entradaPrueba.determinacionImporteDevolucion(), 0)
+		Assert.assertEquals(80.0, entradaPrueba.getImporteDevolucion(), 0)
 	}
 
 	@Test
@@ -65,7 +65,7 @@ class TestEntrada {
 	@Test
 	def void devolverEntradaSinAnticipacionNoDebeDevolverDinero() {
 		cumple.fechaDeInicio = LocalDateTime.now()
-		Assert.assertEquals(0.0, entradaPrueba.determinacionImporteDevolucion(), 0)
+		Assert.assertEquals(0.0, entradaPrueba.getImporteDevolucion(), 0)
 	}
 
 }

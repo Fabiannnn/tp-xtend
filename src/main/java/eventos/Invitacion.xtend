@@ -9,40 +9,45 @@ class Invitacion {
 	
 	EventoCerrado unEventoCerrado
 	Usuario unUsuario
-	int cantidadDeAcompañantes
+	int cantidadDeAcompanantes
 	Boolean aceptada = null
-	int cantidadDeAcompañantesConfirmados = 0
+	int cantidadDeAcompanantesConfirmados = 0
 
-	new(EventoCerrado elEventoCerrado, Usuario elUsuario, int laCantidadDeAcompañantes) {
+	new(EventoCerrado elEventoCerrado, Usuario elUsuario, int laCantidadDeAcompanantes) {
 		unEventoCerrado = elEventoCerrado
 		unUsuario = elUsuario
-		cantidadDeAcompañantes = laCantidadDeAcompañantes
+		cantidadDeAcompanantes = laCantidadDeAcompanantes
 	}
 
 	def rechazar() {
 		this.aceptada = false
 	}
 
-	def aceptar(int unaCantidadDeAcompañantes) {
+	def aceptar(int unaCantidadDeAcompanantes) {
 		this.aceptada = true
-		cantidadDeAcompañantesConfirmados = unaCantidadDeAcompañantes
+		cantidadDeAcompanantesConfirmados = unaCantidadDeAcompanantes
 	}
 
 	def posiblesAsistentes() {
 		if (aceptada === true) {
-			(cantidadDeAcompañantesConfirmados + 1)
+			(cantidadDeAcompanantesConfirmados + 1)
 		} else if (aceptada === false) {
 			0
 		} else if (aceptada === null) {
-			(cantidadDeAcompañantes + 1)
+			(cantidadDeAcompanantes + 1)
 		}
+	}
 
+	def ubicacion(){
+			unEventoCerrado.locacion
 	}
 
 	// Metodos de notificacion de cancelacion y postergacion de eventos
-	//RAG: el .add debe estar encapsulado en Usuario
-	def notificacionAInvitadosDeCancelacion() {
-		this.unUsuario.mensajesGenerales.add("El Evento " + this.unEventoCerrado + " fue cancelado")
+	//RAG: el .add debe estar encapsulado en Usuario			PREGUNTAR
+	
+	def boolean notificacionAInvitadosDeCancelacion() {
+		unUsuario.agregarMensaje("El Evento " + this.unEventoCerrado + " fue cancelado")
+		//this.unUsuario.mensajesGenerales.add("El Evento " + this.unEventoCerrado + " fue cancelado")
 		aceptada = false
 	}
 	

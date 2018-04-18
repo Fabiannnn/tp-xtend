@@ -25,14 +25,12 @@ class Usuario {
 	TipoDeUsuario tipoDeUsuario
 	Set<Evento> eventosOrganizados = newHashSet
 
-	Set<Usuario> amigosEnComun = newHashSet
-
 	// Métodos relacionados con Invitaciones a Eventos Cerrados
 	def recibirInvitacion(Invitacion invitacion) {
 		invitaciones.add(invitacion)
 	}
 
-	def recibirMensaje(String string) {
+	def agregarMensaje(String string) {
 		mensajesGenerales.add(string)
 	}
 
@@ -42,16 +40,16 @@ class Usuario {
 			invitacion.rechazar()
 	}
 
-	def aceptarInvitacion(Invitacion invitacion, int cantidadAcompañantes) {
-		if (equals(invitacion.unUsuario) && (invitacion.cantidadDeAcompañantes >= cantidadAcompañantes) &&
+	def aceptarInvitacion(Invitacion invitacion, int cantidadAcompanantes) {
+		if (equals(invitacion.unUsuario) && (invitacion.cantidadDeAcompanantes >= cantidadAcompanantes) &&
 			invitacion.unEventoCerrado.fechaAnteriorALaLimite()) {
-			invitacion.aceptar(cantidadAcompañantes)
+			invitacion.aceptar(cantidadAcompanantes)
 		}
 	}
 
-	def invitarAUnEventoCerrado(EventoCerrado unEventoCerrado, Usuario elInvitado, int unaCantidadDeAcompañantes) {
+	def invitarAUnEventoCerrado(EventoCerrado unEventoCerrado, Usuario elInvitado, int unaCantidadDeAcompanantes) {
 		if (tipoDeUsuario.sePuedeEntregarInvitacion(unEventoCerrado)) {
-			unEventoCerrado.crearInvitacionConAcompañantes(elInvitado, unaCantidadDeAcompañantes)
+			unEventoCerrado.crearInvitacionConAcompanantes(elInvitado, unaCantidadDeAcompanantes)
 		}
 	}
 
@@ -114,10 +112,17 @@ class Usuario {
 		amigos.add(unAmigo)
 	}
 	
-	//RAG: Este método no se usa
+	//RAG: Este método no se usa    Se esta usando en los test !!!!!!!! si no quien quien crea el evento????
 	def agregarEventoCerrado(EventoCerrado unEventoCerrado) {
 		if (tipoDeUsuario.puedoOrganizarElEventoCerrado(unEventoCerrado.getOrganizador(), unEventoCerrado.fechaDeInicio, unEventoCerrado.fechaFinalizacion, unEventoCerrado.getCapacidadMaxima)
 		) {eventosOrganizados.add(unEventoCerrado)}
+		/*agegar excepcion donde sea que se mude
+		 * else{
+		 * throw new NoPuedeOrganizarEstaEvento("No Puede Organizar el evento")
+		 * }
+		 * 
+		 */
+
 	}
 	
 	def cancelarUnEvento(Evento unEvento) {
@@ -135,15 +140,15 @@ class Usuario {
 	
 	// Métodos relacionados con Aceptacion y rechazo masivos
 	def aceptacionMasiva() {
-		invitaciones.filter(invitacion | invitacion.aceptada===null).forEach[invitacion|this.voyAAceptarla(invitacion)]
+		invitaciones.filter(invitacion | invitacion.aceptada===null).forEach[invitacion|this.aceptarSiCorresponde(invitacion)]
 	}
 	
-	//RAG: nombre raro. Podría ser aceptarSiCorresponde()
-	def voyAAceptarla(Invitacion invitacion) {
+	//RAG: nombre raro. voyAAceptarla Podría ser aceptarSiCorresponde()   ya está REVISAR
+	def aceptarSiCorresponde(Invitacion invitacion) {
 		val cantidadAmigosParaComparar = 4
 		if (elOrganizadorEsAmigo(invitacion) || esDentroDelRadioDeCercania(invitacion) ||
 			asistenMasDeCantidadDeterminadaDeAmigos(invitacion, cantidadAmigosParaComparar)) {
-			invitacion.aceptar(invitacion.cantidadDeAcompañantes)
+			invitacion.aceptar(invitacion.cantidadDeAcompanantes)
 		}
 	} 
 	
@@ -156,14 +161,17 @@ class Usuario {
 	}
 
 	def cantidadDeAmigosInvitados(Invitacion invitacion) {
-		amigosEnComun = amigos
-		amigosEnComun.retainAll(invitacion.unEventoCerrado.invitadosDelEvento)
-		amigosEnComun.size()
+		amigos.filter[unUsuario | invitacion.unEventoCerrado.invitadosDelEvento.contains(unUsuario) ].size()
+		
+//		amigosEnComun = amigos
+//		amigosEnComun.retainAll(invitacion.unEventoCerrado.invitadosDelEvento)
+//		amigosEnComun.size()
 	}
 	
-	//RAG: Demasiadas indirecciones, faltan abstracciones en el medio
+	//RAG: Demasiadas indirecciones, faltan abstracciones en el medio           VER CAMBIO
 	def esDentroDelRadioDeCercania(Invitacion invitacion) {
-		invitacion.unEventoCerrado.locacion.estaDentroDelRadioDeCercania(coordenadasDireccion, radioDeCercania)
+		invitacion.ubicacion().estaDentroDelRadioDeCercania(coordenadasDireccion, radioDeCercania)
+		//invitacion.unEventoCerrado.locacion.estaDentroDelRadioDeCercania(coordenadasDireccion, radioDeCercania)
 	}
 	
 	def rechazoMasivo(){

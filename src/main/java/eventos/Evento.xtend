@@ -1,11 +1,13 @@
 package eventos
 
 import java.time.Duration
+
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.Set
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.geodds.Point
+import excepciones.NoSePuedeInvitarException
 
 @Accessors
 abstract class Evento {
@@ -115,7 +117,7 @@ class EventoAbierto extends Evento {
 	}
 	
 	def ventaExitosa(){
-		val coefExito=0.9 //RAG: es necesaria esta variable?
+		val coefExito=0.9 //RAG: es necesaria esta variable?  NO decidimos separarla del cálculo bajo la premisa de que queda más visible al igual que se habían puesto los booleanos en los tipo de usuario
 		entradasVendidas.filter[entradas | entradas.vigente===true].size()/entradasVendidas.size() >= coefExito
 	}
 	
@@ -128,23 +130,25 @@ class EventoAbierto extends Evento {
 
 @Accessors
 class EventoCerrado extends Evento {
+	
+	static val COEF_EXITO = 0.9
 
 	Set<Invitacion> invitados = newHashSet
-	Set<Usuario> invitadosDelEvento = newHashSet
 	int capacidadMaxima = 0
 	
-	//RAG: no es necesario aclarar que es con acompañantes. Podría llamarse crearInvitacion() o invitar()
-	def crearInvitacionConAcompañantes(Usuario elInvitado, int unaCantidadDeAcompañantes) {
-		if (hayCapacidadDisponible(unaCantidadDeAcompañantes + 1) && fechaAnteriorALaLimite()) {
-			var nuevaInvitacion = new Invitacion(this, elInvitado, unaCantidadDeAcompañantes)
+	//RAG: no es necesario aclarar que es con acompanantes. Podría llamarse crearInvitacion() o invitar()
+	def  void crearInvitacionConAcompanantes(Usuario elInvitado, int unaCantidadDeAcompanantes) {
+		if (hayCapacidadDisponible(unaCantidadDeAcompanantes + 1) && fechaAnteriorALaLimite()) {
+			var nuevaInvitacion = new Invitacion(this, elInvitado, unaCantidadDeAcompanantes)
 			registrarInvitacionEnEvento(nuevaInvitacion)
-			actualizarListadeUsuariosInvitados(nuevaInvitacion)
 			registrarInvitacionEnUsuario(nuevaInvitacion, elInvitado)
-		} // si no se cumple tira una excepcion ver test
-// else
-//			this.organizador.recibirMensaje(
-//				"No se  pudo generar la invitacion del evento " + this.nombre + "para el invitado " + elInvitado +
-//					" con " + unaCantidadDeAcompañantes + " de acompañantes ")
+		} else {
+		throw new NoSePuedeInvitarException("No se puede generar la invitacion")
+	}
+	}
+	
+	def getInvitadosDelEvento() {
+		invitados.map[ unUsuario ].toList
 	}
 
 	def boolean hayCapacidadDisponible(int unaCantidadTotal) {
@@ -157,7 +161,7 @@ class EventoCerrado extends Evento {
 	
 	def registrarInvitacionEnUsuario(Invitacion nuevaInvitacion, Usuario elInvitado) {
 		elInvitado.recibirInvitacion(nuevaInvitacion)
-		elInvitado.recibirMensaje("Fuiste invitado a" + this.nombre + ", con " + nuevaInvitacion.cantidadDeAcompañantes) 
+		elInvitado.agregarMensaje("Fuiste invitado a" + this.nombre + ", con " + nuevaInvitacion.cantidadDeAcompanantes) 
 		//RAG: esta última línea debería estar dentro de recibirInvitacion() en Usuario
 	}
 
@@ -171,11 +175,7 @@ class EventoCerrado extends Evento {
 	
 	override cancelarElEvento(){
 		cancelado = true
-		NotificarAInvitadosQueNoRechazaron()
-	}
-	
-	def actualizarListadeUsuariosInvitados(Invitacion invitacion){
-		invitadosDelEvento.add(invitacion.unUsuario)
+		notificarAInvitadosQueNoRechazaron()
 	}
 	
 	override capacidadMaxima() {
@@ -183,7 +183,7 @@ class EventoCerrado extends Evento {
 	}
 	
 	//RAG: por qué con mayúscula?
-	def NotificarAInvitadosQueNoRechazaron(){
+	def notificarAInvitadosQueNoRechazaron(){
 		invitados.filter[invitados | invitados.aceptada != false].forall[invitacion | invitacion.notificacionAInvitadosDeCancelacion()]
 	}
 	
@@ -197,8 +197,7 @@ class EventoCerrado extends Evento {
 	}
 
 	def asistenciaExitosa(){
-		val coefExito=0.8 
-		invitados.filter[invitacion | invitacion.aceptada===true].size()/ invitados.size() >= coefExito
+		invitados.filter[invitacion | invitacion.aceptada===true].size()/ invitados.size() >= COEF_EXITO
 	}
 
 	override esUnFracaso(){
