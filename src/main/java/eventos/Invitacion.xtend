@@ -22,7 +22,10 @@ class Invitacion {
 	def rechazar() {
 		this.aceptada = false
 	}
-
+	
+	def boolean fechaParaConfirmar(){
+		unEventoCerrado.fechaAnteriorALaLimite()
+	}
 	def aceptar(int unaCantidadDeAcompanantes) {
 		this.aceptada = true
 		cantidadDeAcompanantesConfirmados = unaCantidadDeAcompanantes
@@ -43,19 +46,15 @@ class Invitacion {
 	}
 
 	// Metodos de notificacion de cancelacion y postergacion de eventos
-	//RAG: el .add debe estar encapsulado en Usuario			PREGUNTAR
 	
-	def boolean notificacionAInvitadosDeCancelacion() {
+	def boolean notificacionDeCancelacion() {
 		unUsuario.agregarMensaje("El Evento " + this.unEventoCerrado + " fue cancelado")
-		//this.unUsuario.mensajesGenerales.add("El Evento " + this.unEventoCerrado + " fue cancelado")
 		aceptada = false
 	}
-	
-	//RAG: el .add debe estar encapsulado en Usuario. Por qué en mayúscula?
-	def NotificacionAInvitadosDePostergacion(LocalDateTime nuevaFechaInicio, LocalDateTime nuevaFechaFinalizacion,
+	def NotificacionDePostergacion(LocalDateTime nuevaFechaInicio, LocalDateTime nuevaFechaFinalizacion,
 		LocalDate NuevaFechaLimiteConfirmacion) {
-		this.unUsuario.mensajesGenerales.add(
-			"El Evento " + this.unEventoCerrado + " fue Postergado.  Las nueva fechas son, Inicio " + nuevaFechaInicio +
+		unUsuario.agregarMensaje(
+			"El Evento " + unEventoCerrado + " fue Postergado.  Las nueva fechas son, Inicio " + nuevaFechaInicio +
 				" Finalizacion: " + nuevaFechaFinalizacion + ", Confirmacion: " + NuevaFechaLimiteConfirmacion)
 	}
 

@@ -48,11 +48,9 @@ class Entrada {
 			unUsuario.saldoCuenta = unUsuario.saldoCuenta + getImporteDevolucion()
 		}
 	}
-
 	def double getImporteDevolucion() { 
 		unEventoAbierto.precioEntrada * porcentajeDevolucion() / 100
 	}
-
 	def porcentajeDevolucion() {
 		Math.min(porcentajeDevolucionSinLimite(), 80.0)
 	}
@@ -62,7 +60,6 @@ class Entrada {
 			((diasHastaEvento() - 1.0) * 10.0 + 20.0)
 		}
 	}
-
 	def double diasHastaEvento() {
 		(Period.between(LocalDate.now(), LocalDate.from(unEventoAbierto.fechaDeInicio))).getDays() as double
 	}

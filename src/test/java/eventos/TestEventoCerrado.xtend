@@ -55,14 +55,14 @@ class TestEventoCerrado {
 
 	@Test
 	def cantidadPosiblesAsistentesEventoCerradoSinInvitados() {
-		Assert.assertEquals(0, reunionChica.cantidadPosiblesAsistentes(), 0)
+		Assert.assertEquals(0, reunionChica.cantidadAsistentes(), 0)
 	}
 
 	@Test
 	def cantidadPosiblesAsistentesEventoCerradoConUnInvitadoConCincoAcompanantes() {
 		invitacion = new Invitacion(reunionChica, usuario1, 5)
 		reunionChica.registrarInvitacionEnEvento(invitacion)
-		Assert.assertEquals(6, reunionChica.cantidadPosiblesAsistentes(), 0)
+		Assert.assertEquals(6, reunionChica.cantidadAsistentes(), 0)
 	}
 
 	@Test
@@ -85,8 +85,8 @@ class TestEventoCerrado {
 	def seisInvitadosSeInvitan4MasChequeo10PosiblesAsistentes() {
 		invitacion = new Invitacion(reunionChica, usuario1, 5)
 		reunionChica.registrarInvitacionEnEvento(invitacion)
-		reunionChica.crearInvitacionConAcompanantes(usuario1, 3)
-		Assert.assertEquals(10, reunionChica.cantidadPosiblesAsistentes(), 0)
+		reunionChica.crearInvitacion(usuario1, 3)
+		Assert.assertEquals(10, reunionChica.cantidadAsistentes(), 0)
 	}
 
 //	@Test
@@ -103,8 +103,8 @@ class TestEventoCerrado {
 		reunionChica.registrarInvitacionEnEvento(invitacion)
 		invitacion.aceptar(3)
 		invitacion = new Invitacion(reunionChica, usuario2, 3)
-		reunionChica.crearInvitacionConAcompanantes(usuario2, 3)
-		Assert.assertEquals(8, reunionChica.cantidadPosiblesAsistentes(), 0)
+		reunionChica.crearInvitacion(usuario2, 3)
+		Assert.assertEquals(8, reunionChica.cantidadAsistentes(), 0)
 	}
 
 	@Test
@@ -115,7 +115,7 @@ class TestEventoCerrado {
 		invitacion = new Invitacion(reunionChica, usuario2, 3)
 		reunionChica.registrarInvitacionEnEvento(invitacion)
 		invitacion.rechazar()
-		Assert.assertEquals(4, reunionChica.cantidadPosiblesAsistentes(), 0)
+		Assert.assertEquals(4, reunionChica.cantidadAsistentes(), 0)
 	}
 
 	@Test
@@ -138,7 +138,7 @@ class TestEventoCerrado {
 	def ExcepcionSeisInvitadosSeQuierenInvitarDespuesFechaLimiteSeVerificaLaExcepcion() {
 		invitacion = new Invitacion(otroEvento, usuario1, 5)
 		otroEvento.registrarInvitacionEnEvento(invitacion)
-		otroEvento.crearInvitacionConAcompanantes(usuario2, 3)	
+		otroEvento.crearInvitacion(usuario2, 3)	
 	}
 
 //Test para chequear aceptacion y rechazo masivo
@@ -147,7 +147,7 @@ class TestEventoCerrado {
 		invitacion = new Invitacion(otroEvento, usuario1, 5)
 		usuario1.radioDeCercania = 0.3
 		usuario1.rechazoMasivo()
-		Assert.assertEquals(0, otroEvento.cantidadPosiblesAsistentes(), 0)
+		Assert.assertEquals(0, otroEvento.cantidadAsistentes(), 0)
 	}
 
 	@Test
@@ -155,7 +155,7 @@ class TestEventoCerrado {
 		invitacion = new Invitacion(otroEvento, usuario1, 3)
 		usuario1.radioDeCercania = 3
 		usuario1.aceptacionMasiva()
-		Assert.assertEquals(0, otroEvento.cantidadPosiblesAsistentes(), 0)
+		Assert.assertEquals(0, otroEvento.cantidadAsistentes(), 0)
 	}
 
 	@Test

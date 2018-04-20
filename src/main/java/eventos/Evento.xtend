@@ -62,17 +62,15 @@ class EventoAbierto extends Evento {
 	
 	int edadMinima
 	double precioEntrada
-	Set<Entrada> entradasVendidas = newHashSet
+	Set<Entrada> entradas = newHashSet
 
 	def void comprarEntrada(Usuario elComprador) { // chequea condiciones
 		if ((elComprador.edad() > edadMinima) && fechaAnteriorALaLimite() && hayEntradasDisponibles()) {
 			generarEntrada(elComprador)
 		} 
-
 		 else {
 		throw new EventoException("No se puede Comprar la Entrada")
 		}
-
 	}
 
 	def generarEntrada(Usuario elComprador) { // llega aca si las condiciones de compra se cumplen
@@ -82,7 +80,7 @@ class EventoAbierto extends Evento {
 	}
 
 	def registrarCompraEnEvento(Entrada nuevaEntrada) {
-		entradasVendidas.add(nuevaEntrada)
+		entradas.add(nuevaEntrada)
 	}
 
 	def registrarCompraEnUsuario(Entrada nuevaEntrada, Usuario elComprador) {
@@ -92,12 +90,12 @@ class EventoAbierto extends Evento {
 	// el organizador manda la orden a determinado evento si esta autorizado a cancelarla
 	override void cancelarElEvento() {
 		cancelado = true
-		entradasVendidas.forEach[entrada | entrada.cancelacionDeEvento()]
+		entradas.forEach[entrada | entrada.cancelacionDeEvento()]
 	}
 
 	override postergarElEvento(LocalDateTime nuevaFechaHoraInicio){
 	 	super.postergarElEvento( nuevaFechaHoraInicio)
-		entradasVendidas.forall[invitacion | invitacion.mensajesPorPostergacion(fechaDeInicio,fechaFinalizacion,fechaLimiteConfirmacion)]
+		entradas.forall[invitacion | invitacion.mensajesPorPostergacion(fechaDeInicio,fechaFinalizacion,fechaLimiteConfirmacion)]
 	}
 	
 	override capacidadMaxima() {
@@ -105,7 +103,7 @@ class EventoAbierto extends Evento {
 	}
 	
 	def boolean hayEntradasDisponibles() {
-		entradasVendidas.size() < capacidadMaxima()
+		entradas.size() < capacidadMaxima()
 	}
 
 	override fechaAnteriorALaLimite() { 
@@ -118,14 +116,14 @@ class EventoAbierto extends Evento {
 	}
 	
 	def ventaExitosa(){
-		entradasVendidas.filter[entradas | entradas.vigente===true].size()/entradasVendidas.size() >= 0.9
+		entradas.filter[entradas | entradas.vigente===true].size()/entradas.size() >= 0.9
 	}
 	
 	override esUnFracaso(){
-		entradasVendidas.filter[entradas | entradas.vigente===true].size()/capacidadMaxima() < 0.5
+		entradas.filter[entradas | entradas.vigente===true].size()/capacidadMaxima() < 0.5
 	}
-	override cantidadAsistentes(){//
-		entradasVendidas.filter[entradas | entradas.vigente===true].size()		
+	override cantidadAsistentes(){
+		entradas.filter[entradas | entradas.vigente===true].size()		
 	}
 
 }
@@ -138,8 +136,7 @@ class EventoCerrado extends Evento {
 	Set<Invitacion> invitados = newHashSet
 	int capacidadMaxima = 0
 	
-	//RAG: no es necesario aclarar que es con acompanantes. Podría llamarse crearInvitacion() o invitar()
-	def  void crearInvitacionConAcompanantes(Usuario elInvitado, int unaCantidadDeAcompanantes) {
+	def  void crearInvitacion(Usuario elInvitado, int unaCantidadDeAcompanantes) {
 		if (hayCapacidadDisponible(unaCantidadDeAcompanantes + 1) && fechaAnteriorALaLimite()) {
 			var nuevaInvitacion = new Invitacion(this, elInvitado, unaCantidadDeAcompanantes)
 			registrarInvitacionEnEvento(nuevaInvitacion)
@@ -154,7 +151,7 @@ class EventoCerrado extends Evento {
 	}
 
 	def boolean hayCapacidadDisponible(int unaCantidadTotal) {
-		unaCantidadTotal <= (capacidadMaxima() - cantidadPosiblesAsistentes())
+		unaCantidadTotal <= (capacidadMaxima() - cantidadAsistentes())
 	}
 
 	def registrarInvitacionEnEvento(Invitacion nuevaInvitacion) {
@@ -163,35 +160,32 @@ class EventoCerrado extends Evento {
 	
 	def registrarInvitacionEnUsuario(Invitacion nuevaInvitacion, Usuario elInvitado) {
 		elInvitado.recibirInvitacion(nuevaInvitacion)
-		elInvitado.agregarMensaje("Fuiste invitado a" + this.nombre + ", con " + nuevaInvitacion.cantidadDeAcompanantes) 
-		//RAG: esta última línea debería estar dentro de recibirInvitacion() en Usuario
 	}
 
-	def int cantidadPosiblesAsistentes() {
+	override def int cantidadAsistentes() {
 		invitados.fold(0)[acum, invitados|acum + invitados.posiblesAsistentes()]
 	}
 
-	def int cantidadDeInvitacionesDadas() {
+	def int cantidadDeInvitaciones() {
 		invitados.size() // si son invitaciones totales sin generar nuevas invitaciones por rechazos
 	}
 	
 	override cancelarElEvento(){
 		cancelado = true
-		notificarAInvitadosQueNoRechazaron()
+		notificarAInvitadosCancelacion()
 	}
 	
 	override capacidadMaxima() {
 		capacidadMaxima
 	}
 	
-	//RAG: por qué con mayúscula?
-	def notificarAInvitadosQueNoRechazaron(){
-		invitados.filter[invitados | invitados.aceptada != false].forall[invitacion | invitacion.notificacionAInvitadosDeCancelacion()]
+	def notificarAInvitadosCancelacion(){
+		invitados.filter[invitados | invitados.aceptada != false].forall[invitacion | invitacion.notificacionDeCancelacion()]
 	}
 	
 	override postergarElEvento(LocalDateTime nuevaFechaHoraInicio){
 	 	super.postergarElEvento( nuevaFechaHoraInicio)
-		invitados.forall[invitacion | invitacion.NotificacionAInvitadosDePostergacion(fechaDeInicio,fechaFinalizacion,fechaLimiteConfirmacion)]
+		invitados.forall[invitacion | invitacion.NotificacionDePostergacion(fechaDeInicio,fechaFinalizacion,fechaLimiteConfirmacion)]
 	}
 
 	override esExitoso(){
@@ -209,9 +203,6 @@ class EventoCerrado extends Evento {
 	def asistenciaFracaso(){
 		val coefFracaso =0.5
 		invitados.filter[invitacion | invitacion.aceptada!==false].size()/ invitados.size()< coefFracaso
-	}
-	override cantidadAsistentes(){ //agregado
-		cantidadPosiblesAsistentes()	
 	}
 
 }

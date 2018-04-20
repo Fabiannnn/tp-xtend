@@ -21,7 +21,7 @@ class Usuario {
 	double radioDeCercania
 	double saldoCuenta = 0.0 //esto se agrego segun issue 8
 	Set<Invitacion> invitaciones = newHashSet
-	Set<String> mensajesGenerales = newHashSet // paraInvitaciones cancelaciones postergaciones | RAG: Por qué no notificaciones?
+	Set<String> notificaciones = newHashSet // paraInvitaciones cancelaciones postergaciones
 	Set<Entrada> entradaComprada = newHashSet
 	TipoDeUsuario tipoDeUsuario
 	Set<Evento> eventosOrganizados = newHashSet
@@ -29,28 +29,26 @@ class Usuario {
 	// Métodos relacionados con Invitaciones a Eventos Cerrados
 	def recibirInvitacion(Invitacion invitacion) {
 		invitaciones.add(invitacion)
+		agregarMensaje("Fuiste invitado a" + invitacion.unEventoCerrado + ", con " + invitacion.cantidadDeAcompanantes) 
 	}
-
 	def agregarMensaje(String string) {
-		mensajesGenerales.add(string)
+		notificaciones.add(string)
 	}
-
-	//RAG: faltaría una abstracción en invitación para no tener que hacer "invitacion.unEventoCerrado.fechaAnteriorALaLimite()"
 	def rechazarInvitacion(Invitacion invitacion) {
-		if (equals(invitacion.unUsuario) && invitacion.unEventoCerrado.fechaAnteriorALaLimite())
+		if (equals(invitacion.unUsuario) && invitacion.fechaParaConfirmar())
 			invitacion.rechazar()
 	}
 
 	def aceptarInvitacion(Invitacion invitacion, int cantidadAcompanantes) {
 		if (equals(invitacion.unUsuario) && (invitacion.cantidadDeAcompanantes >= cantidadAcompanantes) &&
-			invitacion.unEventoCerrado.fechaAnteriorALaLimite()) {
+			invitacion.fechaParaConfirmar()) {
 			invitacion.aceptar(cantidadAcompanantes)
 		}
 	}
 
 	def invitarAUnEventoCerrado(EventoCerrado unEventoCerrado, Usuario elInvitado, int unaCantidadDeAcompanantes) {
 		if (tipoDeUsuario.sePuedeEntregarInvitacion(unEventoCerrado)) {
-			unEventoCerrado.crearInvitacionConAcompanantes(elInvitado, unaCantidadDeAcompanantes)
+			unEventoCerrado.crearInvitacion(elInvitado, unaCantidadDeAcompanantes)
 		}
 	}
 
@@ -120,7 +118,7 @@ class Usuario {
 			eventosOrganizados.add(unEventoCerrado)
 		}
 		  else{
-			throw new EventoException("No se puede generar la invitacion")
+			throw new EventoException("No se puede organizar el evento")
 		  }
 	}
 	
@@ -136,17 +134,14 @@ class Usuario {
 		}
 
 	}
-	
 	// Métodos relacionados con Aceptacion y rechazo masivos
 	def aceptacionMasiva() {
 		invitaciones.filter(invitacion | invitacion.aceptada===null).forEach[invitacion|this.aceptarSiCorresponde(invitacion)]
 	}
-	
-	//RAG: nombre raro. voyAAceptarla Podría ser aceptarSiCorresponde()   ya está REVISAR
 	def aceptarSiCorresponde(Invitacion invitacion) {
 		val cantidadAmigosParaComparar = 4
 		if (elOrganizadorEsAmigo(invitacion) || esDentroDelRadioDeCercania(invitacion) ||
-			asistenMasDeCantidadDeterminadaDeAmigos(invitacion, cantidadAmigosParaComparar)) {
+			asistenMasAmigos(invitacion, cantidadAmigosParaComparar)) {
 			invitacion.aceptar(invitacion.cantidadDeAcompanantes)
 		}
 	} 
@@ -155,7 +150,7 @@ class Usuario {
 		amigos.contains(invitacion.unEventoCerrado.organizador)
 	}
 
-	def asistenMasDeCantidadDeterminadaDeAmigos(Invitacion invitacion, int cantidadAmigosParaComparar) {
+	def asistenMasAmigos(Invitacion invitacion, int cantidadAmigosParaComparar) {
 		cantidadDeAmigosInvitados(invitacion) > cantidadAmigosParaComparar
 	}
 
@@ -169,7 +164,7 @@ class Usuario {
 	
 	def rechazoMasivo(){
 		invitaciones.filter(invitacion | invitacion.aceptada===null).forEach[
-			invitacion | this.voyARechazarla(invitacion)
+			invitacion | voyARechazarla(invitacion)
 		]
 	}
 	
@@ -183,14 +178,14 @@ class Usuario {
 	
 	def antisocialRechazaInvitacion(Invitacion invitacion){
 		val cantidadAmigosParaComparar = 1
-			if(!esDentroDelRadioDeCercania(invitacion) || (!elOrganizadorEsAmigo(invitacion) && asistenMasDeCantidadDeterminadaDeAmigos( invitacion,  cantidadAmigosParaComparar) )){
+			if(!esDentroDelRadioDeCercania(invitacion) || (!elOrganizadorEsAmigo(invitacion) && asistenMasAmigos( invitacion,  cantidadAmigosParaComparar) )){
 				invitacion.rechazar( )
 			}
 	}
 	
 	def noAntisocialRechazaInvitacion(Invitacion invitacion){
 		val cantidadAmigosParaComparar = 0
-		if (!esDentroDelRadioDeCercania(invitacion) && asistenMasDeCantidadDeterminadaDeAmigos( invitacion,  cantidadAmigosParaComparar) ){
+		if (!esDentroDelRadioDeCercania(invitacion) && asistenMasAmigos( invitacion,  cantidadAmigosParaComparar) ){
 			invitacion.rechazar()
 		}
 	}
@@ -245,7 +240,7 @@ class UsuarioFree implements TipoDeUsuario {
 	override boolean puedoOrganizarElEventoCerrado(Usuario unUsuario, LocalDateTime unInicioEvento,
 		LocalDateTime unaFinalizacionEvento, int unaCapacidadTotal) {
 		noSuperaElLimiteDeEventosSimultaneos(unUsuario) && noSuperaCapacidadTipoUsuario(unaCapacidadTotal) &&
-			noSuperaLimiteMensualDeEventos(unUsuario, unInicioEvento, unaFinalizacionEvento)
+		noSuperaLimiteMensualDeEventos(unUsuario, unInicioEvento, unaFinalizacionEvento)
 	}
 
 	override boolean sePuedeEntregarInvitacion(EventoCerrado unEvento) {
@@ -296,7 +291,7 @@ class UsuarioAmateur implements TipoDeUsuario {
 	}
 
 	override boolean sePuedeEntregarInvitacion(EventoCerrado unEventoCerrado) {
-		unEventoCerrado.cantidadDeInvitacionesDadas() < maximoInvitacionesEventoCerrado
+		unEventoCerrado.cantidadDeInvitaciones() < maximoInvitacionesEventoCerrado
 	}
 
 	def boolean noSuperaElLimiteDeEventosSimultaneos(Usuario unUsuario) {
