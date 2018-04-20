@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 import java.util.Set
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.geodds.Point
-import excepciones.NoSePuedeInvitarException
+import excepciones.EventoException
 
 @Accessors
 abstract class Evento {
@@ -25,6 +25,7 @@ abstract class Evento {
 	abstract def int capacidadMaxima()
 	abstract def void cancelarElEvento()
 	abstract def boolean esExitoso()
+	abstract def int cantidadAsistentes()//agregado para eventos abiertos entradas vendidas vigentes y cerrados posibles asistentes
 	
 	def double duracion() {
 		Duration.between(fechaDeInicio, fechaFinalizacion).getSeconds() / 3600.0
@@ -61,16 +62,16 @@ class EventoAbierto extends Evento {
 	
 	int edadMinima
 	double precioEntrada
-	Set<Entrada> entradasVendidas
+	Set<Entrada> entradasVendidas = newHashSet
 
 	def void comprarEntrada(Usuario elComprador) { // chequea condiciones
 		if ((elComprador.edad() > edadMinima) && fechaAnteriorALaLimite() && hayEntradasDisponibles()) {
 			generarEntrada(elComprador)
 		} 
-		//si no se cumple tira una excepcion ver test
-//		 else {
-//			elComprador.recibirMensaje("No se  cumplen las condiciones de compra de la entrada ")
-//		}
+
+		 else {
+		throw new EventoException("No se puede Comprar la Entrada")
+		}
 
 	}
 
@@ -117,13 +118,14 @@ class EventoAbierto extends Evento {
 	}
 	
 	def ventaExitosa(){
-		val coefExito=0.9 //RAG: es necesaria esta variable?  NO decidimos separarla del cálculo bajo la premisa de que queda más visible al igual que se habían puesto los booleanos en los tipo de usuario
-		entradasVendidas.filter[entradas | entradas.vigente===true].size()/entradasVendidas.size() >= coefExito
+		entradasVendidas.filter[entradas | entradas.vigente===true].size()/entradasVendidas.size() >= 0.9
 	}
 	
 	override esUnFracaso(){
-		val coefFracaso=0.5 //RAG: es necesaria esta variable? 
-		entradasVendidas.filter[entradas | entradas.vigente===true].size()/capacidadMaxima() < coefFracaso
+		entradasVendidas.filter[entradas | entradas.vigente===true].size()/capacidadMaxima() < 0.5
+	}
+	override cantidadAsistentes(){//
+		entradasVendidas.filter[entradas | entradas.vigente===true].size()		
 	}
 
 }
@@ -143,7 +145,7 @@ class EventoCerrado extends Evento {
 			registrarInvitacionEnEvento(nuevaInvitacion)
 			registrarInvitacionEnUsuario(nuevaInvitacion, elInvitado)
 		} else {
-		throw new NoSePuedeInvitarException("No se puede generar la invitacion")
+		throw new EventoException("No se puede generar la invitacion")
 	}
 	}
 	
@@ -207,6 +209,9 @@ class EventoCerrado extends Evento {
 	def asistenciaFracaso(){
 		val coefFracaso =0.5
 		invitados.filter[invitacion | invitacion.aceptada!==false].size()/ invitados.size()< coefFracaso
+	}
+	override cantidadAsistentes(){ //agregado
+		cantidadPosiblesAsistentes()	
 	}
 
 }

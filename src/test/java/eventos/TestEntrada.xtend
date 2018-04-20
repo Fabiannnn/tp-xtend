@@ -34,7 +34,7 @@ class TestEntrada {
 			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(26))
 			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(7))	
 			edadMinima = 17
-			precioEntrada = 100
+			precioEntrada = 200
 		]
 
 		entradaPrueba = new Entrada(cumple, usuario1)
@@ -46,14 +46,14 @@ class TestEntrada {
 	}
 
 	@Test
-	def void devolverEntradaConMuchosDiasAnticipacionChequeoPImporteIgual80() {
-		Assert.assertEquals(80.0, entradaPrueba.getImporteDevolucion(), 0)
+	def void devolverEntradaConMuchosDiasAnticipacionChequeoPImporteIgual160() {
+		Assert.assertEquals(160.0, entradaPrueba.getImporteDevolucion(), 0)
 	}
 
 	@Test
 	def void devolverEntradaConMuchosDiasAnticipacionChequeoPImporteDevuel80() {
 		entradaPrueba.devolucionEntrada()
-		Assert.assertEquals(80.0, usuario1.saldoCuenta , 0)
+		Assert.assertEquals(160.0, usuario1.saldoCuenta , 0)
 	}
 
 	@Test

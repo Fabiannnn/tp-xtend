@@ -6,6 +6,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import java.util.Set
 import java.time.Period
 import java.time.LocalDateTime
+import excepciones.EventoException
 
 @Accessors
 class Usuario {
@@ -115,14 +116,12 @@ class Usuario {
 	//RAG: Este método no se usa    Se esta usando en los test !!!!!!!! si no quien quien crea el evento????
 	def agregarEventoCerrado(EventoCerrado unEventoCerrado) {
 		if (tipoDeUsuario.puedoOrganizarElEventoCerrado(unEventoCerrado.getOrganizador(), unEventoCerrado.fechaDeInicio, unEventoCerrado.fechaFinalizacion, unEventoCerrado.getCapacidadMaxima)
-		) {eventosOrganizados.add(unEventoCerrado)}
-		/*agegar excepcion donde sea que se mude
-		 * else{
-		 * throw new NoPuedeOrganizarEstaEvento("No Puede Organizar el evento")
-		 * }
-		 * 
-		 */
-
+		) {
+			eventosOrganizados.add(unEventoCerrado)
+		}
+		  else{
+			throw new EventoException("No se puede generar la invitacion")
+		  }
 	}
 	
 	def cancelarUnEvento(Evento unEvento) {
@@ -162,16 +161,10 @@ class Usuario {
 
 	def cantidadDeAmigosInvitados(Invitacion invitacion) {
 		amigos.filter[unUsuario | invitacion.unEventoCerrado.invitadosDelEvento.contains(unUsuario) ].size()
-		
-//		amigosEnComun = amigos
-//		amigosEnComun.retainAll(invitacion.unEventoCerrado.invitadosDelEvento)
-//		amigosEnComun.size()
 	}
 	
-	//RAG: Demasiadas indirecciones, faltan abstracciones en el medio           VER CAMBIO
 	def esDentroDelRadioDeCercania(Invitacion invitacion) {
 		invitacion.ubicacion().estaDentroDelRadioDeCercania(coordenadasDireccion, radioDeCercania)
-		//invitacion.unEventoCerrado.locacion.estaDentroDelRadioDeCercania(coordenadasDireccion, radioDeCercania)
 	}
 	
 	def rechazoMasivo(){

@@ -7,8 +7,7 @@ import org.uqbar.geodds.Point
 import java.time.LocalDate
 import java.time.Period
 import java.time.LocalDateTime
-import excepciones.NoSePuedeInvitarException
-
+import excepciones.EventoException
 
 class TestEventoCerrado {
 	EventoCerrado reunionChica
@@ -135,7 +134,7 @@ class TestEventoCerrado {
 		Assert.assertNull(invitacion.aceptada)
 	}
 
-	@Test (expected=NoSePuedeInvitarException)
+	@Test (expected=EventoException)
 	def ExcepcionSeisInvitadosSeQuierenInvitarDespuesFechaLimiteSeVerificaLaExcepcion() {
 		invitacion = new Invitacion(otroEvento, usuario1, 5)
 		otroEvento.registrarInvitacionEnEvento(invitacion)
