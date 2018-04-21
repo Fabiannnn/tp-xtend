@@ -145,9 +145,7 @@ class TestDeTipoDeUsuario {
 	@Test
 	def unUsuarioFreeQueNoTieneEventosOrganizadosNoPuedeOrganizarEventoAbierto() {
 		Assert.assertFalse(
-			usuarioFree.puedoOrganizarElEventoAbierto("RR", usuario1, salon_SM,
-				LocalDateTime.now().plus(Period.ofDays(3)), LocalDateTime.now().plus(Period.ofDays(5)),
-				LocalDate.now().plus(Period.ofDays(3)), 10, 7))
+			usuarioFree.puedoOrganizarElEventoAbierto(usuario1,	LocalDateTime.now().plus(Period.ofDays(3)), LocalDateTime.now().plus(Period.ofDays(5))))
 	}
 
 	@Test
@@ -215,9 +213,7 @@ class TestDeTipoDeUsuario {
 	def void unUsuarioFreeNoPuedeOrganizarUnEventoAbierto() {
 		unUsuario.setUsuarioFree()
 		Assert.assertFalse(
-			usuarioFree.puedoOrganizarElEventoAbierto("RR", usuario1, salon_SM,
-				LocalDateTime.now().plus(Period.ofDays(3)), LocalDateTime.now().plus(Period.ofDays(5)),
-				LocalDate.now().plus(Period.ofDays(3)), 10, 7))
+			usuarioFree.puedoOrganizarElEventoAbierto(usuario1, LocalDateTime.now().plus(Period.ofDays(3)), LocalDateTime.now().plus(Period.ofDays(5))))
 	}
 
 	// Free: Pueden invitar hasta 50 personas por evento
