@@ -23,7 +23,8 @@ class TestDeTipoDeUsuario {
 	EventoCerrado tercerEvento
 	EventoCerrado cuartoEvento
 	EventoCerrado quintoEvento
-	EventoCerrado sextoEvento
+	EventoCerrado eventoPrueba
+	EventoAbierto reunionAbierta
 
 	int cantMaxDeEventos = 20
 	int contador
@@ -48,7 +49,14 @@ class TestDeTipoDeUsuario {
 			fechaDeNacimiento = LocalDate.of(1900, 04, 02)
 			coordenadasDireccion = new Point(45, 60)
 		]
-
+		reunionAbierta = new EventoAbierto => [
+			nombre = "Reunion Proyecto"
+			organizador = usuario1
+			locacion = salon_SM
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(3))
+		]
 		reunionChica = new EventoCerrado => [
 			nombre = "Reunion Proyecto"
 			organizador = usuario1
@@ -114,12 +122,12 @@ class TestDeTipoDeUsuario {
 		]
 		cuartoEvento = new EventoCerrado => [
 			nombre = "Reunion Proyecto"
-			organizador = unUsuario
+			// organizador = unUsuario
 			locacion = salon_SM
 			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(8))
 			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(9))
 			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(8))
-			capacidadMaxima = 10
+			capacidadMaxima = 50
 		]
 
 		quintoEvento = new EventoCerrado => [
@@ -131,9 +139,8 @@ class TestDeTipoDeUsuario {
 			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(3))
 			capacidadMaxima = 10
 		]
-		sextoEvento = new EventoCerrado => [
+		eventoPrueba = new EventoCerrado => [
 			nombre = "Reunion Proyecto"
-			organizador = unUsuario
 			locacion = salon_SM
 			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
 			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
@@ -145,30 +152,20 @@ class TestDeTipoDeUsuario {
 	@Test
 	def unUsuarioFreeQueNoTieneEventosOrganizadosNoPuedeOrganizarEventoAbierto() {
 		Assert.assertFalse(
-			usuarioFree.puedoOrganizarElEventoAbierto(usuario1,	LocalDateTime.now().plus(Period.ofDays(3)), LocalDateTime.now().plus(Period.ofDays(5))))
+			usuarioFree.puedoOrganizarElEventoAbierto(usuario1, reunionAbierta))
 	}
 
 	@Test
 	def elUsuario2TipoFreeQueNoTieneEventosOrganizadosPuedeOrganizarUnoCerradoDe50Personas() {
 		usuario2.setUsuarioFree()
-		Assert.assertTrue(
-			usuario2.tipoDeUsuario.puedoOrganizarElEventoCerrado(usuario2, LocalDateTime.now().plus(Period.ofDays(3)),
-				LocalDateTime.now().plus(Period.ofDays(4)), 50))
+		Assert.assertTrue(usuario2.tipoDeUsuario.puedoOrganizarElEventoCerrado(usuario2, cuartoEvento))
 	}
 
 	@Test
 	def elUsuario2TipoFreeQueNoTieneEventosOrganizadosNoPuedeOrganizarUnoCerradoDe51Personas() {
 		usuario2.setUsuarioFree()
-		Assert.assertFalse(
-			usuario2.tipoDeUsuario.puedoOrganizarElEventoCerrado(usuario2, LocalDateTime.now().plus(Period.ofDays(3)),
-				LocalDateTime.now().plus(Period.ofDays(4)), 51))
-	}
-
-	@Test
-	def unUsuarioFreeQueNoTieneEventosOrganizadosPuedeOrganizarUnoCerradoDe50Personas() {
-		usuario2.setUsuarioFree()
-		Assert.assertTrue(usuarioFree.noSuperaCapacidadTipoUsuario(50))
-
+		cuartoEvento.capacidadMaxima = 51
+		Assert.assertFalse(usuario2.tipoDeUsuario.puedoOrganizarElEventoCerrado(usuario2, cuartoEvento))
 	}
 
 	@Test
@@ -202,9 +199,7 @@ class TestDeTipoDeUsuario {
 		reunionChica.fechaDeInicio = LocalDateTime.of(2018, 04, 1, 8, 20)
 		reunionChica.fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(3))
 		usuario2.eventosOrganizados.add(reunionChica)
-		Assert.assertFalse(
-			usuario2.tipoDeUsuario.puedoOrganizarElEventoCerrado(usuario2, LocalDateTime.now().plus(Period.ofDays(3)),
-				LocalDateTime.now().plus(Period.ofDays(4)), 50))
+		Assert.assertFalse(usuario2.tipoDeUsuario.puedoOrganizarElEventoCerrado(usuario2, eventoPrueba))
 	}
 
 // mis tests
@@ -213,7 +208,7 @@ class TestDeTipoDeUsuario {
 	def void unUsuarioFreeNoPuedeOrganizarUnEventoAbierto() {
 		unUsuario.setUsuarioFree()
 		Assert.assertFalse(
-			usuarioFree.puedoOrganizarElEventoAbierto(usuario1, LocalDateTime.now().plus(Period.ofDays(3)), LocalDateTime.now().plus(Period.ofDays(5))))
+			usuarioFree.puedoOrganizarElEventoAbierto(usuario1, reunionAbierta))
 	}
 
 	// Free: Pueden invitar hasta 50 personas por evento
@@ -221,12 +216,7 @@ class TestDeTipoDeUsuario {
 	def void unUsuarioFreePuedeOrganizarUnEventoCerradoCon50Personas() {
 		unUsuario.setUsuarioFree()
 		Assert.assertTrue(
-			unUsuario.tipoDeUsuario.puedoOrganizarElEventoCerrado(
-				unUsuario,
-				LocalDateTime.now().plus(Period.ofDays(3)),
-				LocalDateTime.now().plus(Period.ofDays(4)),
-				50
-			)
+			unUsuario.tipoDeUsuario.puedoOrganizarElEventoCerrado(unUsuario, cuartoEvento)
 		)
 	}
 
@@ -234,13 +224,9 @@ class TestDeTipoDeUsuario {
 	@Test
 	def void unUsuarioFreeNoPuedeOrganizarUnEventoCerradoCon51Personas() {
 		unUsuario.setUsuarioFree()
+		eventoPrueba.capacidadMaxima = 51
 		Assert.assertFalse(
-			unUsuario.tipoDeUsuario.puedoOrganizarElEventoCerrado(
-				unUsuario,
-				LocalDateTime.now().plus(Period.ofDays(3)),
-				LocalDateTime.now().plus(Period.ofDays(4)),
-				51
-			)
+			unUsuario.tipoDeUsuario.puedoOrganizarElEventoCerrado(unUsuario, eventoPrueba)
 		)
 	}
 
@@ -250,8 +236,7 @@ class TestDeTipoDeUsuario {
 		unUsuario.setUsuarioFree()
 		unUsuario.agregarEventoCerrado(primerEvento)
 		Assert.assertFalse(
-			unUsuario.tipoDeUsuario.puedoOrganizarElEventoCerrado(unUsuario, LocalDateTime.now().plus(Period.ofDays(3)),
-				LocalDateTime.now().plus(Period.ofDays(4)), 50))
+			unUsuario.tipoDeUsuario.puedoOrganizarElEventoCerrado(unUsuario,eventoPrueba))
 	}
 
 	// Free: un máximo de 3 eventos mensuales  dE ACUERDO A LA FECHA PUEDE FALLAR REVISAAR
@@ -265,11 +250,11 @@ class TestDeTipoDeUsuario {
 		segundoEvento.fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(-8))
 		unUsuario.agregarEventoCerrado(segundoEvento)
 		tercerEvento.fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(-10))
-		tercerEvento.fechaFinalizacion =LocalDateTime.now().plus(Period.ofDays(-10))
+		tercerEvento.fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(-10))
 		unUsuario.agregarEventoCerrado(tercerEvento)
 		cuartoEvento.fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(6))
-		cuartoEvento.fechaFinalizacion =LocalDateTime.now().plus(Period.ofDays(6))
-	unUsuario.agregarEventoCerrado(cuartoEvento)
+		cuartoEvento.fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(6))
+		unUsuario.agregarEventoCerrado(cuartoEvento)
 
 	}
 
@@ -277,9 +262,7 @@ class TestDeTipoDeUsuario {
 	@Test
 	def void unUsuarioFreeNoPuedeCancelarEventos() {
 		unUsuario.setUsuarioFree()
-		Assert.assertFalse(
-			unUsuario.tipoDeUsuario.puedeCancelarEventos()
-		)
+		Assert.assertFalse(unUsuario.tipoDeUsuario.puedeCancelarEventos())
 	}
 
 	// Free: No puede postergar eventos
@@ -305,7 +288,7 @@ class TestDeTipoDeUsuario {
 	}
 
 	// Amateur:  Pueden organizar hasta 5 eventos eventos en simultáneo
-	@Test  (expected=EventoException)
+	@Test(expected=EventoException)
 	def void unUsuarioAmateurNoPuedeOrganizarMasDe5EventosEnSimultaneo() {
 		unUsuario.setUsuarioAmateur()
 		unUsuario.agregarEventoCerrado(primerEvento)
@@ -313,7 +296,7 @@ class TestDeTipoDeUsuario {
 		unUsuario.agregarEventoCerrado(tercerEvento)
 		unUsuario.agregarEventoCerrado(cuartoEvento)
 		unUsuario.agregarEventoCerrado(quintoEvento)
-		unUsuario.agregarEventoCerrado(sextoEvento)
+		unUsuario.agregarEventoCerrado(eventoPrueba)
 	}
 
 	// Profesional: Pueden organizar hasta 20 eventos al mes
@@ -334,7 +317,6 @@ class TestDeTipoDeUsuario {
 			)
 		}
 		Assert.assertFalse(
-			unUsuario.tipoDeUsuario.puedoOrganizarElEventoCerrado(unUsuario, LocalDateTime.now().plus(Period.ofDays(3)),
-				LocalDateTime.now().plus(Period.ofDays(4)), 50))
+			unUsuario.tipoDeUsuario.puedoOrganizarElEventoCerrado(unUsuario, eventoPrueba))
 	}
 }

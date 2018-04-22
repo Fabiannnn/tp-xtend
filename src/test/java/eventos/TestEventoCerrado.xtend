@@ -15,7 +15,9 @@ class TestEventoCerrado {
 	Locacion salon_SM
 	Usuario usuario1
 	Usuario usuario2
+	Usuario usuario3
 	Invitacion invitacion
+	Invitacion invitacion2
 
 	@Before
 	def void init() {
@@ -32,7 +34,12 @@ class TestEventoCerrado {
 		usuario2 = new Usuario => [
 			fechaDeNacimiento = LocalDate.of(1900, 04, 02)
 			coordenadasDireccion = new Point(34, 45)
-			esAntisocial=false
+			esAntisocial = false
+		]
+		usuario3 = new Usuario => [
+			fechaDeNacimiento = LocalDate.of(1900, 04, 02)
+			coordenadasDireccion = new Point(34, 45)
+			esAntisocial = false
 		]
 		reunionChica = new EventoCerrado => [
 			organizador = usuario1
@@ -89,13 +96,13 @@ class TestEventoCerrado {
 		Assert.assertEquals(10, reunionChica.cantidadAsistentes(), 0)
 	}
 
-//	@Test
-//	def seisInvitadosSeInvitan5MasChequeo10PosiblesAsistentes() {
-//		invitacion = new Invitacion(reunionChica, usuario1, 5)
-//		reunionChica.registrarInvitacionEnEvento(invitacion)
-//		reunionChica.crearInvitacionConAcompanantes(usuario1, 4)
-//		Assert.assertEquals(6, reunionChica.cantidadPosiblesAsistentes(), 0) // por que no acepto la segunda invitacion
-//	}
+	@Test (expected=EventoException)
+	def seisInvitadosSeInvitan5MasChequeo10PosiblesAsistentes() {
+		invitacion = new Invitacion(reunionChica, usuario1, 5)
+		reunionChica.registrarInvitacionEnEvento(invitacion)
+		reunionChica.crearInvitacion(usuario2, 4)
+	//	Assert.assertEquals(6, reunionChica.cantidadAsistentes(), 0) // por que no acepto la segunda invitacion
+	}
 
 	@Test
 	def seisInvitadosSeInvitan4Mas_deLaPrimerInvitacionSeConfirman3AcompanantesChequeo8PosiblesAsistentes() {
@@ -134,11 +141,11 @@ class TestEventoCerrado {
 		Assert.assertNull(invitacion.aceptada)
 	}
 
-	@Test (expected=EventoException)
+	@Test(expected=EventoException)
 	def ExcepcionSeisInvitadosSeQuierenInvitarDespuesFechaLimiteSeVerificaLaExcepcion() {
 		invitacion = new Invitacion(otroEvento, usuario1, 5)
 		otroEvento.registrarInvitacionEnEvento(invitacion)
-		otroEvento.crearInvitacion(usuario2, 3)	
+		otroEvento.crearInvitacion(usuario2, 3)
 	}
 
 //Test para chequear aceptacion y rechazo masivo
@@ -167,7 +174,7 @@ class TestEventoCerrado {
 	}
 
 	@Test
-	def seInvitaAlUsuario2_con3AcompanantesUsuario1EsAmigoDelOrganizadorDebeAceptarMasivamente() {
+	def seInvitaAlUsuario2_con3AcompanantesUsuario1EsAmigoDelOrganizadorDebeAceptarMasivamente_seChequeaAcompConfirmados() {
 		invitacion = new Invitacion(reunionChica, usuario2, 3)
 		usuario2.radioDeCercania = 0
 		usuario2.agregarAmigoALaLista(usuario1)
@@ -190,14 +197,66 @@ class TestEventoCerrado {
 		Assert.assertEquals(3, invitacion.cantidadDeAcompanantesConfirmados, 0)
 	}
 
-//	@Test
-//	def unAmigoMasyAceptaMasivamente() {
-//		invitacion = new Invitacion(otroEvento, usuario2, 3)
-//		otroEvento.crearInvitacionConAcompanantes(usuario2, 3)
-//		usuario2.agregarAmigoALaLista(usuario1)
-//		usuario2.aceptacionMasiva()
-//		Assert.assertNull(invitacion.aceptada)
-//	}	
-//	
+	@Test // acepta por amigo organizador chequea directamente de aceptacion masiva
+	def unAmigoMasyAceptaMasivamente() {
+		invitacion = new Invitacion(reunionChica, usuario2, 3)
+		usuario2.recibirInvitacion(invitacion)
+		usuario2.radioDeCercania = 0
+		usuario2.agregarAmigoALaLista(usuario1)
+		usuario2.aceptacionMasiva()
+		Assert.assertTrue(invitacion.aceptada)
+	}
+
+	@Test // no acepta masivamente
+	def noCumpleNingunaCondicionDeAceptarMasivamente() {
+		invitacion = new Invitacion(reunionChica, usuario2, 3)
+		usuario2.recibirInvitacion(invitacion)
+		usuario2.radioDeCercania = 0
+		usuario2.agregarAmigoALaLista(usuario3)
+		usuario2.aceptacionMasiva()
+		Assert.assertNull(invitacion.aceptada)
+	}
+
+	@Test // rechazo masivo por antisocial
+	def rechazoMasivoUsuarioAntisocialyFueraRadioCercania() {
+		invitacion = new Invitacion(reunionChica, usuario2, 3)
+		usuario2.recibirInvitacion(invitacion)
+		usuario2.radioDeCercania = 0
+		usuario2.agregarAmigoALaLista(usuario3)
+		usuario2.antisocialRechazaInvitacion(invitacion)
+		Assert.assertFalse(invitacion.aceptada)
+	}
+
+	@Test // no rechazo masivo por no antisocial y un amigo
+	def noRechazoMasivoUsuarioNoAntisocialyFueraRadioCercaniaPeroCon1Amigo() {
+		invitacion = new Invitacion(reunionChica, usuario2, 3)
+		reunionChica.registrarInvitacionEnEvento(invitacion)
+		usuario2.recibirInvitacion(invitacion)
+		usuario2.radioDeCercania = 0
+		usuario2.agregarAmigoALaLista(usuario1)
+		usuario2.noAntisocialRechazaInvitacion(invitacion)
+		Assert.assertNull(invitacion.aceptada)
+	}
+
+	@Test // rechazo masivo por antisocial
+	def rechazoMasivoUsuarioNoAntisocialyFueraRadioCercaniaySinAMigos() {
+		invitacion2 = new Invitacion(reunionChica, usuario2, 3)
+		reunionChica.registrarInvitacionEnEvento(invitacion2)
+		usuario2.recibirInvitacion(invitacion2)
+		usuario2.radioDeCercania = 0
+		usuario2.agregarAmigoALaLista(usuario3)
+		usuario2.noAntisocialRechazaInvitacion(invitacion2)
+		Assert.assertFalse(invitacion2.aceptada)
+	}
+
+	@Test //
+	def noRechazoMasivoUsuarioNoAntisocialyFueraRadioCercaniay1AMigos() {
+		invitacion2 = new Invitacion(reunionChica, usuario2, 3)
+		reunionChica.registrarInvitacionEnEvento(invitacion2)
+		usuario2.recibirInvitacion(invitacion2)
+		usuario2.radioDeCercania = 0
+		usuario2.agregarAmigoALaLista(usuario1)
+		usuario2.noAntisocialRechazaInvitacion(invitacion2)
+		Assert.assertNull(invitacion2.aceptada)
+	}
 }
-	

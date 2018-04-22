@@ -10,7 +10,7 @@ import excepciones.EventoException
 
 @Accessors
 class Usuario {
-	
+
 	String nombreDeUsuario
 	String nombreYApellido
 	String eMail
@@ -19,21 +19,24 @@ class Usuario {
 	boolean esAntisocial
 	Set<Usuario> amigos = newHashSet
 	double radioDeCercania
-	double saldoCuenta = 0.0 //esto se agrego segun issue 8
+	double saldoCuenta = 0.0 // esto se agrego segun issue 8
 	Set<Invitacion> invitaciones = newHashSet
 	Set<String> notificaciones = newHashSet // paraInvitaciones cancelaciones postergaciones
 	Set<Entrada> entradaComprada = newHashSet
 	TipoDeUsuario tipoDeUsuario
 	Set<Evento> eventosOrganizados = newHashSet
+	int cont = 0
 
 	// Métodos relacionados con Invitaciones a Eventos Cerrados
 	def recibirInvitacion(Invitacion invitacion) {
 		invitaciones.add(invitacion)
-		agregarMensaje("Fuiste invitado a" + invitacion.unEventoCerrado + ", con " + invitacion.cantidadDeAcompanantes) 
+		agregarMensaje("Fuiste invitado a" + invitacion.unEventoCerrado + ", con " + invitacion.cantidadDeAcompanantes)
 	}
+
 	def agregarMensaje(String string) {
 		notificaciones.add(string)
 	}
+
 	def rechazarInvitacion(Invitacion invitacion) {
 		if (equals(invitacion.unUsuario) && invitacion.fechaParaConfirmar())
 			invitacion.rechazar()
@@ -67,60 +70,71 @@ class Usuario {
 		}
 	}
 
-	// Métodos relacionados  organizacion de eventos
-	def organizarEventoAbierto(String unNombre, Usuario unOrganizador, Locacion unaLocacion,
-		LocalDateTime unaFechaInicio, LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion,
-		int unaEdadMinima, double unPrecioEntrada) {
-		if (tipoDeUsuario.puedoOrganizarElEventoAbierto( unOrganizador, unaFechaInicio,	unaFechaFinalizacion)) {
+	// Métodos relacionados  organizacion de eventos     ESTE HABRIA QUE MODIF PARA QUE RECIBA EL EV ABIERTO
+//	def organizarEventoAbierto(String unNombre, Usuario unOrganizador, Locacion unaLocacion,
+//		LocalDateTime unaFechaInicio, LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion,
+//		int unaEdadMinima, double unPrecioEntrada) {
+//		if (tipoDeUsuario.puedoOrganizarElEventoAbierto(unOrganizador, unaFechaInicio, unaFechaFinalizacion)) {
+//			eventosOrganizados.add(
+//				new EventoAbierto => [
+//					nombre = unNombre
+//					organizador = unOrganizador
+//					locacion = unaLocacion
+//					fechaDeInicio = unaFechaInicio
+//					fechaFinalizacion = unaFechaFinalizacion
+//					fechaLimiteConfirmacion = unaFechaLimiteConfirmacion
+//					edadMinima = unaEdadMinima
+//					precioEntrada = unPrecioEntrada
+//				]
+//			)
+//		}
+//	}
+	def organizarEventoAbierto(EventoAbierto unEventoAbierto) {
+		if (tipoDeUsuario.puedoOrganizarElEventoAbierto(this, unEventoAbierto)) {
+			unEventoAbierto.organizador = this
 			eventosOrganizados.add(
-				new EventoAbierto =>[
-					nombre = unNombre
-					organizador = unOrganizador
-					locacion = unaLocacion
-					fechaDeInicio = unaFechaInicio
-					fechaFinalizacion = unaFechaFinalizacion
-					fechaLimiteConfirmacion = unaFechaLimiteConfirmacion
-					edadMinima = unaEdadMinima
-					precioEntrada = unPrecioEntrada
-				]
-			) 
+				unEventoAbierto
+			)
+		} else {
+			throw new EventoException("No se puede organizar el evento")
 		}
 	}
 
-	def organizarEventoCerrado(String unNombre, Usuario unOrganizador, Locacion unaLocacion,
-		LocalDateTime unaFechaInicio, LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion,
-		int unaCapacidadMaxima) {
-		if (tipoDeUsuario.puedoOrganizarElEventoCerrado(unOrganizador, unaFechaInicio, unaFechaFinalizacion,
-			unaCapacidadMaxima)) {
-			eventosOrganizados.add(
-				new EventoCerrado=>[
-					nombre = unNombre
-					organizador = unOrganizador
-					locacion = unaLocacion
-					fechaDeInicio = unaFechaInicio
-					fechaFinalizacion = unaFechaFinalizacion
-					fechaLimiteConfirmacion = unaFechaLimiteConfirmacion
-					capacidadMaxima = unaCapacidadMaxima
-					]
-					)
-		}
-	}
-	
-	def agregarAmigoALaLista( Usuario unAmigo) {
+//	def organizarEventoCerrado(String unNombre, Usuario unOrganizador, Locacion unaLocacion,
+//		LocalDateTime unaFechaInicio, LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion,
+//		int unaCapacidadMaxima) {
+//		if (tipoDeUsuario.puedoOrganizarElEventoCerrado(unOrganizador, unaFechaInicio, unaFechaFinalizacion,
+//			unaCapacidadMaxima)) {
+//			eventosOrganizados.add(
+//				new EventoCerrado=>[
+//					nombre = unNombre
+//					organizador = unOrganizador
+//					locacion = unaLocacion
+//					fechaDeInicio = unaFechaInicio
+//					fechaFinalizacion = unaFechaFinalizacion
+//					fechaLimiteConfirmacion = unaFechaLimiteConfirmacion
+//					capacidadMaxima = unaCapacidadMaxima
+//					]
+//					)
+//		}
+//	}
+//	
+	def agregarAmigoALaLista(Usuario unAmigo) {
 		amigos.add(unAmigo)
 	}
-	
-	//RAG: Este método no se usa    Se esta usando en los test !!!!!!!! si no quien quien crea el evento????
+
+	// RAG: Este método no se usa    Se esta usando en los test !!!!!!!! si no quien quien crea el evento????
+	// esto lo cambied ahora recibe el evento ya creado en princiio sin organizador y llama  a validar si el
+	// usuario puede organizarlo se pone el organizador y se caarga en su set d eeventos org
 	def agregarEventoCerrado(EventoCerrado unEventoCerrado) {
-		if (tipoDeUsuario.puedoOrganizarElEventoCerrado(unEventoCerrado.getOrganizador(), unEventoCerrado.fechaDeInicio, unEventoCerrado.fechaFinalizacion, unEventoCerrado.getCapacidadMaxima)
-		) {
+		if (tipoDeUsuario.puedoOrganizarElEventoCerrado(this, unEventoCerrado)) {
+			unEventoCerrado.organizador = this
 			eventosOrganizados.add(unEventoCerrado)
-		}
-		  else{
+		} else {
 			throw new EventoException("No se puede organizar el evento")
-		  }
+		}
 	}
-	
+
 	def cancelarUnEvento(Evento unEvento) {
 		if (tipoDeUsuario.puedeCancelarEventos()) {
 			unEvento.cancelarElEvento()
@@ -133,18 +147,27 @@ class Usuario {
 		}
 
 	}
+
 	// Métodos relacionados con Aceptacion y rechazo masivos
 	def aceptacionMasiva() {
-		invitaciones.filter(invitacion | invitacion.aceptada===null).forEach[invitacion|this.aceptarSiCorresponde(invitacion)]
+		invitaciones.forEach(invitacion|noEstaAceptada(invitacion))
+	// invitaciones.filter(invitacion | ((invitacion.aceptada)===null)).forEach[invitacion|this.aceptarSiCorresponde(invitacion)]
 	}
+
+	def noEstaAceptada(Invitacion invitacion) {
+		if (invitacion.aceptada === null) {
+			aceptarSiCorresponde(invitacion)
+		}
+	}
+
 	def aceptarSiCorresponde(Invitacion invitacion) {
 		val cantidadAmigosParaComparar = 4
 		if (elOrganizadorEsAmigo(invitacion) || esDentroDelRadioDeCercania(invitacion) ||
 			asistenMasAmigos(invitacion, cantidadAmigosParaComparar)) {
 			invitacion.aceptar(invitacion.cantidadDeAcompanantes)
 		}
-	} 
-	
+	}
+
 	def elOrganizadorEsAmigo(Invitacion invitacion) {
 		amigos.contains(invitacion.unEventoCerrado.organizador)
 	}
@@ -153,52 +176,58 @@ class Usuario {
 		cantidadDeAmigosInvitados(invitacion) > cantidadAmigosParaComparar
 	}
 
-	def cantidadDeAmigosInvitados(Invitacion invitacion) {
-		amigos.filter[unUsuario | invitacion.unEventoCerrado.invitadosDelEvento.contains(unUsuario) ].size()
+	def int cantidadDeAmigosInvitados(Invitacion invitacion) { // MEJORAR ESTO
+		amigos.filter[unUsuario|invitacion.unEventoCerrado.invitados.contains(unUsuario)].size()
+
 	}
-	
+
 	def esDentroDelRadioDeCercania(Invitacion invitacion) {
 		invitacion.ubicacion().estaDentroDelRadioDeCercania(coordenadasDireccion, radioDeCercania)
 	}
-	
-	def rechazoMasivo(){
-		invitaciones.filter(invitacion | invitacion.aceptada===null).forEach[
-			invitacion | voyARechazarla(invitacion)
+
+	def rechazoMasivo() {
+		invitaciones.forEach [ invitacion |
+			if (invitacion.aceptada === null) {
+				voyARechazarla(invitacion)
+			}
 		]
 	}
-	
+
 	def voyARechazarla(Invitacion invitacion) {
-		if(esAntisocial) {
+		if (esAntisocial) {
 			antisocialRechazaInvitacion(invitacion)
 		} else {
 			noAntisocialRechazaInvitacion(invitacion)
 		}
 	}
-	
-	def antisocialRechazaInvitacion(Invitacion invitacion){
+
+	def antisocialRechazaInvitacion(Invitacion invitacion) {
 		val cantidadAmigosParaComparar = 1
-			if(!esDentroDelRadioDeCercania(invitacion) || (!elOrganizadorEsAmigo(invitacion) && asistenMasAmigos( invitacion,  cantidadAmigosParaComparar) )){
-				invitacion.rechazar( )
-			}
+		if ((esDentroDelRadioDeCercania(invitacion) === false) ||
+			((elOrganizadorEsAmigo(invitacion) === false) &&
+				asistenMasAmigos(invitacion, cantidadAmigosParaComparar) )) {
+			invitacion.rechazar()
+		}
 	}
-	
-	def noAntisocialRechazaInvitacion(Invitacion invitacion){
+
+	def noAntisocialRechazaInvitacion(Invitacion invitacion) {
 		val cantidadAmigosParaComparar = 0
-		if (!esDentroDelRadioDeCercania(invitacion) && asistenMasAmigos( invitacion,  cantidadAmigosParaComparar) ){
+		if ((esDentroDelRadioDeCercania(invitacion) === false) &&
+			!asistenMasAmigos(invitacion, cantidadAmigosParaComparar) && (elOrganizadorEsAmigo(invitacion) === false)) {
 			invitacion.rechazar()
 		}
 	}
 
 // Seteo de tipo de usuarios
-	def void setUsuarioFree() { 
+	def void setUsuarioFree() {
 		tipoDeUsuario = new UsuarioFree
 	}
 
-	def void setUsuarioAmateur() { 
+	def void setUsuarioAmateur() {
 		tipoDeUsuario = new UsuarioAmateur
 	}
 
-	def void setUsuarioProfesional() { 
+	def void setUsuarioProfesional() {
 		tipoDeUsuario = new UsuarioProfesional
 	}
 
@@ -206,10 +235,9 @@ class Usuario {
 
 interface TipoDeUsuario {
 
-	def boolean puedoOrganizarElEventoAbierto(Usuario unOrganizador, LocalDateTime unaFechaInicio, LocalDateTime unaFechaFinalizacion )
+	def boolean puedoOrganizarElEventoAbierto(Usuario unOrganizador, EventoAbierto unEventoAbierto)
 
-	def boolean puedoOrganizarElEventoCerrado(Usuario unUsuario, LocalDateTime unInicioEvento,
-		LocalDateTime unaFinalizacionEvento, int unaCapacidadTotal)
+	def boolean puedoOrganizarElEventoCerrado(Usuario unOrganizador, EventoCerrado unEventoCerrado)
 
 	def boolean puedePostergarEventos()
 
@@ -229,16 +257,17 @@ class UsuarioFree implements TipoDeUsuario {
 //	override boolean puedoOrganizarElEventoAbierto(String unNombre, Usuario unOrganizador, Locacion unaLocacion,
 //		LocalDateTime unaFechaInicio, LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion,
 //		int unaEdadMinima, double unPrecioEntrada) { false }
-	override boolean puedoOrganizarElEventoAbierto(Usuario unOrganizador, LocalDateTime unaFechaInicio, LocalDateTime unaFechaFinalizacion) { false }
-	
+	override boolean puedoOrganizarElEventoAbierto(Usuario unOrganizador, EventoAbierto unEventoAbierto) { false }
+
 	override boolean puedePostergarEventos() { false }
 
 	override boolean puedeCancelarEventos() { false }
 
-	override boolean puedoOrganizarElEventoCerrado(Usuario unUsuario, LocalDateTime unInicioEvento,
-		LocalDateTime unaFinalizacionEvento, int unaCapacidadTotal) {
-		noSuperaElLimiteDeEventosSimultaneos(unUsuario) && noSuperaCapacidadTipoUsuario(unaCapacidadTotal) &&
-		noSuperaLimiteMensualDeEventos(unUsuario, unInicioEvento, unaFinalizacionEvento)
+	override boolean puedoOrganizarElEventoCerrado(Usuario unOrganizador, EventoCerrado unEventoCerrado) {
+		noSuperaElLimiteDeEventosSimultaneos(unOrganizador) &&
+			noSuperaCapacidadTipoUsuario(unEventoCerrado.capacidadMaxima()) &&
+			noSuperaLimiteMensualDeEventos(unOrganizador, unEventoCerrado.fechaDeInicio,
+				unEventoCerrado.fechaFinalizacion)
 	}
 
 	override boolean sePuedeEntregarInvitacion(EventoCerrado unEvento) {
@@ -278,19 +307,16 @@ class UsuarioAmateur implements TipoDeUsuario {
 //		int unaEdadMinima, double unPrecioEntrada) {
 //		puedoOrganizarElEventoAbierto && noSuperaElLimiteDeEventosSimultaneos(unOrganizador)
 //	}
-
-	override boolean puedoOrganizarElEventoAbierto(Usuario unOrganizador,LocalDateTime unaFechaInicio, LocalDateTime unaFechaFinalizacion) {
+	override boolean puedoOrganizarElEventoAbierto(Usuario unOrganizador, EventoAbierto unEventoAbierto) {
 		puedoOrganizarElEventoAbierto && noSuperaElLimiteDeEventosSimultaneos(unOrganizador)
 	}
-
 
 	override boolean puedePostergarEventos() { true }
 
 	override boolean puedeCancelarEventos() { true }
 
-	override boolean puedoOrganizarElEventoCerrado(Usuario unUsuario, LocalDateTime unInicioEvento,
-		LocalDateTime unaFinalizacionEvento, int unaCapacidadTotal) {
-		noSuperaElLimiteDeEventosSimultaneos(unUsuario)
+	override boolean puedoOrganizarElEventoCerrado(Usuario unOrganizador, EventoCerrado unEventoCerrado) {
+		noSuperaElLimiteDeEventosSimultaneos(unOrganizador)
 	}
 
 	override boolean sePuedeEntregarInvitacion(EventoCerrado unEventoCerrado) {
@@ -313,16 +339,17 @@ class UsuarioProfesional implements TipoDeUsuario {
 //		int unaEdadMinima, double unPrecioEntrada) {
 //		noSuperaElLimiteDeEventosMensuales(unOrganizador, unaFechaInicio, unaFechaFinalizacion)
 //	}
-	override boolean puedoOrganizarElEventoAbierto(Usuario unOrganizador,LocalDateTime unaFechaInicio, LocalDateTime unaFechaFinalizacion) {
-		noSuperaElLimiteDeEventosMensuales(unOrganizador, unaFechaInicio, unaFechaFinalizacion)
+	override boolean puedoOrganizarElEventoAbierto(Usuario unOrganizador,EventoAbierto unEventoAbierto) {
+		noSuperaElLimiteDeEventosMensuales(unOrganizador, unEventoAbierto.fechaDeInicio, unEventoAbierto.fechaFinalizacion)
 	}
+
 	override boolean puedePostergarEventos() { true }
-	
+
 	override boolean puedeCancelarEventos() { true }
 
-	override boolean puedoOrganizarElEventoCerrado(Usuario unUsuario, LocalDateTime unInicioEvento,
-		LocalDateTime unaFinalizacionEvento, int unaCapacidadTotal) {
-		noSuperaElLimiteDeEventosMensuales(unUsuario, unInicioEvento, unaFinalizacionEvento)
+	override boolean puedoOrganizarElEventoCerrado(Usuario unOrganizador, EventoCerrado unEventoCerrado) {
+		noSuperaElLimiteDeEventosMensuales(unOrganizador, unEventoCerrado.fechaDeInicio,
+			unEventoCerrado.fechaFinalizacion)
 	}
 
 	override boolean sePuedeEntregarInvitacion(EventoCerrado unEvento) {
