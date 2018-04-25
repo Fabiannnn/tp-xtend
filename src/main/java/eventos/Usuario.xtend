@@ -7,9 +7,10 @@ import java.util.Set
 import java.time.Period
 import java.time.LocalDateTime
 import excepciones.EventoException
+import repositorio.Entidad
 
 @Accessors
-class Usuario {
+class Usuario implements Entidad {
 
 	String nombreDeUsuario
 	String nombreYApellido
@@ -26,7 +27,10 @@ class Usuario {
 	TipoDeUsuario tipoDeUsuario
 	Set<Evento> eventosOrganizados = newHashSet
 	int cont = 0
-
+	
+override validar() {
+		(true )
+	}
 	// Métodos relacionados con Invitaciones a Eventos Cerrados
 	def recibirInvitacion(Invitacion invitacion) {
 		invitaciones.add(invitacion)
@@ -70,25 +74,7 @@ class Usuario {
 		}
 	}
 
-	// Métodos relacionados  organizacion de eventos     ESTE HABRIA QUE MODIF PARA QUE RECIBA EL EV ABIERTO
-//	def organizarEventoAbierto(String unNombre, Usuario unOrganizador, Locacion unaLocacion,
-//		LocalDateTime unaFechaInicio, LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion,
-//		int unaEdadMinima, double unPrecioEntrada) {
-//		if (tipoDeUsuario.puedoOrganizarElEventoAbierto(unOrganizador, unaFechaInicio, unaFechaFinalizacion)) {
-//			eventosOrganizados.add(
-//				new EventoAbierto => [
-//					nombre = unNombre
-//					organizador = unOrganizador
-//					locacion = unaLocacion
-//					fechaDeInicio = unaFechaInicio
-//					fechaFinalizacion = unaFechaFinalizacion
-//					fechaLimiteConfirmacion = unaFechaLimiteConfirmacion
-//					edadMinima = unaEdadMinima
-//					precioEntrada = unPrecioEntrada
-//				]
-//			)
-//		}
-//	}
+// este cambio ya lo vio Rodrigo
 	def organizarEventoAbierto(EventoAbierto unEventoAbierto) {
 		if (tipoDeUsuario.puedoOrganizarElEventoAbierto(this, unEventoAbierto)) {
 			unEventoAbierto.organizador = this
@@ -100,33 +86,12 @@ class Usuario {
 		}
 	}
 
-//	def organizarEventoCerrado(String unNombre, Usuario unOrganizador, Locacion unaLocacion,
-//		LocalDateTime unaFechaInicio, LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion,
-//		int unaCapacidadMaxima) {
-//		if (tipoDeUsuario.puedoOrganizarElEventoCerrado(unOrganizador, unaFechaInicio, unaFechaFinalizacion,
-//			unaCapacidadMaxima)) {
-//			eventosOrganizados.add(
-//				new EventoCerrado=>[
-//					nombre = unNombre
-//					organizador = unOrganizador
-//					locacion = unaLocacion
-//					fechaDeInicio = unaFechaInicio
-//					fechaFinalizacion = unaFechaFinalizacion
-//					fechaLimiteConfirmacion = unaFechaLimiteConfirmacion
-//					capacidadMaxima = unaCapacidadMaxima
-//					]
-//					)
-//		}
-//	}
-//	
 	def agregarAmigoALaLista(Usuario unAmigo) {
 		amigos.add(unAmigo)
 	}
 
-	// RAG: Este método no se usa    Se esta usando en los test !!!!!!!! si no quien quien crea el evento????
-	// esto lo cambied ahora recibe el evento ya creado en princiio sin organizador y llama  a validar si el
-	// usuario puede organizarlo se pone el organizador y se caarga en su set d eeventos org
-	def agregarEventoCerrado(EventoCerrado unEventoCerrado) {
+	// Este cambio ya lo vio Rodrigo
+	def organizarEventoCerrado(EventoCerrado unEventoCerrado) {
 		if (tipoDeUsuario.puedoOrganizarElEventoCerrado(this, unEventoCerrado)) {
 			unEventoCerrado.organizador = this
 			eventosOrganizados.add(unEventoCerrado)
@@ -203,9 +168,8 @@ class Usuario {
 
 	def antisocialRechazaInvitacion(Invitacion invitacion) {
 		val cantidadAmigosParaComparar = 1
-		if ((esDentroDelRadioDeCercania(invitacion) === false) ||
-			((elOrganizadorEsAmigo(invitacion) === false) &&
-				asistenMasAmigos(invitacion, cantidadAmigosParaComparar) )) {
+		if ((esDentroDelRadioDeCercania(invitacion) === false) || ((elOrganizadorEsAmigo(invitacion) === false) &&
+			asistenMasAmigos(invitacion, cantidadAmigosParaComparar) )) {
 			invitacion.rechazar()
 		}
 	}
@@ -339,8 +303,9 @@ class UsuarioProfesional implements TipoDeUsuario {
 //		int unaEdadMinima, double unPrecioEntrada) {
 //		noSuperaElLimiteDeEventosMensuales(unOrganizador, unaFechaInicio, unaFechaFinalizacion)
 //	}
-	override boolean puedoOrganizarElEventoAbierto(Usuario unOrganizador,EventoAbierto unEventoAbierto) {
-		noSuperaElLimiteDeEventosMensuales(unOrganizador, unEventoAbierto.fechaDeInicio, unEventoAbierto.fechaFinalizacion)
+	override boolean puedoOrganizarElEventoAbierto(Usuario unOrganizador, EventoAbierto unEventoAbierto) {
+		noSuperaElLimiteDeEventosMensuales(unOrganizador, unEventoAbierto.fechaDeInicio,
+			unEventoAbierto.fechaFinalizacion)
 	}
 
 	override boolean puedePostergarEventos() { true }

@@ -234,7 +234,7 @@ class TestDeTipoDeUsuario {
 	@Test
 	def void unUsuarioFreeNoPuedeOrganizarMasDeUnEventoCerradoEnSimultaneo() {
 		unUsuario.setUsuarioFree()
-		unUsuario.agregarEventoCerrado(primerEvento)
+		unUsuario.organizarEventoCerrado(primerEvento)
 		Assert.assertFalse(
 			unUsuario.tipoDeUsuario.puedoOrganizarElEventoCerrado(unUsuario,eventoPrueba))
 	}
@@ -245,16 +245,16 @@ class TestDeTipoDeUsuario {
 		unUsuario.setUsuarioFree()
 		primerEvento.fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(-12))
 		primerEvento.fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(-11))
-		unUsuario.agregarEventoCerrado(primerEvento)
+		unUsuario.organizarEventoCerrado(primerEvento)
 		segundoEvento.fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(-9))
 		segundoEvento.fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(-8))
-		unUsuario.agregarEventoCerrado(segundoEvento)
+		unUsuario.organizarEventoCerrado(segundoEvento)
 		tercerEvento.fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(-10))
 		tercerEvento.fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(-10))
-		unUsuario.agregarEventoCerrado(tercerEvento)
+		unUsuario.organizarEventoCerrado(tercerEvento)
 		cuartoEvento.fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(6))
 		cuartoEvento.fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(6))
-		unUsuario.agregarEventoCerrado(cuartoEvento)
+		unUsuario.organizarEventoCerrado(cuartoEvento)
 
 	}
 
@@ -278,12 +278,12 @@ class TestDeTipoDeUsuario {
 	@Test
 	def void unUsuarioAmateurPuedeOrganizarHasta5EventosEnSimultaneo() {
 		unUsuario.setUsuarioAmateur()
-		unUsuario.agregarEventoCerrado(primerEvento)
-		unUsuario.agregarEventoCerrado(segundoEvento)
-		unUsuario.agregarEventoCerrado(tercerEvento)
-		unUsuario.agregarEventoCerrado(cuartoEvento)
+		unUsuario.organizarEventoCerrado(primerEvento)
+		unUsuario.organizarEventoCerrado(segundoEvento)
+		unUsuario.organizarEventoCerrado(tercerEvento)
+		unUsuario.organizarEventoCerrado(cuartoEvento)
 		Assert.assertTrue(
-			unUsuario.agregarEventoCerrado(quintoEvento)
+			unUsuario.organizarEventoCerrado(quintoEvento)
 		)
 	}
 
@@ -291,12 +291,12 @@ class TestDeTipoDeUsuario {
 	@Test(expected=EventoException)
 	def void unUsuarioAmateurNoPuedeOrganizarMasDe5EventosEnSimultaneo() {
 		unUsuario.setUsuarioAmateur()
-		unUsuario.agregarEventoCerrado(primerEvento)
-		unUsuario.agregarEventoCerrado(segundoEvento)
-		unUsuario.agregarEventoCerrado(tercerEvento)
-		unUsuario.agregarEventoCerrado(cuartoEvento)
-		unUsuario.agregarEventoCerrado(quintoEvento)
-		unUsuario.agregarEventoCerrado(eventoPrueba)
+		unUsuario.organizarEventoCerrado(primerEvento)
+		unUsuario.organizarEventoCerrado(segundoEvento)
+		unUsuario.organizarEventoCerrado(tercerEvento)
+		unUsuario.organizarEventoCerrado(cuartoEvento)
+		unUsuario.organizarEventoCerrado(quintoEvento)
+		unUsuario.organizarEventoCerrado(eventoPrueba)
 	}
 
 	// Profesional: Pueden organizar hasta 20 eventos al mes
@@ -304,7 +304,7 @@ class TestDeTipoDeUsuario {
 	def void unUsuarioProfesionalPuedeOrganizarHasta20EventosAlMes() {
 		unUsuario.setUsuarioProfesional()
 		for (contador = 0; contador < cantMaxDeEventos; contador = contador + 1) {
-			unUsuario.agregarEventoCerrado(
+			unUsuario.organizarEventoCerrado(
 				new EventoCerrado => [
 					nombre = "Otra Reunion "
 					organizador = unUsuario
