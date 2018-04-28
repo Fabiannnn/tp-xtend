@@ -32,7 +32,7 @@ class Usuario implements Entidad {
 		(true )
 	}
 
-	// Métodos relacionados con Invitaciones a Eventos Cerrados
+// Métodos relacionados con Invitaciones a Eventos Cerrados
 	def recibirInvitacion(Invitacion invitacion) {
 		invitaciones.add(invitacion)
 		agregarMensaje("Fuiste invitado a" + invitacion.unEventoCerrado + ", con " + invitacion.cantidadDeAcompanantes)
@@ -60,7 +60,7 @@ class Usuario implements Entidad {
 		}
 	}
 
-	// Métodos relacionados con Entradas  a Eventos Abiertos
+// Métodos relacionados con Entradas  a Eventos Abiertos
 	def edad() {
 		Period.between(fechaDeNacimiento, LocalDate.now()).getYears
 	}
@@ -79,7 +79,6 @@ class Usuario implements Entidad {
 	def organizarEventoAbierto(EventoAbierto unEventoAbierto) {
 		if (unEventoAbierto.validarDatosEvento()) {
 			if (tipoDeUsuario.puedoOrganizarElEventoAbierto(this, unEventoAbierto)) {
-
 				unEventoAbierto.organizador = this
 				eventosOrganizados.add(
 					unEventoAbierto
@@ -88,20 +87,21 @@ class Usuario implements Entidad {
 				throw new EventoException("El Usuario No puede organizar el evento")
 			}
 		}
-
 	}
 
 	def agregarAmigoALaLista(Usuario unAmigo) {
 		amigos.add(unAmigo)
 	}
 
-	// Este cambio ya lo vio Rodrigo
+// Este cambio ya lo vio Rodrigo
 	def organizarEventoCerrado(EventoCerrado unEventoCerrado) {
-		if (tipoDeUsuario.puedoOrganizarElEventoCerrado(this, unEventoCerrado)) {
-			unEventoCerrado.organizador = this
-			eventosOrganizados.add(unEventoCerrado)
-		} else {
-			throw new EventoException("No se puede organizar el evento")
+		if (unEventoCerrado.validarDatosEvento()) {
+			if (tipoDeUsuario.puedoOrganizarElEventoCerrado(this, unEventoCerrado)) {
+				unEventoCerrado.organizador = this
+				eventosOrganizados.add(unEventoCerrado) 
+			} else {
+				throw new EventoException("No se puede organizar el evento")
+			}
 		}
 	}
 
@@ -111,17 +111,18 @@ class Usuario implements Entidad {
 		}
 	}
 
-	def postergarUnEvento(Evento unEvento, LocalDateTime nuevaFechaHoraInicio) {
+	def postergarUnEvento(
+		Evento unEvento,
+		LocalDateTime nuevaFechaHoraInicio
+	) {
 		if (tipoDeUsuario.puedePostergarEventos()) {
 			unEvento.postergarElEvento(nuevaFechaHoraInicio)
 		}
-
 	}
 
 	// Métodos relacionados con Aceptacion y rechazo masivos
 	def aceptacionMasiva() {
 		invitaciones.forEach(invitacion|noEstaAceptada(invitacion))
-	// invitaciones.filter(invitacion | ((invitacion.aceptada)===null)).forEach[invitacion|this.aceptarSiCorresponde(invitacion)]
 	}
 
 	def noEstaAceptada(Invitacion invitacion) {

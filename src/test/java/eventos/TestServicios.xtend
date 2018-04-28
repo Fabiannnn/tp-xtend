@@ -7,13 +7,11 @@ import java.time.LocalDate
 import java.time.Period
 import org.uqbar.geodds.Point
 import org.junit.Before
+import org.eclipse.xtend.lib.annotations.Accessors
 
-class TestServicios {
-	EventoCerrado reunionChica
-	EventoAbierto otroEvento
-	Locacion salon_SM
-	Usuario usuario1
-	Usuario usuario2
+@Accessors
+class TestServicios extends FixtureTest{
+
 	Usuario usuario3
 	Invitacion invitacion
 	Servicio servicioCatering
@@ -23,42 +21,12 @@ class TestServicios {
 	Entrada entradaPrueba3
 
 	@Before
-	def void init() {
+	def void initTest() {
 
-		salon_SM = new Locacion => [
-			nombreLugar = "San Martin"
-			punto = new Point(35, 45)
-			superficie = 12
-		]
-		usuario1 = new Usuario => [
-			fechaDeNacimiento = LocalDate.of(2002, 05, 15)
-			coordenadasDireccion = new Point(60, 80)
-		]
-		usuario2 = new Usuario => [
-			fechaDeNacimiento = LocalDate.of(1900, 04, 02)
-			coordenadasDireccion = new Point(34, 45)
-			esAntisocial = false
-		]
 		usuario3 = new Usuario => [
 			fechaDeNacimiento = LocalDate.of(1900, 04, 02)
 			coordenadasDireccion = new Point(34, 45)
 			esAntisocial = false
-		]
-		reunionChica = new EventoCerrado => [
-			organizador = usuario1
-			locacion = salon_SM
-			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
-			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
-			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(3))
-			capacidadMaxima = 10
-		]
-		otroEvento = new EventoAbierto => [
-			organizador = usuario1
-			locacion = salon_SM
-			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
-			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(5))
-			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(-1))
-
 		]
 		servicioCatering = new Servicio => [
 			ubicacion = new Point(34.910067, 45) // distancia a reunion chica aproximada 10 km
@@ -74,9 +42,9 @@ class TestServicios {
 			costoPorPersona = 400
 			porcentajeCostoMinimo = 20
 		]
-		entradaPrueba = new Entrada(otroEvento, usuario1)
-		entradaPrueba2 = new Entrada(otroEvento, usuario2)
-		entradaPrueba3 = new Entrada(otroEvento, usuario3)
+		entradaPrueba = new Entrada(reunionAbierta, usuario1)
+		entradaPrueba2 = new Entrada(reunionAbierta, usuario2)
+		entradaPrueba3 = new Entrada(reunionAbierta, usuario3)
 
 	}
 
@@ -127,14 +95,14 @@ class TestServicios {
 	@Test
 	def costoTotalServicioAnimacionTarifaPorPersonaAbiertoSinAsistentes() { // capacidad 9 por 20%base 2 *$400
 		servicioAnimacion.setTarifaPorPersona()
-		Assert.assertEquals(800, servicioAnimacion.costoTotal(otroEvento), 0.0)
+		Assert.assertEquals(800, servicioAnimacion.costoTotal(reunionAbierta), 0.0)
 	}
 	@Test
 	def costoTotalServicioAnimacionTarifaPorPersonaAbiertoConTresAsistentes1200() { // costoTraslado 0  costo base por capacidad 2 *400 pero 3 asist s*400 1200
 		servicioAnimacion.setTarifaPorPersona()
-		otroEvento.registrarCompraEnEvento(entradaPrueba)
-		otroEvento.registrarCompraEnEvento(entradaPrueba2)
-		otroEvento.registrarCompraEnEvento(entradaPrueba3)
-		Assert.assertEquals(1200, servicioAnimacion.costoTotal(otroEvento), 0.0)
+		reunionAbierta.registrarCompraEnEvento(entradaPrueba)
+		reunionAbierta.registrarCompraEnEvento(entradaPrueba2)
+		reunionAbierta.registrarCompraEnEvento(entradaPrueba3)
+		Assert.assertEquals(1200, servicioAnimacion.costoTotal(reunionAbierta), 0.0)
 	}
 }

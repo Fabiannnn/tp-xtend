@@ -4,6 +4,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.geodds.Point
 import repositorio.Entidad
 import excepciones.EventoException
+import repositorio.RepositorioServicio
 
 @Accessors
 class Servicio implements Entidad {
@@ -46,7 +47,7 @@ class Servicio implements Entidad {
 		if (tipoDeTarifa !== null) {
 			tipoDeTarifa.validarTipoTarifa(this)
 		} else {
-			false
+			throw new EventoException("Faltan Datos de tarifas")
 		} // ver como refactorizar
 	}
 }
