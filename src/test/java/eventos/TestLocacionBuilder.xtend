@@ -26,10 +26,18 @@ class TestLocacionBuilder {
 		Assert.assertEquals(16, salon_SM.superficie, 0)
 	}
 	@Test(expected=EventoException)
-	def void locacionIncompletaDaExcepcion() {
+	def void locacionSinUbicacionDaExcepcion() {
 		salon_Incompleto = new LocacionBuilder()
 			.nombreLugar("San Martin")
 			.superficie(16)
 			.build
 	}
+		@Test(expected=EventoException)
+	def void locacionSinNombreDaExcepcion() {
+		salon_Incompleto = new LocacionBuilder()
+			.punto (new Point(35,45))
+			.superficie(16)
+			.build
+	}
+	
 }

@@ -10,14 +10,9 @@ class LocacionBuilder {
 	Point punto
 	double superficie
 
-//	val personasPorMetroCuadrado = 0.8
 	new() {
 	}
 
-//	def locacion(String _locacion) {
-//		this.locacionBuild= _locacion
-//		this
-//	}
 	def nombreLugar(String _nombreLugar) {
 		this.nombreLugar = _nombreLugar
 		this

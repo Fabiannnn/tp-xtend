@@ -29,19 +29,8 @@ class Locacion implements Entidad {
 		(nombreLugar !== null && punto !== null )
 	}
 
-//	def boolean validarNombre() {
-//		if (nombreLugar === null) {
-//		throw new EventoException("Falta nombre")
-//		}
-//	}
-
 	override toString() {
 		nombreLugar
 	}
 }
-//class locacion implements Entidad {
-//	override validar() {
-//		if (nombreLugar !== null && punto !== null ){true}
-//		
-//	}
-//} 
+ 

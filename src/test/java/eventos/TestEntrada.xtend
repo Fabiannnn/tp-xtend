@@ -7,38 +7,10 @@ import java.time.LocalDate
 import org.junit.Before
 import org.junit.Test
 import java.time.Period
+import org.eclipse.xtend.lib.annotations.Accessors
 
-class TestEntrada {
-	EventoAbierto cumple
-	Locacion salon_SM
-	Usuario usuario1
-	Entrada entradaPrueba
-
-	@Before
-	def void init() {
-		salon_SM = new Locacion=>[
-			nombreLugar = "San Martin"
-			punto = new Point(35, 45)
-			superficie = 16
-		]
-		usuario1 = new Usuario=>[
-			nombreDeUsuario = "Organizador1"
-			fechaDeNacimiento = LocalDate.of(2002, 05, 15)
-			coordenadasDireccion = new Point(40, 50)
-		]
-			
-		cumple = new EventoAbierto =>[ 
-			organizador = usuario1
-			locacion = salon_SM
-			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(25))
-			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(26))
-			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(7))	
-			edadMinima = 17
-			precioEntrada = 200
-		]
-
-		entradaPrueba = new Entrada(cumple, usuario1)
-	}
+@Accessors
+class TestEntrada extends FixtureTest{
 
 	@Test
 	def void devolverEntradaConMuchosDiasAnticipacionChequeoPorcentajeDevolucionIgualA80() {

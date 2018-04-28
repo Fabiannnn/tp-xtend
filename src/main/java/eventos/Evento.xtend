@@ -54,6 +54,25 @@ abstract class Evento {
 	def calcularDiferenciaTiempo(LocalDateTime nuevaFechaHoraInicio) {
 		Duration.between(fechaDeInicio, nuevaFechaHoraInicio).toHours()
 	}
+	def boolean validarDatosEvento(){
+		( validarDatosCompletos() && validarFechas())
+	}
+	def boolean validarFechas(){
+		if(!((fechaLimiteConfirmacion< LocalDate.from(fechaDeInicio)) && (fechaDeInicio<fechaFinalizacion))){
+					throw new EventoException("Fechas del evento Inconsistentes")
+			} else {
+				true
+		}
+	}
+	def boolean validarDatosCompletos(){
+		if ((nombre===null || fechaDeInicio===null || fechaFinalizacion===null || fechaLimiteConfirmacion === null || locacion === null
+		)){
+			throw new EventoException("Faltan Datos en el Evento")
+		}else {true}
+	}
+	override toString() {
+		nombre
+	}
 }
 
 

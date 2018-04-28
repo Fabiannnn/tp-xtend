@@ -27,10 +27,11 @@ class Usuario implements Entidad {
 	TipoDeUsuario tipoDeUsuario
 	Set<Evento> eventosOrganizados = newHashSet
 	int cont = 0
-	
-override validar() {
+
+	override validar() {
 		(true )
 	}
+
 	// Métodos relacionados con Invitaciones a Eventos Cerrados
 	def recibirInvitacion(Invitacion invitacion) {
 		invitaciones.add(invitacion)
@@ -76,14 +77,18 @@ override validar() {
 
 // este cambio ya lo vio Rodrigo
 	def organizarEventoAbierto(EventoAbierto unEventoAbierto) {
-		if (tipoDeUsuario.puedoOrganizarElEventoAbierto(this, unEventoAbierto)) {
-			unEventoAbierto.organizador = this
-			eventosOrganizados.add(
-				unEventoAbierto
-			)
-		} else {
-			throw new EventoException("No se puede organizar el evento")
+		if (unEventoAbierto.validarDatosEvento()) {
+			if (tipoDeUsuario.puedoOrganizarElEventoAbierto(this, unEventoAbierto)) {
+
+				unEventoAbierto.organizador = this
+				eventosOrganizados.add(
+					unEventoAbierto
+				)
+			} else {
+				throw new EventoException("El Usuario No puede organizar el evento")
+			}
 		}
+
 	}
 
 	def agregarAmigoALaLista(Usuario unAmigo) {

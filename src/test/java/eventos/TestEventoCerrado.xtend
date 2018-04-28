@@ -1,64 +1,15 @@
 package eventos
 
 import org.junit.Assert
-import org.junit.Before
 import org.junit.Test
-import org.uqbar.geodds.Point
-import java.time.LocalDate
-import java.time.Period
-import java.time.LocalDateTime
 import excepciones.EventoException
+import org.eclipse.xtend.lib.annotations.Accessors
 
-class TestEventoCerrado {
-	EventoCerrado reunionChica
-	EventoCerrado otroEvento
-	Locacion salon_SM
-	Usuario usuario1
-	Usuario usuario2
-	Usuario usuario3
+@Accessors
+class TestEventoCerrado extends FixtureTest{
+
 	Invitacion invitacion
 	Invitacion invitacion2
-
-	@Before
-	def void init() {
-
-		salon_SM = new Locacion => [
-			nombreLugar = "San Martin"
-			punto = new Point(35, 45)
-			superficie = 16
-		]
-		usuario1 = new Usuario => [
-			fechaDeNacimiento = LocalDate.of(2002, 05, 15)
-			coordenadasDireccion = new Point(60, 80)
-		]
-		usuario2 = new Usuario => [
-			fechaDeNacimiento = LocalDate.of(1900, 04, 02)
-			coordenadasDireccion = new Point(34, 45)
-			esAntisocial = false
-		]
-		usuario3 = new Usuario => [
-			fechaDeNacimiento = LocalDate.of(1900, 04, 02)
-			coordenadasDireccion = new Point(34, 45)
-			esAntisocial = false
-		]
-		reunionChica = new EventoCerrado => [
-			organizador = usuario1
-			locacion = salon_SM
-			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
-			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(5))
-			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(3))
-			capacidadMaxima = 10
-		]
-
-		otroEvento = new EventoCerrado => [
-			organizador = usuario1
-			locacion = salon_SM
-			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
-			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(5))
-			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(-1))
-			capacidadMaxima = 10
-		]
-	}
 
 	@Test
 	def cantidadPosiblesAsistentesEventoCerradoSinInvitados() {
@@ -101,7 +52,6 @@ class TestEventoCerrado {
 		invitacion = new Invitacion(reunionChica, usuario1, 5)
 		reunionChica.registrarInvitacionEnEvento(invitacion)
 		reunionChica.crearInvitacion(usuario2, 4)
-	//	Assert.assertEquals(6, reunionChica.cantidadAsistentes(), 0) // por que no acepto la segunda invitacion
 	}
 
 	@Test
