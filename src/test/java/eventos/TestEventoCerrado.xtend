@@ -93,6 +93,7 @@ class TestEventoCerrado extends FixtureTest{
 
 	@Test(expected=EventoException)
 	def ExcepcionSeisInvitadosSeQuierenInvitarDespuesFechaLimiteSeVerificaLaExcepcion() {
+		
 		invitacion = new Invitacion(otroEvento, usuario1, 5)
 		otroEvento.registrarInvitacionEnEvento(invitacion)
 		otroEvento.crearInvitacion(usuario2, 3)

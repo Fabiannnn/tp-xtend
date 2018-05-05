@@ -12,8 +12,7 @@ import java.time.LocalDate
 
 @Accessors
 class TestEventos extends FixtureTest {
-	//TipoDeUsuario usuarioProfesional
-
+	// TipoDeUsuario usuarioProfesional
 // Se chequea la determinación de capacidad del evento según sea Evento Cerrado o Abierto
 	@Test
 	def void capacidadSanMartinEnEventoCerrado_10persona() {
@@ -46,50 +45,52 @@ class TestEventos extends FixtureTest {
 // testeo de validacion evento Abierto
 	@Test(expected=EventoException)
 	def void unEventoAbiertoSinNombreNoSeValidaSuOrganizacion() {
-		reunionAbierta.nombre= null
+		reunionAbierta.nombre = null
 		usuario1.setUsuarioProfesional()
 		usuario1.organizarEventoAbierto(reunionAbierta)
 	}
-		@Test(expected=EventoException)
+
+	@Test(expected=EventoException)
 	def void unEventoAbiertoSinLocacionNoSeValidaSuOrganizacion() {
-		reunionAbierta.locacion= null
+		reunionAbierta.locacion = null
 
 		usuario1.setUsuarioProfesional()
 		usuario1.organizarEventoAbierto(reunionAbierta)
 	}
-		@Test(expected=EventoException)
+
+	@Test(expected=EventoException)
 	def void unEventoAbiertoSinFechaDeInicioNoSeValidaSuOrganizacion() {
-		reunionAbierta.fechaDeInicio= null
+		reunionAbierta.fechaDeInicio = null
 		usuario1.setUsuarioProfesional()
 		usuario1.organizarEventoAbierto(reunionAbierta)
 	}
-		@Test(expected=EventoException)
+
+	@Test(expected=EventoException)
 	def void unEventoAbiertoSinFechaDeFinalizacionNoSeValidaSuOrganizacion() {
-		reunionAbierta.fechaFinalizacion= null
+		reunionAbierta.fechaFinalizacion = null
 		usuario1.setUsuarioProfesional()
 		usuario1.organizarEventoAbierto(reunionAbierta)
 	}
-			@Test(expected=EventoException)
+
+	@Test(expected=EventoException)
 	def void unEventoAbiertoSinFechaDeConfirmacionNoSeValidaSuOrganizacion() {
-		reunionAbierta.fechaLimiteConfirmacion= null
+		reunionAbierta.fechaLimiteConfirmacion = null
 		usuario1.setUsuarioProfesional()
 		usuario1.organizarEventoAbierto(reunionAbierta)
 	}
-	
-			@Test(expected=EventoException)
+
+	@Test(expected=EventoException)
 	def void unEventoAbiertoFinalizacionAnteriorAInicioNoSeValidaSuOrganizacion() {
-		reunionAbierta.fechaFinalizacion=(LocalDateTime.now().plus(Period.ofDays(2)))
+		reunionAbierta.fechaFinalizacion = (LocalDateTime.now().plus(Period.ofDays(2)))
 		usuario1.setUsuarioProfesional()
 		usuario1.organizarEventoAbierto(reunionAbierta)
 	}
-	
-			@Test(expected=EventoException)
+
+	@Test(expected=EventoException)
 	def void unEventoAbiertoLimiteConfirmacionMayorAInicioNoSeValidaSuOrganizacion() {
-		reunionAbierta.fechaDeInicio=(LocalDateTime.now().plus(Period.ofDays(1)))
+		reunionAbierta.fechaDeInicio = (LocalDateTime.now().plus(Period.ofDays(1)))
 		usuario1.setUsuarioProfesional()
 		usuario1.organizarEventoAbierto(reunionAbierta)
 	}
-	// FALTARIA REPETIR ESTOS TEST PARA EVENTOS CERRADOS
-
-
+// FALTARIA REPETIR ESTOS TEST PARA EVENTOS CERRADOS revisar Test eventos cerrados que no se repitan
 }

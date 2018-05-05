@@ -7,7 +7,6 @@ import java.util.Set
 import java.time.Period
 import java.time.LocalDateTime
 import excepciones.EventoException
-import repositorio.Entidad
 
 @Accessors
 class Usuario implements Entidad {
@@ -29,7 +28,7 @@ class Usuario implements Entidad {
 	int cont = 0
 
 	override validar() {
-		(true )
+		(true )//reemplazar cuando se modele
 	}
 
 // Métodos relacionados con Invitaciones a Eventos Cerrados

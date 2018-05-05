@@ -1,4 +1,4 @@
-package repositorio
+package eventos
 
 import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
@@ -6,39 +6,60 @@ import excepciones.EventoException
 import eventos.Usuario
 import eventos.Locacion
 import eventos.Servicio
+import java.util.ArrayList
 
 @Accessors
 abstract class Repositorio<T extends Entidad> {
 
 	List<T> elementos = newArrayList
-//	int nextId = 1;
-	
+	int nextId = 1;
 
 	def void create(T elemento) {
 		validarElemento(elemento)
 		noEstaEnRepositorio(elemento)
-	//	agregar(elemento) como se le dice a que repositorio se agrega
-	// falta que haga todo lo que sigue add setear id incrementar id
+		asignarId(elemento)
+		agregarElemento(elemento)
+
+	}
+
+	def void asignarId(T elemento) {
+		elemento.agregarId(nextId)
+		nextId += 1
+	}
+
+	def void agregarElemento(T elemento) {
+		elementos.add(elemento)
+	}
+
+	def int sizeElementos() { // /para empezar
+		elementos.size()
 	}
 
 	def void delete(T elemento) {
-		delete(elemento)
+		elementos.remove(elemento)
 	}
 
 	def void update(T elemento) {}
 
-	def T searchById(int id) {
-//		find(id| claveId==id)
+	def T searchById(int _id) {
+		elementos.findFirst[elemento|elemento.getId() == _id]
 	}
 
-	def List<T> search(String value) {}
+	def List<T> search(String value) {
+		println(elementos.filter[elementoBuscado(value)].toList()) // despues sacar
+		return elementos.filter[elementoBuscado(value)].toList()
 
-	def noEstaEnRepositorio(T elemento){
-		
+	}
+
+	def noEstaEnRepositorio(T elemento) {
+		if (elementos.contains(elemento)) {
+			throw new EventoException("El objeto " + elemento.toString() + "ya está en el repositorio")
+		}
 	}
 
 	def validarElemento(T elemento) {
-		if (!elemento.validar) {
+		if (!elemento.validar()) {
+			println("El objeto " + elemento.toString() + " no cumple validación obligatoria") // sacar despues
 			throw new EventoException("El objeto " + elemento.toString() + " no cumple validación obligatoria")
 		}
 
@@ -50,12 +71,8 @@ abstract class Repositorio<T extends Entidad> {
 //}
 @Accessors
 class RepositorioLocacion extends Repositorio<Locacion> {
-	override create(Locacion locacion) {
-		locacion.validar()
-		noEstaEnRepositorio(locacion)
-		elementos.add(new Locacion(locacion.nextId(), locacion))
-	}
 }
+
 @Accessors
 class RepositorioServicio extends Repositorio<Servicio> {
 	override create(Servicio servicio) {

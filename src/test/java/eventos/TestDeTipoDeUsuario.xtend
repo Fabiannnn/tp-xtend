@@ -81,8 +81,7 @@ class TestDeTipoDeUsuario extends FixtureTest{
 	def void unUsuarioFreeNoPuedeOrganizarMasDeUnEventoCerradoEnSimultaneo() {
 		unUsuario.setUsuarioFree()
 		unUsuario.organizarEventoCerrado(primerEvento)
-		Assert.assertFalse(
-			unUsuario.tipoDeUsuario.puedoOrganizarElEventoCerrado(unUsuario,eventoPrueba))
+		Assert.assertFalse(	unUsuario.tipoDeUsuario.puedoOrganizarElEventoCerrado(unUsuario,segundoEvento))
 	}
 
 		@Test(expected=EventoException)
@@ -127,8 +126,7 @@ class TestDeTipoDeUsuario extends FixtureTest{
 		unUsuario.organizarEventoCerrado(segundoEvento)
 		unUsuario.organizarEventoCerrado(tercerEvento)
 		unUsuario.organizarEventoCerrado(cuartoEvento)
-		Assert.assertTrue(
-			unUsuario.organizarEventoCerrado(quintoEvento)
+		Assert.assertTrue(unUsuario.organizarEventoCerrado(quintoEvento)
 		)
 	}
 
@@ -156,7 +154,7 @@ class TestDeTipoDeUsuario extends FixtureTest{
 					locacion = salon_SM
 					fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
 					fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
-					fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(3))
+					fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(2))
 					capacidadMaxima = 100
 				]
 			)

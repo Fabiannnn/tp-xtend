@@ -2,9 +2,7 @@ package eventos
 
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.geodds.Point
-import repositorio.Entidad
 import excepciones.EventoException
-import repositorio.RepositorioServicio
 
 @Accessors
 class Servicio implements Entidad {
@@ -37,6 +35,10 @@ class Servicio implements Entidad {
 
 	def void setTarifaPorPersona() {
 		tipoDeTarifa = new TarifaPorPersona
+	}
+
+	override nextId() {
+		1 // reemplazar cuando se modele
 	}
 
 	override def boolean validar() {
@@ -84,9 +86,11 @@ class TarifaPorPersona implements TipoDeTarifa {
 		Math.max((costoBasePorCapacidad(unServicio, unEvento)), (unEvento.cantidadAsistentes() *
 			unServicio.costoPorPersona ))
 	}
+
 	override boolean validarTipoTarifa(Servicio unServicio) {
 		(unServicio.costoPorPersona > 0)
 	}
+
 	def double costoBasePorCapacidad(Servicio unServicio, Evento unEvento) {
 		Math.round(unEvento.capacidadMaxima() * unServicio.porcentajeCostoMinimo / 100) * unServicio.costoPorPersona
 	}

@@ -13,6 +13,9 @@ abstract class FixtureTest {
 	EventoCerrado reunionChica
 	EventoCerrado otroEvento
 	Locacion salon_SM
+	Locacion salon_2
+	Locacion salon_3
+	Locacion salon_Incompleto
 	Usuario usuario1
 	Usuario usuario2
 	Usuario usuario3
@@ -27,19 +30,37 @@ abstract class FixtureTest {
 	EventoAbierto reunionAbierta
 	EventoAbierto cumple
 	Entrada entradaPrueba
-
+	RepositorioLocacion repoLocacion 
+			//RepositorioLocacion<Locacion> repo = new Repositorio<Locacion>()
 	int cantMaxDeEventos = 20
 	int contador
 
 	@Before
 	def void init() {
-
+		
 		salon_SM = new Locacion => [
 			nombreLugar = "San Martin"
 			punto = new Point(35, 45)
 			superficie = 16
 		]
-
+		salon_2 = new Locacion => [
+			nombreLugar = "San Martin 2"
+			punto = new Point(35, 65)
+			superficie = 45
+		]
+		salon_3 = new Locacion => [
+			nombreLugar = "Sanse"
+			punto = new Point(35, 65)
+			superficie = 45
+		]
+		
+		repoLocacion= new RepositorioLocacion()
+		
+		salon_Incompleto = new Locacion => [
+			nombreLugar = "San Martin incompleto"
+			superficie = 16
+		]
+		
 		usuario1 = new Usuario => [
 			nombreDeUsuario = "PrimerUsuario"
 			fechaDeNacimiento = LocalDate.of(2002, 05, 15)
@@ -88,7 +109,7 @@ abstract class FixtureTest {
 			locacion = salon_SM
 			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(-1))
 			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(1))
-			fechaLimiteConfirmacion = LocalDate.now()
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(-2))
 			capacidadMaxima = 50
 		]
 		reunionGrande = new EventoCerrado => [
@@ -115,7 +136,7 @@ abstract class FixtureTest {
 			locacion = salon_SM
 			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
 			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
-			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(3))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(2))
 			capacidadMaxima = 10
 		]
 		segundoEvento = new EventoCerrado => [
@@ -141,7 +162,7 @@ abstract class FixtureTest {
 			locacion = salon_SM
 			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(8))
 			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(9))
-			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(8))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(7))
 			capacidadMaxima = 50
 		]
 
@@ -151,7 +172,7 @@ abstract class FixtureTest {
 			locacion = salon_SM
 			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
 			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
-			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(3))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(2))
 			capacidadMaxima = 10
 		]
 		eventoPrueba = new EventoCerrado => [
