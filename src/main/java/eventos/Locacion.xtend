@@ -12,7 +12,12 @@ class Locacion implements Entidad {
 	Point punto
 	double superficie
 	val personasPorMetroCuadrado = 0.8
-
+	int idLocacion=0
+	
+	new(Object object, Locacion locacion) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
 	def double distancia(Point otroPunto) {
 		punto.distance(otroPunto)
 	}
@@ -32,5 +37,11 @@ class Locacion implements Entidad {
 	override toString() {
 		nombreLugar
 	}
+	
+	override nextId() {
+		idLocacion+=1
+		return idLocacion
+	}
+	
 }
  
