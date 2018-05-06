@@ -45,53 +45,47 @@ class TestsRepositorioServicios extends FixtureTest {
 	}
 
 	@Test
-	def void pruebaDeQueSePuedeAgregarServicioAlRepositorioDirectamenteSinValidar() {
-		repoServicio.elementos.add(servicioAnimacion)
-		Assert.assertEquals(1, repoServicio.sizeElementos(), 0)
-	}
-
-	@Test
-	def void sePuedeAgregarServicioAnimacionAlRepositorioValidando() {
+	def void sePuedeAgregarServicioValidoyPasaValidacion() {
 		servicioAnimacion.setTarifaPorPersona()
 		repoServicio.create(servicioAnimacion)
-		Assert.assertEquals(1, repoServicio.sizeElementos(), 0)
+		Assert.assertEquals(1, repoServicio.elementos.size(), 0)
 	}
 
 	@Test(expected=EventoException)
-	def void seAgregoServicioAnimacionSeQuiereAgregarDeNUevoYException() {
+	def void noSePuedeAgregarUnSegundoServicioDeAnimacion() {
 		repoServicio.create(servicioAnimacion)
 		repoServicio.create(servicioAnimacion)
 	}
 
-	@Test
-	def void noPasaValidacionDesdeTipoDeTarifaSiNoTieneCosto() {
+	@Test(expected=EventoException)
+	def void unaTarifaSinCostoNoValidaTarifa() {
 		servicioAnimacion.setTarifaPorPersona()
 		servicioAnimacion.costoPorPersona = 0
-		Assert.assertFalse(servicioAnimacion.validarTarifa())
+		servicioAnimacion.validarTarifa()
 	}
 
 	@Test
-	def void pasaValidacionDesdeTipoDeTarifaSiTieneCostoPorPErsona() {
+	def void unaTarifaConCostoValidaTarifa() {
 		servicioAnimacion.setTarifaPorPersona()
 		Assert.assertTrue(servicioAnimacion.validarTarifa())
 	}
 
 	@Test(expected=EventoException)
-	def void pruebaQueNoSePuedeAgregarServicioArnimacionIncompletoAlRepositorioServicio() {
+	def void noSePuedeValidarServicioAnimacionIncompleto() {
 		repoServicio.validarElemento(servicioAnimacion)
 	}
 
 	@Test
-	def void seAgregan2ServiciosValidos() {        //consola[]
+	def void seAgregan2ServiciosValidos() {
 		servicioCatering.setTarifaFija()
 		servicioAnimacion.setTarifaPorPersona()
 		repoServicio.create(servicioAnimacion)
 		repoServicio.create(servicioCatering)
-		Assert.assertEquals(2, repoServicio.sizeElementos(), 0)
+		Assert.assertEquals(2, repoServicio.elementos.size(), 0)
 	}
 
 	@Test
-	def void seAgrega3SalonesValidosyBuscamosPor_artQueNoEsta() {//consola[]
+	def void seAgrega3SalonesValidosyBuscamosPor_artQueNoEsta() {
 		servicioCatering.setTarifaFija()
 		servicioAnimacion.setTarifaPorPersona()
 		repoServicio.create(servicioAnimacion)
@@ -109,7 +103,7 @@ class TestsRepositorioServicios extends FixtureTest {
 	}
 
 	@Test
-	def void seAgrega2ServiciosValidosyBuscamosPor_erinQueNoEstaAlInicio() {//en consola[]
+	def void seAgrega2ServiciosValidosyBuscamosPor_erinQueNoEstaAlInicio() {
 		servicioCatering.setTarifaFija()
 		servicioAnimacion.setTarifaPorPersona()
 		repoServicio.create(servicioAnimacion)
@@ -119,39 +113,61 @@ class TestsRepositorioServicios extends FixtureTest {
 
 	@Test
 	def void seAgrega2ServiciosValidosyBuscamosPor_id_2() {
-	servicioCatering.setTarifaFija()
+		servicioCatering.setTarifaFija()
 		servicioAnimacion.setTarifaPorPersona()
 		repoServicio.create(servicioAnimacion)
 		repoServicio.create(servicioCatering)
-		Assert.assertEquals(200.0, repoServicio.searchById(2).costoFijo, 0.0) // ver como comparar objeto
+		Assert.assertEquals(200.0, repoServicio.searchById(2).costoFijo, 0.0)
 	}
 
 	@Test
 	def void seAgrega2ServiciosValidosyborramosServicioAnimacion() {
-	servicioCatering.setTarifaFija()
+		servicioCatering.setTarifaFija()
 		servicioAnimacion.setTarifaPorPersona()
 		repoServicio.create(servicioAnimacion)
 		repoServicio.create(servicioCatering)
 		repoServicio.delete(servicioAnimacion)
-		Assert.assertEquals(1, repoServicio.sizeElementos(), 0)
+		Assert.assertEquals(1, repoServicio.elementos.size(), 0)
 	}
-	
+
 	@Test
 	def void seAgrega2ServiciosValidosSeBorraServicioAnimacionNoSeEncuentraId1() {
-	servicioCatering.setTarifaFija()
+		servicioCatering.setTarifaFija()
 		servicioAnimacion.setTarifaPorPersona()
 		repoServicio.create(servicioAnimacion)
 		repoServicio.create(servicioCatering)
 		repoServicio.delete(servicioAnimacion)
-	Assert.assertNull(repoServicio.searchById(1))
+		Assert.assertNull(repoServicio.searchById(1))
 	}
-		@Test
+
+	@Test
 	def void seAgrega2ServiciosValidosSeBorraServicioAnimacionSeEncuentraId2() {
-	servicioCatering.setTarifaFija()
+		servicioCatering.setTarifaFija()
 		servicioAnimacion.setTarifaPorPersona()
 		repoServicio.create(servicioAnimacion)
 		repoServicio.create(servicioCatering)
 		repoServicio.delete(servicioAnimacion)
-	Assert.assertNotNull(repoServicio.searchById(2))
+		Assert.assertNotNull(repoServicio.searchById(2))
 	}
+
+	// Tests de updates
+	@Test
+	def void seAgrega1ServicioValidoSeReemplazaId1ConOtro() {
+		servicioCatering.setTarifaFija()
+		servicioAnimacion.setTarifaPorPersona()
+		repoServicio.create(servicioAnimacion)
+		servicioCatering.id = 1
+		repoServicio.update(servicioCatering)
+		Assert.assertTrue(repoServicio.elementos.exists[elemento|elemento == servicioCatering])
+	}
+
+	@Test(expected=EventoException)
+	def void seAgrega1ServicioValidoSeQuiereReemplazarId3yDaExcepcion() {
+		servicioCatering.setTarifaFija()
+		servicioAnimacion.setTarifaPorPersona()
+		repoServicio.create(servicioAnimacion)
+		servicioCatering.id = 3
+		repoServicio.update(servicioCatering)
+	}
+
 }

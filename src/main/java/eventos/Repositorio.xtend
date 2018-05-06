@@ -19,7 +19,6 @@ abstract class Repositorio<T extends Entidad> {
 		noEstaEnRepositorio(elemento)
 		asignarId(elemento)
 		agregarElemento(elemento)
-
 	}
 
 	def void asignarId(T elemento) {
@@ -31,24 +30,25 @@ abstract class Repositorio<T extends Entidad> {
 		elementos.add(elemento)
 	}
 
-	def int sizeElementos() { // /para empezar
-		elementos.size()
-	}
-
 	def void delete(T elemento) {
 		elementos.remove(elemento)
 	}
 
-	def void update(T elemento) {}
+	def void update(T _elemento) {
+		this.validarElemento(_elemento) //si no es valido la excepcion la llama la validacion
+		if (this.searchById(_elemento.getId()) === null){throw new EventoException("No existe el elemento que se quiere actualizar")}
+		else{
+			delete(this.searchById(_elemento.getId()))
+			elementos.add(_elemento)
+		}
+	}
 
 	def T searchById(int _id) {
 		elementos.findFirst[elemento|elemento.getId() == _id]
 	}
 
 	def List<T> search(String value) {
-		println(elementos.filter[elementoBuscado(value)].toList()) // despues sacar
 		return elementos.filter[elementoBuscado(value)].toList()
-
 	}
 
 	def noEstaEnRepositorio(T elemento) {
@@ -59,23 +59,19 @@ abstract class Repositorio<T extends Entidad> {
 
 	def validarElemento(T elemento) {
 		if (!elemento.validar()) {
-			println("El objeto " + elemento.toString() + " no cumple validación obligatoria") // sacar despues
 			throw new EventoException("El objeto " + elemento.toString() + " no cumple validación obligatoria")
 		}
-
 	}
 }
 
 @Accessors
 class RepositorioUsuario extends Repositorio<Usuario> {
-	
-	
 }
+
 @Accessors
 class RepositorioLocacion extends Repositorio<Locacion> {
 }
 
 @Accessors
 class RepositorioServicio extends Repositorio<Servicio> {
-
 }

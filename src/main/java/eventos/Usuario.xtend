@@ -197,7 +197,7 @@ class Usuario implements Entidad {
 	}
 
 //interface Entidad
-	override validar() {		//VER COMO REFACTORIZAR
+	override validar() { // VER COMO REFACTORIZAR
 		if (nombreUsuario === null || nombreApellido === null || eMail === null || fechaNacimiento === null ||
 			coordenadas === null) {
 			throw new EventoException("Faltan Datos de Usuario")
@@ -240,9 +240,6 @@ class UsuarioFree implements TipoDeUsuario {
 	val maximoPersonasPorEventoCerrado = 50
 	val cantidadMaximaEventosMensuales = 3
 
-//	override boolean puedoOrganizarElEventoAbierto(String unNombre, Usuario unOrganizador, Locacion unaLocacion,
-//		LocalDateTime unaFechaInicio, LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion,
-//		int unaEdadMinima, double unPrecioEntrada) { false }
 	override boolean puedoOrganizarElEventoAbierto(Usuario unOrganizador, EventoAbierto unEventoAbierto) { false }
 
 	override boolean puedePostergarEventos() { false }
@@ -288,11 +285,6 @@ class UsuarioAmateur implements TipoDeUsuario {
 	val maximoInvitacionesEventoCerrado = 50
 	boolean puedoOrganizarElEventoAbierto = true
 
-//	override boolean puedoOrganizarElEventoAbierto(String unNombre, Usuario unOrganizador, Locacion unaLocacion,
-//		LocalDateTime unaFechaInicio, LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion,
-//		int unaEdadMinima, double unPrecioEntrada) {
-//		puedoOrganizarElEventoAbierto && noSuperaElLimiteDeEventosSimultaneos(unOrganizador)
-//	}
 	override boolean puedoOrganizarElEventoAbierto(Usuario unOrganizador, EventoAbierto unEventoAbierto) {
 		puedoOrganizarElEventoAbierto && noSuperaElLimiteDeEventosSimultaneos(unOrganizador)
 	}
@@ -320,11 +312,6 @@ class UsuarioProfesional implements TipoDeUsuario {
 
 	val cantidadMaximaEventosMensuales = 20
 
-//	override boolean puedoOrganizarElEventoAbierto(String unNombre, Usuario unOrganizador, Locacion unaLocacion,
-//		LocalDateTime unaFechaInicio, LocalDateTime unaFechaFinalizacion, LocalDate unaFechaLimiteConfirmacion,
-//		int unaEdadMinima, double unPrecioEntrada) {
-//		noSuperaElLimiteDeEventosMensuales(unOrganizador, unaFechaInicio, unaFechaFinalizacion)
-//	}
 	override boolean puedoOrganizarElEventoAbierto(Usuario unOrganizador, EventoAbierto unEventoAbierto) {
 		noSuperaElLimiteDeEventosMensuales(unOrganizador, unEventoAbierto.fechaDeInicio,
 			unEventoAbierto.fechaFinalizacion)

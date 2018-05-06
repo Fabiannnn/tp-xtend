@@ -76,18 +76,23 @@ class TarifaFija implements TipoDeTarifa {
 	}
 
 	override boolean validarTipoTarifa(Servicio unServicio) {
-		(unServicio.costoFijo > 0)
+		if (!(unServicio.costoFijo > 0)) {
+			throw new EventoException("Falta establecer costo fijo")
+		}
+		return true
 	}
 }
 
 class TarifaPorHora implements TipoDeTarifa {
 	override double costo(Servicio unServicio, Evento unEvento) {
 		unServicio.costoPorHora * unEvento.duracion + unServicio.costoMinimo
-
 	}
 
 	override boolean validarTipoTarifa(Servicio unServicio) {
-		(unServicio.costoPorHora > 0)
+		if (!(unServicio.costoPorHora > 0)) {
+			throw new EventoException("Falta establecer costo por hora")
+		}
+		return true
 	}
 }
 
@@ -98,7 +103,10 @@ class TarifaPorPersona implements TipoDeTarifa {
 	}
 
 	override boolean validarTipoTarifa(Servicio unServicio) {
-		(unServicio.costoPorPersona > 0)
+		if (!(unServicio.costoPorPersona > 0)) {
+			throw new EventoException("Falta establecer costo por persona")
+		}
+		return true
 	}
 
 	def double costoBasePorCapacidad(Servicio unServicio, Evento unEvento) {

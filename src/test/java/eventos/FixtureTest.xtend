@@ -52,7 +52,7 @@ abstract class FixtureTest {
 		salon_3 = new Locacion => [
 			nombre = "Sanse"
 			punto = new Point(35, 65)
-			superficie = 45
+			superficie = 100
 		]
 
 		salon_Incompleto = new Locacion => [

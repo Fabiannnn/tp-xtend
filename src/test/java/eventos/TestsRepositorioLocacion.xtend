@@ -7,16 +7,11 @@ import excepciones.EventoException
 
 @Accessors
 class TestsRepositorioLocacion extends FixtureTest {
-	@Test
-	def void pruebaDeQueSePuedeAgregarSMSeAgregaAlRepositorioSinValidar() {
-		repoLocacion.elementos.add(salon_SM)
-		Assert.assertEquals(1, repoLocacion.sizeElementos(), 0)
-	}
 
 	@Test
 	def void pruebaDeQueSePuedeAgregarSMSeAgregaAlRepositorioValidando() {
 		repoLocacion.create(salon_SM)
-		Assert.assertEquals(1, repoLocacion.sizeElementos(), 0)
+		Assert.assertEquals(1, repoLocacion.elementos.size(), 0)
 	}
 
 	@Test
@@ -29,12 +24,11 @@ class TestsRepositorioLocacion extends FixtureTest {
 	def void seAgregoSalonSmConId1SeQuiereAgregarDeNUevoYException() {
 		repoLocacion.create(salon_SM)
 		repoLocacion.create(salon_SM)
-
 	}
 
-	@Test
+	@Test(expected=EventoException)
 	def void pruebaQueNoSeValidaDesdeLocacionSalonIncompleto() {
-		Assert.assertFalse(salon_Incompleto.validar())
+		salon_Incompleto.validar()
 	}
 
 	@Test(expected=EventoException)
@@ -47,11 +41,11 @@ class TestsRepositorioLocacion extends FixtureTest {
 		repoLocacion.create(salon_SM)
 		repoLocacion.create(salon_2)
 		repoLocacion.create(salon_3)
-		Assert.assertEquals(3, repoLocacion.sizeElementos(), 0)
+		Assert.assertEquals(3, repoLocacion.elementos.size(), 0)
 	}
 
 	@Test
-	def void seAgrega3SalonesValidosyBuscamosPor_art() {
+	def void seAgrega3SalonesValidosyBuscamosPorCadenaArt() {
 		repoLocacion.create(salon_SM)
 		repoLocacion.create(salon_2)
 		repoLocacion.create(salon_3)
@@ -59,19 +53,37 @@ class TestsRepositorioLocacion extends FixtureTest {
 	}
 
 	@Test
-	def void seAgrega3SalonesValidosyBuscamosPor_id_2() {
+	def void seAgrega3SalonesValidosyBuscamosPorId2() {
 		repoLocacion.create(salon_SM)
 		repoLocacion.create(salon_2)
 		repoLocacion.create(salon_3)
-		Assert.assertEquals(45.0, repoLocacion.searchById(2).superficie, 0.0) // ver como comparar objeto
+		Assert.assertEquals(45.0, repoLocacion.searchById(2).superficie, 0.0)
 	}
 
 	@Test
-	def void seAgrega3SalonesValidosyborramosSalon_2() {
+	def void seAgrega3SalonesValidosyborramosSalon2() {
 		repoLocacion.create(salon_SM)
 		repoLocacion.create(salon_2)
 		repoLocacion.create(salon_3)
 		repoLocacion.delete(salon_2)
-		Assert.assertEquals(2, repoLocacion.sizeElementos(), 0)
+		Assert.assertEquals(2, repoLocacion.elementos.size(), 0)
+	}
+
+//Test de update
+	@Test
+	def void seAgrega2SalonesValidosyReemplazamosElId2PorSalon3() {
+		repoLocacion.create(salon_SM)
+		repoLocacion.create(salon_2)
+		salon_3.id = 2
+		repoLocacion.update(salon_3)
+		Assert.assertEquals(100, repoLocacion.searchById(2).superficie, 0)
+	}
+
+	@Test(expected=EventoException)
+	def void seAgrega2SalonesValidosySeQuiereActualizarUnIdQueNoExiste() {
+		repoLocacion.create(salon_SM)
+		repoLocacion.create(salon_2)
+		salon_3.id = 4
+		repoLocacion.update(salon_3)
 	}
 }
