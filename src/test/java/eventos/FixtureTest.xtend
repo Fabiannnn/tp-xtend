@@ -30,14 +30,15 @@ abstract class FixtureTest {
 	EventoAbierto reunionAbierta
 	EventoAbierto cumple
 	Entrada entradaPrueba
-	RepositorioLocacion repoLocacion 
-			//RepositorioLocacion<Locacion> repo = new Repositorio<Locacion>()
+	RepositorioLocacion repoLocacion
+	RepositorioServicio repoServicio
+	RepositorioUsuario repoUsuario
 	int cantMaxDeEventos = 20
 	int contador
 
 	@Before
 	def void init() {
-		
+
 		salon_SM = new Locacion => [
 			nombreLugar = "San Martin"
 			punto = new Point(35, 45)
@@ -53,13 +54,15 @@ abstract class FixtureTest {
 			punto = new Point(35, 65)
 			superficie = 45
 		]
-		
-		repoLocacion= new RepositorioLocacion()
-		
+
 		salon_Incompleto = new Locacion => [
 			nombreLugar = "San Martin incompleto"
 			superficie = 16
 		]
+
+		repoLocacion = new RepositorioLocacion()
+		repoServicio = new RepositorioServicio()
+		repoUsuario = new RepositorioUsuario()
 		
 		usuario1 = new Usuario => [
 			nombreDeUsuario = "PrimerUsuario"
@@ -72,7 +75,7 @@ abstract class FixtureTest {
 			fechaDeNacimiento = LocalDate.of(1900, 04, 02)
 			coordenadasDireccion = new Point(45, 60)
 		]
-		 usuario3 = new Usuario => [
+		usuario3 = new Usuario => [
 			fechaDeNacimiento = LocalDate.of(1900, 04, 02)
 			coordenadasDireccion = new Point(34, 45)
 			esAntisocial = false
