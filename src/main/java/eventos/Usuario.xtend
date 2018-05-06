@@ -25,11 +25,7 @@ class Usuario implements Entidad {
 	Set<Entrada> entradaComprada = newHashSet
 	TipoDeUsuario tipoDeUsuario
 	Set<Evento> eventosOrganizados = newHashSet
-	int cont = 0
-
-	override validar() {
-		(true )//reemplazar cuando se modele
-	}
+	int id
 
 // Métodos relacionados con Invitaciones a Eventos Cerrados
 	def recibirInvitacion(Invitacion invitacion) {
@@ -97,7 +93,7 @@ class Usuario implements Entidad {
 		if (unEventoCerrado.validarDatosEvento()) {
 			if (tipoDeUsuario.puedoOrganizarElEventoCerrado(this, unEventoCerrado)) {
 				unEventoCerrado.organizador = this
-				eventosOrganizados.add(unEventoCerrado) 
+				eventosOrganizados.add(unEventoCerrado)
 			} else {
 				throw new EventoException("No se puede organizar el evento")
 			}
@@ -200,6 +196,27 @@ class Usuario implements Entidad {
 		tipoDeUsuario = new UsuarioProfesional
 	}
 
+//interface Entidad
+	override validar() {		//VER COMO REFACTORIZAR
+		if (nombreDeUsuario === null || nombreYApellido === null || eMail === null || fechaDeNacimiento === null ||
+			coordenadasDireccion === null) {
+			throw new EventoException("Faltan Datos de Usuario")
+		} else {
+			true
+		}
+	}
+
+	override int getId() {
+		return id
+	}
+
+	override void agregarId(int _nextId) {
+		id = _nextId
+	}
+
+	override boolean elementoBuscado(String cadena) {
+		nombreYApellido.contains(cadena) || nombreDeUsuario.contentEquals(cadena)
+	}
 }
 
 interface TipoDeUsuario {

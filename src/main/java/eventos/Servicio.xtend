@@ -15,6 +15,7 @@ class Servicio implements Entidad {
 	double costoPorPersona = 0
 	double costoPorKm = 0
 	Point ubicacion
+	int id
 
 	def setTarifaFija() {
 		tipoDeTarifa = new TarifaFija()
@@ -37,10 +38,6 @@ class Servicio implements Entidad {
 		tipoDeTarifa = new TarifaPorPersona
 	}
 
-	override nextId() {
-		1 // reemplazar cuando se modele
-	}
-
 	override def boolean validar() {
 		(descripcion !== null && ubicacion !== null && validarTarifa())
 	}
@@ -52,6 +49,19 @@ class Servicio implements Entidad {
 			throw new EventoException("Faltan Datos de tarifas")
 		} // ver como refactorizar
 	}
+
+	override int getId() {
+		return id
+	}
+
+	override void agregarId(int _nextId) {
+		id = _nextId
+	}
+
+	override boolean elementoBuscado(String cadena) {
+		descripcion.startsWith(cadena)
+	}
+
 }
 
 interface TipoDeTarifa {

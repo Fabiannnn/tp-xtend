@@ -6,7 +6,7 @@ import org.junit.Test
 import excepciones.EventoException
 
 @Accessors
-class TestRepositorios extends FixtureTest {
+class TestsRepositorioLocacion extends FixtureTest {
 	@Test
 	def void pruebaDeQueSePuedeAgregarSMSeAgregaAlRepositorioSinValidar() {
 		repoLocacion.elementos.add(salon_SM)

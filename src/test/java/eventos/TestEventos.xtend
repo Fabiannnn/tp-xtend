@@ -75,6 +75,7 @@ class TestEventos extends FixtureTest {
 	@Test(expected=EventoException)
 	def void unEventoAbiertoSinFechaDeConfirmacionNoSeValidaSuOrganizacion() {
 		reunionAbierta.fechaLimiteConfirmacion = null
+		
 		usuario1.setUsuarioProfesional()
 		usuario1.organizarEventoAbierto(reunionAbierta)
 	}

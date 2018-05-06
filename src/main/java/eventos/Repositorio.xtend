@@ -66,18 +66,16 @@ abstract class Repositorio<T extends Entidad> {
 	}
 }
 
-//
-//class RepositorioUsuario extends Repositorio<Usuario> {
-//}
+@Accessors
+class RepositorioUsuario extends Repositorio<Usuario> {
+	
+	
+}
 @Accessors
 class RepositorioLocacion extends Repositorio<Locacion> {
 }
 
 @Accessors
 class RepositorioServicio extends Repositorio<Servicio> {
-	override create(Servicio servicio) {
-		servicio.validar()
-		noEstaEnRepositorio(servicio)
-//		elementos.add(nextId, servicio)
-	}
+
 }

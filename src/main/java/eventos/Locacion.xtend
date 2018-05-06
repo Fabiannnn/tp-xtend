@@ -25,18 +25,17 @@ class Locacion implements Entidad {
 		Math.floor(superficie * personasPorMetroCuadrado) as int
 	}
 
-	override agregarId(int _nextId) {
-		id = _nextId
-
+	override validar() { // hacer las validaciones separadas para mandar excepciones independientes con descripcion
+		(nombreLugar !== null && punto !== null )
 	}
 
 	override getId() {
 		return id
-
 	}
 
-	override validar() { // hacer las validaciones separadas para mandar excepciones independientes con descripcion
-		(nombreLugar !== null && punto !== null )
+	override agregarId(int _nextId) {
+		id = _nextId
+
 	}
 
 	override elementoBuscado(String cadena) {
