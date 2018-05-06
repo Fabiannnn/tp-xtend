@@ -1,5 +1,0 @@
-package eventos
-
-class EventoBuilder {
-	
-}

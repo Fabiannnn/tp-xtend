@@ -40,23 +40,23 @@ abstract class FixtureTest {
 	def void init() {
 
 		salon_SM = new Locacion => [
-			nombreLugar = "San Martin"
+			nombre = "San Martin"
 			punto = new Point(35, 45)
 			superficie = 16
 		]
 		salon_2 = new Locacion => [
-			nombreLugar = "San Martin 2"
+			nombre = "San Martin 2"
 			punto = new Point(35, 65)
 			superficie = 45
 		]
 		salon_3 = new Locacion => [
-			nombreLugar = "Sanse"
+			nombre = "Sanse"
 			punto = new Point(35, 65)
 			superficie = 45
 		]
 
 		salon_Incompleto = new Locacion => [
-			nombreLugar = "San Martin incompleto"
+			nombre = "San Martin incompleto"
 			superficie = 16
 		]
 
@@ -65,19 +65,19 @@ abstract class FixtureTest {
 		repoUsuario = new RepositorioUsuario()
 		
 		usuario1 = new Usuario => [
-			nombreDeUsuario = "PrimerUsuario"
-			fechaDeNacimiento = LocalDate.of(2002, 05, 15)
-			coordenadasDireccion = new Point(40, 50)
+			nombreUsuario = "PrimerUsuario"
+			fechaNacimiento = LocalDate.of(2002, 05, 15)
+			coordenadas = new Point(40, 50)
 		]
 
 		usuario2 = new Usuario => [
-			nombreDeUsuario = "SegundoUssuario"
-			fechaDeNacimiento = LocalDate.of(1900, 04, 02)
-			coordenadasDireccion = new Point(45, 60)
+			nombreUsuario = "SegundoUssuario"
+			fechaNacimiento = LocalDate.of(1900, 04, 02)
+			coordenadas = new Point(45, 60)
 		]
 		usuario3 = new Usuario => [
-			fechaDeNacimiento = LocalDate.of(1900, 04, 02)
-			coordenadasDireccion = new Point(34, 45)
+			fechaNacimiento = LocalDate.of(1900, 04, 02)
+			coordenadas = new Point(34, 45)
 			esAntisocial = false
 		]
 		reunionAbierta = new EventoAbierto => [
@@ -129,9 +129,9 @@ abstract class FixtureTest {
 
 // mis variables para los tests
 		unUsuario = new Usuario => [
-			nombreDeUsuario = "Usuario"
-			fechaDeNacimiento = LocalDate.of(2002, 05, 15)
-			coordenadasDireccion = new Point(40, 50)
+			nombreUsuario = "Usuario"
+			fechaNacimiento = LocalDate.of(2002, 05, 15)
+			coordenadas = new Point(40, 50)
 		]
 		primerEvento = new EventoCerrado => [
 			nombre = "Reunion Proyecto"

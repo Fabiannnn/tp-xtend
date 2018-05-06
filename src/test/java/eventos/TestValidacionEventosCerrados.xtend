@@ -14,7 +14,6 @@ class TestValidacionEventosCerrados extends FixtureTest {
 		usuario1.setUsuarioProfesional()
 		usuario1.organizarEventoCerrado(reunionGrande)
 		Assert.assertTrue(reunionGrande.organizador == usuario1)
-
 	}
 
 	@Test(expected=EventoException)
@@ -27,7 +26,6 @@ class TestValidacionEventosCerrados extends FixtureTest {
 	@Test(expected=EventoException)
 	def void unEventoAbiertoSinLocacionNoSeValidaSuOrganizacion() {
 		reunionAbierta.locacion = null
-
 		usuario1.setUsuarioProfesional()
 		usuario1.organizarEventoAbierto(reunionAbierta)
 	}
@@ -44,7 +42,6 @@ class TestValidacionEventosCerrados extends FixtureTest {
 		reunionGrande.fechaFinalizacion = null
 		usuario1.setUsuarioProfesional()
 		usuario1.organizarEventoCerrado(reunionGrande)
-
 	}
 
 	@Test(expected=EventoException)
@@ -59,7 +56,6 @@ class TestValidacionEventosCerrados extends FixtureTest {
 		reunionGrande.fechaFinalizacion = (LocalDateTime.now().plus(Period.ofDays(2)))
 		usuario1.setUsuarioProfesional()
 		usuario1.organizarEventoCerrado(reunionGrande)
-
 	}
 
 	@Test(expected=EventoException)

@@ -14,7 +14,7 @@ class TestLocacionBuilder {
 	@Before
 	def void init() {
 		salon_SM = new LocacionBuilder()
-			.nombreLugar("San Martin")
+			.nombre("San Martin")
 			.punto (new Point(35,45))
 			.superficie(16)
 			.build
@@ -28,7 +28,7 @@ class TestLocacionBuilder {
 	@Test(expected=EventoException)
 	def void locacionSinUbicacionDaExcepcion() {
 		salon_Incompleto = new LocacionBuilder()
-			.nombreLugar("San Martin")
+			.nombre("San Martin")
 			.superficie(16)
 			.build
 	}

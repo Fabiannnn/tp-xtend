@@ -7,7 +7,7 @@ import excepciones.EventoException
 @Accessors
 class Locacion implements Entidad {
 
-	String nombreLugar
+	String nombre
 	Point punto
 	double superficie
 	val personasPorMetroCuadrado = 0.8
@@ -26,7 +26,7 @@ class Locacion implements Entidad {
 	}
 
 	override validar() { // hacer las validaciones separadas para mandar excepciones independientes con descripcion
-		(nombreLugar !== null && punto !== null )
+		(nombre !== null && punto !== null )
 	}
 
 	override getId() {
@@ -39,11 +39,11 @@ class Locacion implements Entidad {
 	}
 
 	override elementoBuscado(String cadena) {
-		nombreLugar.contains(cadena)
+		nombre.contains(cadena)
 	}
 
 	override toString() {
-		nombreLugar
+		nombre
 	}
 
 }

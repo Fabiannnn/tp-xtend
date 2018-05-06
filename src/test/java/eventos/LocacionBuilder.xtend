@@ -6,15 +6,15 @@ import excepciones.EventoException
 
 @Accessors
 class LocacionBuilder {
-	String nombreLugar
+	String nombre
 	Point punto
 	double superficie
 
 	new() {
 	}
 
-	def nombreLugar(String _nombreLugar) {
-		this.nombreLugar = _nombreLugar
+	def nombre(String _nombre) {
+		this.nombre = _nombre
 		this
 	}
 
@@ -29,9 +29,9 @@ class LocacionBuilder {
 	}
 
 	def build() {
-		if (nombreLugar !== null && punto !== null ) {
+		if (nombre !== null && punto !== null ) {
 			new Locacion() => [
-				it.nombreLugar = nombreLugar
+				it.nombre = nombre
 				it.punto = punto
 				it.superficie = superficie
 			]

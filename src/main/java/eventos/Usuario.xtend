@@ -11,11 +11,11 @@ import excepciones.EventoException
 @Accessors
 class Usuario implements Entidad {
 
-	String nombreDeUsuario
-	String nombreYApellido
+	String nombreUsuario
+	String nombreApellido
 	String eMail
-	LocalDate fechaDeNacimiento
-	Point coordenadasDireccion
+	LocalDate fechaNacimiento
+	Point coordenadas
 	boolean esAntisocial
 	Set<Usuario> amigos = newHashSet
 	double radioDeCercania
@@ -57,7 +57,7 @@ class Usuario implements Entidad {
 
 // Métodos relacionados con Entradas  a Eventos Abiertos
 	def edad() {
-		Period.between(fechaDeNacimiento, LocalDate.now()).getYears
+		Period.between(fechaNacimiento, LocalDate.now()).getYears
 	}
 
 	def comprarEntradaAUnEventoAbierto(EventoAbierto unEventoAbierto) {
@@ -148,7 +148,7 @@ class Usuario implements Entidad {
 	}
 
 	def esDentroDelRadioDeCercania(Invitacion invitacion) {
-		invitacion.ubicacion().estaDentroDelRadioDeCercania(coordenadasDireccion, radioDeCercania)
+		invitacion.ubicacion().estaDentroDelRadioDeCercania(coordenadas, radioDeCercania)
 	}
 
 	def rechazoMasivo() {
@@ -198,8 +198,8 @@ class Usuario implements Entidad {
 
 //interface Entidad
 	override validar() {		//VER COMO REFACTORIZAR
-		if (nombreDeUsuario === null || nombreYApellido === null || eMail === null || fechaDeNacimiento === null ||
-			coordenadasDireccion === null) {
+		if (nombreUsuario === null || nombreApellido === null || eMail === null || fechaNacimiento === null ||
+			coordenadas === null) {
 			throw new EventoException("Faltan Datos de Usuario")
 		} else {
 			true
@@ -215,7 +215,7 @@ class Usuario implements Entidad {
 	}
 
 	override boolean elementoBuscado(String cadena) {
-		nombreYApellido.contains(cadena) || nombreDeUsuario.contentEquals(cadena)
+		nombreApellido.contains(cadena) || nombreUsuario.contentEquals(cadena)
 	}
 }
 

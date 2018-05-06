@@ -78,12 +78,11 @@ class TestsRepositorioServicios extends FixtureTest {
 
 	@Test(expected=EventoException)
 	def void pruebaQueNoSePuedeAgregarServicioArnimacionIncompletoAlRepositorioServicio() {
-
 		repoServicio.validarElemento(servicioAnimacion)
 	}
 
 	@Test
-	def void seAgregan2ServiciosValidos() {
+	def void seAgregan2ServiciosValidos() {        //consola[]
 		servicioCatering.setTarifaFija()
 		servicioAnimacion.setTarifaPorPersona()
 		repoServicio.create(servicioAnimacion)
@@ -92,7 +91,7 @@ class TestsRepositorioServicios extends FixtureTest {
 	}
 
 	@Test
-	def void seAgrega3SalonesValidosyBuscamosPor_artQueNoEsta() {
+	def void seAgrega3SalonesValidosyBuscamosPor_artQueNoEsta() {//consola[]
 		servicioCatering.setTarifaFija()
 		servicioAnimacion.setTarifaPorPersona()
 		repoServicio.create(servicioAnimacion)
@@ -110,7 +109,7 @@ class TestsRepositorioServicios extends FixtureTest {
 	}
 
 	@Test
-	def void seAgrega2ServiciosValidosyBuscamosPor_erinQueNoEstaAlInicio() {
+	def void seAgrega2ServiciosValidosyBuscamosPor_erinQueNoEstaAlInicio() {//en consola[]
 		servicioCatering.setTarifaFija()
 		servicioAnimacion.setTarifaPorPersona()
 		repoServicio.create(servicioAnimacion)

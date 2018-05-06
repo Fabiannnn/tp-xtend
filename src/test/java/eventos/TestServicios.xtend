@@ -24,8 +24,8 @@ class TestServicios extends FixtureTest{
 	def void initTest() {
 
 		usuario3 = new Usuario => [
-			fechaDeNacimiento = LocalDate.of(1900, 04, 02)
-			coordenadasDireccion = new Point(34, 45)
+			fechaNacimiento = LocalDate.of(1900, 04, 02)
+			coordenadas = new Point(34, 45)
 			esAntisocial = false
 		]
 		servicioCatering = new Servicio => [
