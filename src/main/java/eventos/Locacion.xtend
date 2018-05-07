@@ -33,17 +33,14 @@ class Locacion implements Entidad {
 		throw new EventoException("Faltan las coordenadas")	
 		}
 		return true
-		
 	}
 	
-
 	override getId() {
 		return id
 	}
 
 	override agregarId(int _nextId) {
 		id = _nextId
-
 	}
 
 	override elementoBuscado(String cadena) {
@@ -53,5 +50,4 @@ class Locacion implements Entidad {
 	override toString() {
 		nombre
 	}
-
 }

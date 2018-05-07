@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 
 @Accessors
 class Invitacion {
-	
+
 	EventoCerrado unEventoCerrado
 	Usuario unUsuario
 	int cantidadDeAcompanantes
@@ -22,10 +22,11 @@ class Invitacion {
 	def rechazar() {
 		this.aceptada = false
 	}
-	
-	def boolean fechaParaConfirmar(){
+
+	def boolean fechaParaConfirmar() {
 		unEventoCerrado.fechaAnteriorALaLimite()
 	}
+
 	def aceptar(int unaCantidadDeAcompanantes) {
 		this.aceptada = true
 		cantidadDeAcompanantesConfirmados = unaCantidadDeAcompanantes
@@ -41,21 +42,20 @@ class Invitacion {
 		}
 	}
 
-	def ubicacion(){
-			unEventoCerrado.locacion
+	def ubicacion() {
+		unEventoCerrado.locacion
 	}
 
-	// Metodos de notificacion de cancelacion y postergacion de eventos
-	
+// Metodos de notificacion de cancelacion y postergacion de eventos
 	def boolean notificacionDeCancelacion() {
 		unUsuario.agregarMensaje("El Evento " + this.unEventoCerrado + " fue cancelado")
 		aceptada = false
 	}
+
 	def NotificacionDePostergacion(LocalDateTime nuevaFechaInicio, LocalDateTime nuevaFechaFinalizacion,
 		LocalDate NuevaFechaLimiteConfirmacion) {
 		unUsuario.agregarMensaje(
 			"El Evento " + unEventoCerrado + " fue Postergado.  Las nueva fechas son, Inicio " + nuevaFechaInicio +
 				" Finalizacion: " + nuevaFechaFinalizacion + ", Confirmacion: " + NuevaFechaLimiteConfirmacion)
 	}
-
 }

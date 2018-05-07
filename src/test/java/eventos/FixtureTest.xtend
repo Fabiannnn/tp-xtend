@@ -63,19 +63,25 @@ abstract class FixtureTest {
 		repoLocacion = new RepositorioLocacion()
 		repoServicio = new RepositorioServicio()
 		repoUsuario = new RepositorioUsuario()
-		
+
 		usuario1 = new Usuario => [
 			nombreUsuario = "PrimerUsuario"
+			email = "mail1"
+			nombreApellido = "Pepe Argento"
 			fechaNacimiento = LocalDate.of(2002, 05, 15)
 			coordenadas = new Point(40, 50)
 		]
 
 		usuario2 = new Usuario => [
-			nombreUsuario = "SegundoUssuario"
+			nombreUsuario = "SegundoUsuario"
+			email = "mail2"
+			nombreApellido = "Mario Perez"
 			fechaNacimiento = LocalDate.of(1900, 04, 02)
 			coordenadas = new Point(45, 60)
 		]
 		usuario3 = new Usuario => [
+			email = "mail3"
+			nombreApellido = "María Gomez"
 			fechaNacimiento = LocalDate.of(1900, 04, 02)
 			coordenadas = new Point(34, 45)
 			esAntisocial = false

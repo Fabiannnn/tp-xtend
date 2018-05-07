@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 
 @Accessors
 class Entrada {
-	
+
 	EventoAbierto unEventoAbierto
 	Usuario unUsuario
 	boolean vigente = true
@@ -18,15 +18,13 @@ class Entrada {
 	}
 
 // Metodos para devolucion de entradas,   por cancelación o postergacin
-
-
 	def void cancelacionDeEvento() {
 		unUsuario.agregarMensaje("El Evento " + this.unEventoAbierto +
 			" fue cancelado. El importe de la entrada le fue devuelto")
 		vigente = false
 		devolucionEntradaImporteTotal()
 	}
-	
+
 	def void devolucionEntradaImporteTotal() {
 		unUsuario.saldoCuenta = unUsuario.saldoCuenta + unEventoAbierto.precioEntrada
 	}
@@ -48,9 +46,11 @@ class Entrada {
 			unUsuario.saldoCuenta = unUsuario.saldoCuenta + getImporteDevolucion()
 		}
 	}
-	def double getImporteDevolucion() { 
+
+	def double getImporteDevolucion() {
 		unEventoAbierto.precioEntrada * porcentajeDevolucion() / 100
 	}
+
 	def porcentajeDevolucion() {
 		Math.min(porcentajeDevolucionSinLimite(), 80.0)
 	}
@@ -60,6 +60,7 @@ class Entrada {
 			((diasHastaEvento() - 1.0) * 10.0 + 20.0)
 		}
 	}
+
 	def double diasHastaEvento() {
 		(Period.between(LocalDate.now(), LocalDate.from(unEventoAbierto.fechaDeInicio))).getDays() as double
 	}

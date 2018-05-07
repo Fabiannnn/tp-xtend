@@ -27,7 +27,6 @@ class TestEventoCerrado extends FixtureTest{
 	def hayCapacidadDisponibleParaOtroInvitadoConTresAcompanantesEsFalso() {
 		invitacion = new Invitacion(reunionChica, usuario1, 5)
 		reunionChica.registrarInvitacionEnEvento(invitacion)
-
 		Assert.assertTrue(reunionChica.hayCapacidadDisponible(4))
 	}
 
@@ -35,7 +34,6 @@ class TestEventoCerrado extends FixtureTest{
 	def hayCapacidadDisponibleParaOtroInvitadoConCuatroAcompanantesEsFalso() {
 		invitacion = new Invitacion(reunionChica, usuario1, 5)
 		reunionChica.registrarInvitacionEnEvento(invitacion)
-
 		Assert.assertFalse(reunionChica.hayCapacidadDisponible(5))
 	}
 
@@ -93,7 +91,6 @@ class TestEventoCerrado extends FixtureTest{
 
 	@Test(expected=EventoException)
 	def ExcepcionSeisInvitadosSeQuierenInvitarDespuesFechaLimiteSeVerificaLaExcepcion() {
-		
 		invitacion = new Invitacion(otroEvento, usuario1, 5)
 		otroEvento.registrarInvitacionEnEvento(invitacion)
 		otroEvento.crearInvitacion(usuario2, 3)
@@ -200,7 +197,7 @@ class TestEventoCerrado extends FixtureTest{
 		Assert.assertFalse(invitacion2.aceptada)
 	}
 
-	@Test //
+	@Test 
 	def noRechazoMasivoUsuarioNoAntisocialyFueraRadioCercaniay1AMigos() {
 		invitacion2 = new Invitacion(reunionChica, usuario2, 3)
 		reunionChica.registrarInvitacionEnEvento(invitacion2)

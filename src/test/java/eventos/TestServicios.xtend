@@ -1,13 +1,11 @@
 package eventos
 
-import org.junit.Assert
-import org.junit.Test
-import java.time.LocalDateTime
 import java.time.LocalDate
-import java.time.Period
-import org.uqbar.geodds.Point
-import org.junit.Before
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.junit.Assert
+import org.junit.Before
+import org.junit.Test
+import org.uqbar.geodds.Point
 
 @Accessors
 class TestServicios extends FixtureTest{
@@ -92,11 +90,13 @@ class TestServicios extends FixtureTest{
 		reunionChica.registrarInvitacionEnEvento(invitacion)
 		Assert.assertEquals(2000, servicioAnimacion.costoTotal(reunionChica), 0.0)
 	}
+	
 	@Test
 	def costoTotalServicioAnimacionTarifaPorPersonaAbiertoSinAsistentes() { // capacidad 9 por 20%base 2 *$400
 		servicioAnimacion.setTarifaPorPersona()
 		Assert.assertEquals(800, servicioAnimacion.costoTotal(reunionAbierta), 0.0)
 	}
+	
 	@Test
 	def costoTotalServicioAnimacionTarifaPorPersonaAbiertoConTresAsistentes1200() { // costoTraslado 0  costo base por capacidad 2 *400 pero 3 asist s*400 1200
 		servicioAnimacion.setTarifaPorPersona()

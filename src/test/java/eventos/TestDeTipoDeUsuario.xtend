@@ -1,24 +1,21 @@
 package eventos
 
-import org.junit.Before
-import java.time.LocalDate
-import java.time.Period
-import java.time.LocalDateTime
-import org.uqbar.geodds.Point
-import org.junit.Test
-import org.junit.Assert
 import excepciones.EventoException
-import org.eclipse.xtend.lib.annotations.Accessors
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.Month
+import java.time.Period
+import org.eclipse.xtend.lib.annotations.Accessors
+import org.junit.Assert
+import org.junit.Test
 
 @Accessors
-class TestDeTipoDeUsuario extends FixtureTest{
+class TestDeTipoDeUsuario extends FixtureTest {
 
 	@Test
 	def unUsuarioFreeQueNoTieneEventosOrganizadosyQuiereOrganizar1CerradoNoSuperaElLimiteDeEventosSimultaneos() {
 		usuario2.setUsuarioFree()
 		Assert.assertTrue(usuarioFree.noSuperaElLimiteDeEventosSimultaneos(usuario2))
-
 	}
 
 	@Test
@@ -26,7 +23,6 @@ class TestDeTipoDeUsuario extends FixtureTest{
 		usuario2.setUsuarioFree()
 		usuario2.eventosOrganizados.add(otroEvento)
 		Assert.assertEquals(1, usuario2.eventosOrganizados.size(), 0)
-
 	}
 
 	@Test
@@ -36,7 +32,6 @@ class TestDeTipoDeUsuario extends FixtureTest{
 		reunionChica.fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(3))
 		usuario2.eventosOrganizados.add(reunionChica)
 		Assert.assertFalse(usuarioFree.noSuperaElLimiteDeEventosSimultaneos(usuario2))
-
 	}
 
 	@Test
@@ -48,13 +43,11 @@ class TestDeTipoDeUsuario extends FixtureTest{
 		Assert.assertFalse(usuario2.tipoDeUsuario.puedoOrganizarElEventoCerrado(usuario2, eventoPrueba))
 	}
 
-
 	// Free: No pueden organizar eventos abiertos
 	@Test
 	def void unUsuarioFreeNoPuedeOrganizarUnEventoAbierto() {
 		unUsuario.setUsuarioFree()
-		Assert.assertFalse(
-			usuarioFree.puedoOrganizarElEventoAbierto(usuario1, reunionAbierta))
+		Assert.assertFalse(usuarioFree.puedoOrganizarElEventoAbierto(usuario1, reunionAbierta))
 	}
 
 	// Free: Pueden invitar hasta 50 personas por evento
@@ -81,10 +74,10 @@ class TestDeTipoDeUsuario extends FixtureTest{
 	def void unUsuarioFreeNoPuedeOrganizarMasDeUnEventoCerradoEnSimultaneo() {
 		unUsuario.setUsuarioFree()
 		unUsuario.organizarEventoCerrado(primerEvento)
-		Assert.assertFalse(	unUsuario.tipoDeUsuario.puedoOrganizarElEventoCerrado(unUsuario,segundoEvento))
+		Assert.assertFalse(unUsuario.tipoDeUsuario.puedoOrganizarElEventoCerrado(unUsuario, segundoEvento))
 	}
 
-		@Test(expected=EventoException)
+	@Test(expected=EventoException)
 	def void unUsuarioFreeNoPuedeOrganizarCuatroEventosCerradosPorMes() {
 		unUsuario.setUsuarioFree()
 		primerEvento.fechaDeInicio = LocalDateTime.of(2018, Month.MARCH, 18, 14, 13);
@@ -99,7 +92,6 @@ class TestDeTipoDeUsuario extends FixtureTest{
 		cuartoEvento.fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(1))
 		cuartoEvento.fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(6))
 		unUsuario.organizarEventoCerrado(cuartoEvento)
-
 	}
 
 	// Free: No puede cancelar eventos
@@ -126,7 +118,8 @@ class TestDeTipoDeUsuario extends FixtureTest{
 		unUsuario.organizarEventoCerrado(segundoEvento)
 		unUsuario.organizarEventoCerrado(tercerEvento)
 		unUsuario.organizarEventoCerrado(cuartoEvento)
-		Assert.assertTrue(unUsuario.organizarEventoCerrado(quintoEvento)
+		Assert.assertTrue(
+			unUsuario.organizarEventoCerrado(quintoEvento)
 		)
 	}
 
@@ -159,8 +152,6 @@ class TestDeTipoDeUsuario extends FixtureTest{
 				]
 			)
 		}
-		Assert.assertFalse(
-			unUsuario.tipoDeUsuario.puedoOrganizarElEventoCerrado(unUsuario, eventoPrueba))
+		Assert.assertFalse(unUsuario.tipoDeUsuario.puedoOrganizarElEventoCerrado(unUsuario, eventoPrueba))
 	}
 }
-

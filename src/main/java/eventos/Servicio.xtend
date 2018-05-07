@@ -19,7 +19,6 @@ class Servicio implements Entidad {
 
 	def setTarifaFija() {
 		tipoDeTarifa = new TarifaFija()
-
 	}
 
 	def double costoTotal(Evento unEvento) {
@@ -47,7 +46,7 @@ class Servicio implements Entidad {
 			tipoDeTarifa.validarTipoTarifa(this)
 		} else {
 			throw new EventoException("Faltan Datos de tarifas")
-		} // ver como refactorizar
+		}
 	}
 
 	override int getId() {
@@ -61,7 +60,6 @@ class Servicio implements Entidad {
 	override boolean elementoBuscado(String cadena) {
 		descripcion.startsWith(cadena)
 	}
-
 }
 
 interface TipoDeTarifa {
@@ -112,5 +110,4 @@ class TarifaPorPersona implements TipoDeTarifa {
 	def double costoBasePorCapacidad(Servicio unServicio, Evento unEvento) {
 		Math.round(unEvento.capacidadMaxima() * unServicio.porcentajeCostoMinimo / 100) * unServicio.costoPorPersona
 	}
-
 }

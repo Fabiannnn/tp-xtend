@@ -22,9 +22,13 @@ abstract class Evento {
 	boolean postergado = false
 	
 	abstract def boolean esUnFracaso()
+
 	abstract def int capacidadMaxima()
+
 	abstract def void cancelarElEvento()
+
 	abstract def boolean esExitoso()
+
 	abstract def int cantidadAsistentes()//agregado para eventos abiertos entradas vendidas vigentes y cerrados posibles asistentes
 	
 	def double duracion() {
@@ -54,9 +58,11 @@ abstract class Evento {
 	def calcularDiferenciaTiempo(LocalDateTime nuevaFechaHoraInicio) {
 		Duration.between(fechaDeInicio, nuevaFechaHoraInicio).toHours()
 	}
+
 	def boolean validarDatosEvento(){
 		( validarDatosCompletos() && validarFechas())
 	}
+
 	def boolean validarFechas(){
 		if(!((fechaLimiteConfirmacion< LocalDate.from(fechaDeInicio)) && (fechaDeInicio<fechaFinalizacion))){
 					throw new EventoException("Fechas del evento Inconsistentes")
@@ -64,12 +70,14 @@ abstract class Evento {
 				true
 		}
 	}
+
 	def boolean validarDatosCompletos(){
 		if ((nombre===null || fechaDeInicio===null || fechaFinalizacion===null || fechaLimiteConfirmacion === null || locacion === null
 		)){
 			throw new EventoException("Faltan Datos en el Evento")
 		}else {true}
 	}
+
 	override toString() {
 		nombre
 	}

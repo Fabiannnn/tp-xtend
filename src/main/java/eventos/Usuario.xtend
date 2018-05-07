@@ -13,7 +13,7 @@ class Usuario implements Entidad {
 
 	String nombreUsuario
 	String nombreApellido
-	String eMail
+	String email
 	LocalDate fechaNacimiento
 	Point coordenadas
 	boolean esAntisocial
@@ -144,7 +144,6 @@ class Usuario implements Entidad {
 
 	def int cantidadDeAmigosInvitados(Invitacion invitacion) { // MEJORAR ESTO
 		amigos.filter[unUsuario|invitacion.unEventoCerrado.invitados.contains(unUsuario)].size()
-
 	}
 
 	def esDentroDelRadioDeCercania(Invitacion invitacion) {
@@ -198,7 +197,7 @@ class Usuario implements Entidad {
 
 //interface Entidad
 	override validar() { // VER COMO REFACTORIZAR
-		if (nombreUsuario === null || nombreApellido === null || eMail === null || fechaNacimiento === null ||
+		if (nombreUsuario === null || nombreApellido === null || email === null || fechaNacimiento === null ||
 			coordenadas === null) {
 			throw new EventoException("Faltan Datos de Usuario")
 		} else {
@@ -275,7 +274,6 @@ class UsuarioFree implements TipoDeUsuario {
 		unUsuario.eventosOrganizados.filter[evento|evento.fechaDeInicio.month == unaFecha.month].size() <
 			cantidadMaximaEventosMensuales
 	}
-
 }
 
 @Accessors

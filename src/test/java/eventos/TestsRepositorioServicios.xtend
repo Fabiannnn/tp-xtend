@@ -5,18 +5,13 @@ import org.junit.Assert
 import org.junit.Test
 import excepciones.EventoException
 import org.junit.Before
-import java.time.LocalDate
 import org.uqbar.geodds.Point
 
 @Accessors
 class TestsRepositorioServicios extends FixtureTest {
-	Usuario usuario3
-	Invitacion invitacion
+
 	Servicio servicioCatering
 	Servicio servicioAnimacion
-	Entrada entradaPrueba
-	Entrada entradaPrueba2
-	Entrada entradaPrueba3
 
 	@Before
 	def void initTest() {
@@ -30,6 +25,7 @@ class TestsRepositorioServicios extends FixtureTest {
 			costoMinimo = 100
 			porcentajeCostoMinimo = 20
 		]
+		
 		servicioAnimacion = new Servicio => [
 			ubicacion = new Point(35, 45) // distancia a reunion chica 0
 			descripcion = "Animacion"
@@ -41,7 +37,6 @@ class TestsRepositorioServicios extends FixtureTest {
 			costoPorPersona = 400
 			porcentajeCostoMinimo = 20
 		]
-
 	}
 
 	@Test
