@@ -85,15 +85,11 @@ class RepositorioLocacion extends Repositorio<Locacion> {
 	var Point unPunto
 
 	def coordenadasIguales(Point unPunto) {
-			println(elementos.filter(elemento | elemento.punto == unPunto).size())
-			return elementos.filter(elemento | elemento.punto == unPunto).size()
-		
+		elementos.filter(elemento|(elemento.punto.x == unPunto.x) && (elemento.punto.y == unPunto.y))
 	}
 
 	def actualizarLocacion(String texto) {
 		var JsonArray datasets = Json.parse(texto).asArray()
-		println(datasets)
-		println(datasets.size())
 
 		for (i = 0; i < datasets.size(); i++) {
 			var JsonObject dataset = datasets.get(i).asObject()
@@ -101,25 +97,16 @@ class RepositorioLocacion extends Repositorio<Locacion> {
 			longitud = dataset.get("y").asDouble()
 			unNombre = dataset.get("nombre").asString()
 			unPunto = new Point(latitud, longitud)
-			
-//			elementos.add(new Locacion() => [
-//				nombre = unNombre
-//				punto = unPunto
-//
-//			])
-//			println(dataset)
-//			println(unNombre)
-//			println(latitud)
-//			println(longitud)
-//			println(unPunto)
 
-			if (coordenadasIguales(unPunto)==0) {
-				println("creo la locacion")
+			if ((coordenadasIguales(unPunto).size() == 0)) {
 				create(new Locacion() => [
 					nombre = unNombre
 					punto = unPunto
 				])
-			} else {	(elementos.findFirst(elemento | elemento.punto == unPunto)).nombre = unNombre}
+			} else {
+				elementos.
+					findFirst(elemento|(elemento.punto.x == unPunto.x) && (elemento.punto.y == unPunto.y)).nombre = unNombre
+			}
 		}
 	}
 
@@ -127,4 +114,55 @@ class RepositorioLocacion extends Repositorio<Locacion> {
 
 @Accessors
 class RepositorioServicio extends Repositorio<Servicio> {
+
+	int iter
+	int iter2
+	var String unaDescripcion
+	var String unTipoTarifa
+	var double unValor
+	var double unPorcentajeMinimo
+	var double unMinimo
+	var Point unPunto
+	var double unaTarifaTraslado
+	var double x
+	var double y
+
+//	def coordenadasIguales(Point unPunto) {
+//		elementos.filter(elemento|(elemento.punto.x == unPunto.x) && (elemento.punto.y == unPunto.y))
+//	}
+	def actualizarServicios(String texto) {
+		var JsonArray setServicios = Json.parse(texto).asArray()
+
+		for (iter = 0; iter < setServicios.size(); iter++) {
+
+			var JsonObject dataset = setServicios.get(iter).asObject()
+
+			unaDescripcion = dataset.get("descripcion").asString()
+			
+	println(unaDescripcion)
+		var JsonArray tarifasServicios = dataset.get("tarifaServicio").asArray()
+		var JsonObject tarifaTraslado = dataset.get("tarifaTraslado").asObject()
+		var JsonObject tarifaServicio = tarifasServicios.asObject()
+			unTipoTarifa = tarifaServicio.get("tipo").asString()
+println(unTipoTarifa)
+			unValor = tarifaServicio.get("valor").asDouble()
+			if (unTipoTarifa == "TPP") {
+				unPorcentajeMinimo = tarifaServicio.get("porcentajeParaMinimo").asDouble()
+			}
+			if (unTipoTarifa == "TPH") {
+				unMinimo = tarifaServicio.get("minimo").asDouble()
+
+			}
+		//	var JsonObject tarifaTrasladoObj = tarifaTraslado.asObject()
+			unaTarifaTraslado = tarifaTraslado.get("tarifaTraslado").asDouble()
+			x = dataset.get("x").asDouble()
+			y = dataset.get("y").asDouble()
+			unPunto = new Point(x, y)
+			
+			println(unPunto)
+//			println(tarifaServicio)
+			println(unaTarifaTraslado)
+
+		}
+	}
 }
