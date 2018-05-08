@@ -60,6 +60,10 @@ abstract class FixtureTest {
 			superficie = 16
 		]
 
+
+
+
+
 		repoLocacion = new RepositorioLocacion()
 		repoServicio = new RepositorioServicio()
 		repoUsuario = new RepositorioUsuario()

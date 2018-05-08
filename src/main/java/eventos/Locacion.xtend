@@ -13,6 +13,13 @@ class Locacion implements Entidad {
 	val personasPorMetroCuadrado = 0.8
 	int id
 
+
+//new(String unNombre, Point unPunto, double unaSuperficie) {
+//		this.nombre = unNombre
+//		this.punto = unPunto
+//		this.superficie = unaSuperficie
+//	}
+
 	def double distancia(Point otroPunto) {
 		punto.distance(otroPunto)
 	}

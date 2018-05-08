@@ -7,7 +7,7 @@ import excepciones.EventoException
 
 @Accessors
 class TestsRepositorioLocacion extends FixtureTest {
-
+	String jsonText
 	@Test
 	def void pruebaDeQueSePuedeAgregarSMSeAgregaAlRepositorioValidando() {
 		repoLocacion.create(salon_SM)
@@ -85,5 +85,12 @@ class TestsRepositorioLocacion extends FixtureTest {
 		repoLocacion.create(salon_2)
 		salon_3.id = 4
 		repoLocacion.update(salon_3)
+	}
+		@Test
+	def void seAgrega2SalonesValidosySeActualizaConJson() {
+		repoLocacion.create(salon_SM)
+		repoLocacion.create(salon_2)
+		jsonText = '''[{"x":-34.603759,"y":-58.381586, "nombre":"Salón El Abierto"},{ "x":-34.572224,"y":-58.535651, "nombre":"Estadio Obras" }]'''
+		repoLocacion.actualizarLocacion(jsonText)
 	}
 }
