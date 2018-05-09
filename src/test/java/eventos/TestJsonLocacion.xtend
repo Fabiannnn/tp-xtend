@@ -4,6 +4,7 @@ import org.junit.Test
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.junit.Before
 import org.junit.Assert
+import repositorio.RepositorioLocacion
 
 @Accessors
 class TestJsonLocacion {

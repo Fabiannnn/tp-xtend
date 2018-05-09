@@ -1,15 +1,13 @@
 package eventos
 
-import org.eclipse.xtend.lib.annotations.Accessors
-
 interface Entidad {
 
-	def boolean validar()
+	def boolean validar()	//TODO esValido
 
 	def int getId()
 
 	def void agregarId(int _nextId)
 
-	def boolean elementoBuscado(String cadena)
+	def boolean elementoBuscado(String cadena)//TODO cambiar nombre
 
 }

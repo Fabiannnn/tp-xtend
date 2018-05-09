@@ -92,5 +92,16 @@ class TestsRepositorioLocacion extends FixtureTest {
 		repoLocacion.create(salon_2)
 		jsonText = '''[{"x":-34.603759,"y":-58.381586, "nombre":"Salón El Abierto"},{ "x":-34.572224,"y":-58.535651, "nombre":"Estadio Obras" }]'''
 		repoLocacion.actualizarLocacion(jsonText)
+		Assert.assertEquals(4, repoLocacion.elementos.size(),0)
+		
+	}
+		@Test
+	def void seAgrega2SalonesValidosySeActualizaConJsonYSeotroJsonModificado() {
+		jsonText = '''[{"x":-34.603759,"y":-58.381586, "nombre":"Salón El Abierto"},{ "x":-34.572224,"y":-58.535651, "nombre":"Estadio Obras" }]'''
+		repoLocacion.actualizarLocacion(jsonText)
+		jsonText = '''[{"x":-34.603759,"y":-58.388986, "nombre":"Salón El Abierto Otro Lugar"},{ "x":-34.572224,"y":-58.535651, "nombre":"Estadio Obras Modificado" }]'''
+		repoLocacion.actualizarLocacion(jsonText)
+	Assert.assertEquals("Estadio Obras Modificado", repoLocacion.searchById(2).nombre)
+	Assert.assertEquals(3, repoLocacion.elementos.size(),0)
 	}
 }

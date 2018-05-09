@@ -8,7 +8,7 @@ import org.junit.Test
 import org.uqbar.geodds.Point
 
 @Accessors
-class TestServicios extends FixtureTest{
+class TestServicios extends FixtureTest {
 
 	Usuario usuario3
 	Invitacion invitacion
@@ -21,11 +21,12 @@ class TestServicios extends FixtureTest{
 	@Before
 	def void initTest() {
 
-		usuario3 = new Usuario => [
+		new Usuario => [
 			fechaNacimiento = LocalDate.of(1900, 04, 02)
 			coordenadas = new Point(34, 45)
 			esAntisocial = false
 		]
+		
 		servicioCatering = new Servicio => [
 			ubicacion = new Point(34.910067, 45) // distancia a reunion chica aproximada 10 km
 			costoFijo = 100
@@ -90,13 +91,13 @@ class TestServicios extends FixtureTest{
 		reunionChica.registrarInvitacionEnEvento(invitacion)
 		Assert.assertEquals(2000, servicioAnimacion.costoTotal(reunionChica), 0.0)
 	}
-	
+
 	@Test
 	def costoTotalServicioAnimacionTarifaPorPersonaAbiertoSinAsistentes() { // capacidad 9 por 20%base 2 *$400
 		servicioAnimacion.setTarifaPorPersona()
 		Assert.assertEquals(800, servicioAnimacion.costoTotal(reunionAbierta), 0.0)
 	}
-	
+
 	@Test
 	def costoTotalServicioAnimacionTarifaPorPersonaAbiertoConTresAsistentes1200() { // costoTraslado 0  costo base por capacidad 2 *400 pero 3 asist s*400 1200
 		servicioAnimacion.setTarifaPorPersona()

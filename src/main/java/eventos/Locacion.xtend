@@ -13,13 +13,6 @@ class Locacion implements Entidad {
 	val personasPorMetroCuadrado = 0.8
 	int id
 
-
-//new(String unNombre, Point unPunto, double unaSuperficie) {
-//		this.nombre = unNombre
-//		this.punto = unPunto
-//		this.superficie = unaSuperficie
-//	}
-
 	def double distancia(Point otroPunto) {
 		punto.distance(otroPunto)
 	}
@@ -35,6 +28,7 @@ class Locacion implements Entidad {
 	override validar() { 
 		if(nombre === null){
 		throw new EventoException("Falta el nombre de la locacion")	
+	//TODO	nombre.nullOrEmpty
 		}
 		if(punto === null){
 		throw new EventoException("Faltan las coordenadas")	

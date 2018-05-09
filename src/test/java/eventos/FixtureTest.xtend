@@ -1,11 +1,14 @@
 package eventos
 
-import org.junit.Before
-import org.uqbar.geodds.Point
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.Period
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.junit.Before
+import org.uqbar.geodds.Point
+import repositorio.RepositorioLocacion
+import repositorio.RepositorioServicio
+import repositorio.RepositorioUsuario
 
 @Accessors
 abstract class FixtureTest {
