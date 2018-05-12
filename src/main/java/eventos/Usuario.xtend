@@ -196,7 +196,7 @@ class Usuario implements Entidad {
 	}
 
 //interface Entidad
-	override validar() { //TODO VER COMO REFACTORIZAR
+	override esValido() { //TODO VER COMO REFACTORIZAR
 		if (nombreUsuario === null || nombreApellido === null || email === null || fechaNacimiento === null ||
 			coordenadas === null) {
 			throw new EventoException("Faltan Datos de Usuario")

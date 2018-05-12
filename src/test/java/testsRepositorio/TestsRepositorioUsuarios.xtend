@@ -1,4 +1,6 @@
-package eventos
+package testsRepositorio
+
+import eventos.FixtureTest
 
 import excepciones.EventoException
 import org.eclipse.xtend.lib.annotations.Accessors
@@ -6,7 +8,7 @@ import org.junit.Assert
 import org.junit.Test
 
 @Accessors
-class TestRepositorioUsuario extends FixtureTest {
+class TestsRepositorioUsuarios extends FixtureTest {
 	@Test
 	def void sePuedeAgregarUsuarioValidoyPasaValidacion() {
 		repoUsuario.create(usuario1)

@@ -25,7 +25,7 @@ class Locacion implements Entidad {
 		Math.floor(superficie * personasPorMetroCuadrado) as int
 	}
 
-	override validar() { 
+	override esValido() { 
 		if(nombre === null){
 		throw new EventoException("Falta el nombre de la locacion")	
 	//TODO	nombre.nullOrEmpty

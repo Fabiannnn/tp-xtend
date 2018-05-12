@@ -1,12 +1,13 @@
-package eventos
+package testsRepositorio
 
+import eventos.FixtureTest
+import excepciones.EventoException
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.junit.Assert
 import org.junit.Test
-import excepciones.EventoException
 
 @Accessors
-class TestsRepositorioLocacion extends FixtureTest {
+class TestsRepositorioLocaciones extends FixtureTest {
 	String jsonText
 	@Test
 	def void pruebaDeQueSePuedeAgregarSMSeAgregaAlRepositorioValidando() {
@@ -28,12 +29,12 @@ class TestsRepositorioLocacion extends FixtureTest {
 
 	@Test(expected=EventoException)
 	def void pruebaQueNoSeValidaDesdeLocacionSalonIncompleto() {
-		salon_Incompleto.validar()
+		salon_Incompleto.esValido()
 	}
 
 	@Test(expected=EventoException)
 	def void pruebaQueNoSePuedeAgregarSalonIncompletoAlRepositorioLocacion() {
-		repoLocacion.validarElemento(salon_Incompleto)
+		repoLocacion.create(salon_Incompleto)
 	}
 
 	@Test
@@ -76,6 +77,16 @@ class TestsRepositorioLocacion extends FixtureTest {
 		repoLocacion.create(salon_2)
 		salon_3.id = 2
 		repoLocacion.update(salon_3)
+		Assert.assertEquals(100, repoLocacion.searchById(2).superficie, 0)
+	}
+	@Test
+	def void seAgrega2SalonesValidosySeBorraElPrimeroyReemplazamosElId2PorSalon3() {
+		repoLocacion.create(salon_SM)
+		repoLocacion.create(salon_2)
+		repoLocacion.delete(salon_SM)
+		salon_3.id = 2
+		repoLocacion.update(salon_3)
+		Assert.assertEquals(0, repoLocacion.elementos.indexOf(repoLocacion.searchById(2)), 0)
 		Assert.assertEquals(100, repoLocacion.searchById(2).superficie, 0)
 	}
 

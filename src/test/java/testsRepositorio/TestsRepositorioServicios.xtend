@@ -1,4 +1,7 @@
-package eventos
+package testsRepositorio
+
+import eventos.FixtureTest
+import eventos.Servicio
 
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.junit.Assert
@@ -25,7 +28,7 @@ class TestsRepositorioServicios extends FixtureTest {
 			costoMinimo = 100
 			porcentajeCostoMinimo = 20
 		]
-		
+
 		servicioAnimacion = new Servicio => [
 			ubicacion = new Point(35, 45) // distancia a reunion chica 0
 			descripcion = "Animacion"
@@ -63,11 +66,6 @@ class TestsRepositorioServicios extends FixtureTest {
 	def void unaTarifaConCostoValidaTarifa() {
 		servicioAnimacion.setTarifaPorPersona()
 		Assert.assertTrue(servicioAnimacion.validarTarifa())
-	}
-
-	@Test(expected=EventoException)
-	def void noSePuedeValidarServicioAnimacionIncompleto() {
-		repoServicio.validarElemento(servicioAnimacion)
 	}
 
 	@Test
