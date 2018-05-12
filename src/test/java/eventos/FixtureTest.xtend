@@ -6,9 +6,9 @@ import java.time.Period
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.junit.Before
 import org.uqbar.geodds.Point
-import repositorio.RepositorioLocacion
-import repositorio.RepositorioServicio
-import repositorio.RepositorioUsuario
+import repositorio.RepositorioLocaciones
+import repositorio.RepositorioServicios
+import repositorio.RepositorioUsuarios
 
 @Accessors
 abstract class FixtureTest {
@@ -33,9 +33,9 @@ abstract class FixtureTest {
 	EventoAbierto reunionAbierta
 	EventoAbierto cumple
 	Entrada entradaPrueba
-	RepositorioLocacion repoLocacion
-	RepositorioServicio repoServicio
-	RepositorioUsuario repoUsuario
+	RepositorioLocaciones repoLocacion
+	RepositorioServicios repoServicio
+	RepositorioUsuarios repoUsuario
 	int cantMaxDeEventos = 20
 	int contador
 
@@ -63,13 +63,9 @@ abstract class FixtureTest {
 			superficie = 16
 		]
 
-
-
-
-
-		repoLocacion = new RepositorioLocacion()
-		repoServicio = new RepositorioServicio()
-		repoUsuario = new RepositorioUsuario()
+		repoLocacion = new RepositorioLocaciones()
+		repoServicio = new RepositorioServicios()
+		repoUsuario = new RepositorioUsuarios()
 
 		usuario1 = new Usuario => [
 			nombreUsuario = "PrimerUsuario"

@@ -4,16 +4,16 @@ import org.junit.Test
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.junit.Before
 import org.junit.Assert
-import repositorio.RepositorioLocacion
+import repositorio.RepositorioLocaciones
 
 @Accessors
 class TestJsonLocacion {
-	RepositorioLocacion repoLocacion
+	RepositorioLocaciones repoLocacion
 	String jsonText
 
 	@Before
 	def void init() {
-		repoLocacion = new RepositorioLocacion()
+		repoLocacion = new RepositorioLocaciones()
 	}
 
 	@Test
