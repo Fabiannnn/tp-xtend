@@ -1,25 +1,22 @@
-package eventos
+package testsJsons
 
-import org.junit.Test
-import org.eclipse.xtend.lib.annotations.Accessors
-import org.junit.Before
-import org.junit.Assert
-import eventos.FixtureTest
-import repositorio.RepositorioLocaciones
 import jsons.JsonLocacion
+import org.eclipse.xtend.lib.annotations.Accessors
+import org.junit.Assert
+import org.junit.Test
+import repositorio.RepositorioLocaciones
 
 @Accessors
-class TestJsonLocacion{
+class TestJsonLocacion {
 	String jsonText
 	RepositorioLocaciones repoLocacionJson
 	RepositorioLocaciones repoDeLocaciones
 	JsonLocacion jsonLocacion
-	
+
 	@Test
 	def void seAgrega2SalonesValidosySeActualizaConJsonYSeVerificaQueNoVuelvaACargarIgualJson() {
 		jsonText = '''[{"x":-34.603759,"y":-58.381586, "nombre":"Salón El Abierto"},{ "x":-34.572224,"y":-58.535651, "nombre":"Estadio Obras" }]'''
 		var jsonLocacion = new JsonLocacion()
-		var RepositorioLocaciones repoLocacionJson = new RepositorioLocaciones()
 		var RepositorioLocaciones repoDeLocaciones = new RepositorioLocaciones()
 		jsonLocacion.deserializarJson(jsonText, repoDeLocaciones)
 		jsonLocacion.deserializarJson(jsonText, repoDeLocaciones)
@@ -29,7 +26,6 @@ class TestJsonLocacion{
 	@Test
 	def void seAgrega2SalonesValidosySeActualizaConJsonYSeotroJsonModificado() {
 		var jsonLocacion = new JsonLocacion()
-		var RepositorioLocaciones repoLocacionJson = new RepositorioLocaciones()
 		var RepositorioLocaciones repoDeLocaciones = new RepositorioLocaciones()
 		jsonText = '''[{"x":-34.603759,"y":-58.381586, "nombre":"Salón El Abierto"},{ "x":-34.572224,"y":-58.535651, "nombre":"Estadio Obras" }]'''
 		jsonLocacion.deserializarJson(jsonText, repoDeLocaciones)

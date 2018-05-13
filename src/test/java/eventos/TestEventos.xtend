@@ -1,14 +1,12 @@
 package eventos
 
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
-import org.uqbar.geodds.Point
-import org.eclipse.xtend.lib.annotations.Accessors
 import excepciones.EventoException
 import java.time.LocalDateTime
 import java.time.Period
-import java.time.LocalDate
+import org.eclipse.xtend.lib.annotations.Accessors
+import org.junit.Assert
+import org.junit.Test
+import org.uqbar.geodds.Point
 
 @Accessors
 class TestEventos extends FixtureTest {

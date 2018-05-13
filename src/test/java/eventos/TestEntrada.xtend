@@ -1,13 +1,9 @@
 package eventos
 
 import java.time.LocalDateTime
-import org.junit.Assert
-import org.uqbar.geodds.Point
-import java.time.LocalDate
-import org.junit.Before
-import org.junit.Test
-import java.time.Period
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.junit.Assert
+import org.junit.Test
 
 @Accessors
 class TestEntrada extends FixtureTest{

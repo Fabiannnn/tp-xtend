@@ -2,9 +2,8 @@ package repositorio
 
 import eventos.Entidad
 import excepciones.EventoException
-import org.eclipse.xtend.lib.annotations.Accessors
 import java.util.List
-import eventos.Locacion
+import org.eclipse.xtend.lib.annotations.Accessors
 
 @Accessors
 abstract class Repositorio<T extends Entidad> {
@@ -19,7 +18,7 @@ abstract class Repositorio<T extends Entidad> {
 		agregarElemento(elemento)
 	}
 
-	def void recibirListaActualizacionJson(List<Locacion> _locaciones) {
+	def void recibirListaActualizacionJson(List<T> _objeto) {
 	}
 
 	def void asignarId(T elemento) {
