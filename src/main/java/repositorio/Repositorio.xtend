@@ -4,6 +4,7 @@ import eventos.Entidad
 import excepciones.EventoException
 import org.eclipse.xtend.lib.annotations.Accessors
 import java.util.List
+import eventos.Locacion
 
 @Accessors
 abstract class Repositorio<T extends Entidad> {
@@ -16,6 +17,9 @@ abstract class Repositorio<T extends Entidad> {
 		noEstaEnRepositorio(elemento) // TODO hay que refactorizarlo ver mail julian
 		asignarId(elemento)
 		agregarElemento(elemento)
+	}
+
+	def void recibirListaActualizacionJson(List<Locacion> _locaciones) {
 	}
 
 	def void asignarId(T elemento) {
