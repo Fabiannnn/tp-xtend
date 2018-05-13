@@ -1,23 +1,20 @@
 package jsons
 
-import org.eclipse.xtend.lib.annotations.Accessors
-import org.uqbar.geodds.Point
-import eventos.Locacion
+import com.eclipsesource.json.Json
 import com.eclipsesource.json.JsonArray
 import com.eclipsesource.json.JsonValue
-import com.eclipsesource.json.Json
+import eventos.Locacion
 import java.util.List
-import repositorio.RepositorioLocaciones
+import org.eclipse.xtend.lib.annotations.Accessors
+import org.uqbar.geodds.Point
 import repositorio.Repositorio
 
 @Accessors
 class JsonLocacion implements JsonsInterface {
 	var List<Locacion> locaciones = newArrayList
-	//var RepositorioLocaciones repo
 
 	override deserializarJson(String texto, Repositorio _repositorio) {
 		var JsonArray datasets = Json.parse(texto).asArray()
-
 		for (JsonValue locacion : datasets) { // (i = 0; i < datasets.size(); i++) 
 			locaciones.add(jsonLocacionAObjeto(locacion))
 		}
