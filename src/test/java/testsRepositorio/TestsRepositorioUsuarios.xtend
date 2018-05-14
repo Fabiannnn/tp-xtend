@@ -9,6 +9,7 @@ import org.junit.Test
 
 @Accessors
 class TestsRepositorioUsuarios extends FixtureTest {
+	
 	@Test
 	def void sePuedeAgregarUsuarioValidoyPasaValidacion() {
 		repoUsuario.create(usuario1)

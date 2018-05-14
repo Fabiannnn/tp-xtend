@@ -25,7 +25,6 @@ override void recibirListaActualizacionJson(List<Usuario> usuarios) {
 			
 			}else{
 				this.create(_usuarios)}
-
 	}
 	}
 

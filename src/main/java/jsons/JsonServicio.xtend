@@ -13,12 +13,10 @@ class JsonServicio implements JsonsInterface {
 
 	var List<Servicio> servicios = newArrayList
 
-//	override deserializarJson(String texto, Repositorio _repositorio) {
-//		var JsonArray setServicios = Json.parse(texto).asArray()
-//	}
+
 	override deserializarJson(String texto, Repositorio _repositorio) {
 		var JsonArray datasets = Json.parse(texto).asArray()
-		for (JsonValue servicio : datasets) { // (i = 0; i < datasets.size(); i++) 
+		for (JsonValue servicio : datasets) { // reemplaza a la iteracion... (i = 0; i < datasets.size(); i++) 
 			servicios.add(jsonServicioAObjeto(servicio))
 		}
 		_repositorio.recibirListaActualizacionJson(servicios)
@@ -26,7 +24,6 @@ class JsonServicio implements JsonsInterface {
 
 	def jsonServicioAObjeto(JsonValue _ServicioJson) {
 		var Servicio servAuxiliar
-
 		var JsonObject dataset = _ServicioJson.asObject()
 		val String unaDescripcion = dataset.get("descripcion").asString()
 		val JsonObject tarifaServicio = dataset.get("tarifaServicio").asObject()

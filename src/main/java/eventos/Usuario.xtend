@@ -196,13 +196,28 @@ class Usuario implements Entidad {
 	}
 
 //interface Entidad
-	override esValido() { //TODO VER COMO REFACTORIZAR
-		if (nombreUsuario === null || nombreApellido === null || email === null || fechaNacimiento === null ||
-			coordenadas === null) {
+	override esValido() { // VER COMO REFACTORIZAR  Asi???
+		if (sinNombreUsuario() || sinNombreApellido() ||  sinEmail() || sinFechaNacimiento() ||
+			sinUbicacion()) {
 			throw new EventoException("Faltan Datos de Usuario")
 		} else {
 			true
 		}
+	}
+	def sinNombreUsuario(){
+		nombreUsuario === null
+	}
+		def sinNombreApellido(){
+		nombreApellido === null
+	}
+		def sinEmail(){
+		email === null
+	}
+		def sinFechaNacimiento(){
+		fechaNacimiento === null
+	}
+		def sinUbicacion(){
+		coordenadas === null
 	}
 
 	override int getId() {
