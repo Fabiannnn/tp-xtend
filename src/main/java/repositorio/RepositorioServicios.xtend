@@ -7,26 +7,25 @@ import org.eclipse.xtend.lib.annotations.Accessors
 @Accessors
 class RepositorioServicios extends Repositorio<Servicio> {
 
-
 	def descripcionesIguales(String unaDescripcion) {
 		elementos.exists(elemento|elemento.descripcion.contentEquals(unaDescripcion))
 	}
 
 	def actualizarElementoJson(Servicio _servicios) {
 		if (descripcionesIguales(_servicios.descripcion)) {
-				var int idAux
-				idAux = elementos.findFirst(elemento|elemento.descripcion.contentEquals(_servicios.descripcion)).id
-				_servicios.id = idAux
-				update(_servicios)
+			var int idAux
+			idAux = elementos.findFirst(elemento|elemento.descripcion.contentEquals(_servicios.descripcion)).id
+			_servicios.id = idAux
+			update(_servicios)
 
-			} else {
-				this.create(_servicios)
-				
-			}
-			}
+		} else {
+			this.create(_servicios)
+
+		}
+	}
 
 	override void recibirListaActualizacionJson(List<Servicio> servicios) {
-		servicios.forEach[elemento | actualizarElementoJson(elemento)]
+		servicios.forEach[elemento|actualizarElementoJson(elemento)]
 	}
 
-	}
+}

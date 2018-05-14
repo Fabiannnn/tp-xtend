@@ -12,12 +12,12 @@ class RepositorioLocaciones extends Repositorio<Locacion> {
 		locaciones.forEach[elemento | actualizarElementoJson(elemento)]
 	}
 	def actualizarElementoJson(Locacion _locacion){
-		if ((coordenadasIguales(_locacion.punto ).size() == 0)) {
+		if ((!coordenadasIguales(_locacion.punto ))) {//refactorizado
 			create(_locacion)}
 			else{elementos.findFirst(elemento|(elemento.punto.x == _locacion.punto.x) && (elemento.punto.y == _locacion.punto.y)).nombre = _locacion.nombre
+				}
 	}
-	}
-	def coordenadasIguales(Point unPunto) {
-		elementos.filter(elemento|(elemento.punto.x == unPunto.x) && (elemento.punto.y == unPunto.y))
+	def coordenadasIguales(Point unPunto) {//refactorizado
+		elementos.exists(elemento|(elemento.punto.x == unPunto.x) && (elemento.punto.y == unPunto.y))		
 	}
 }

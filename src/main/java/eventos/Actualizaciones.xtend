@@ -6,8 +6,8 @@ import com.eclipsesource.json.Json
 
 @Accessors
 class Actualizaciones {
-	def actualizarLocacion(String texto){
-			var JsonArray listado = Json.parse(texto).asArray()
-			listado.forEach[ ]
+	def actualizarLocacion(String texto) {
+		var JsonArray listado = Json.parse(texto).asArray()
+		listado.forEach[]
 	}
-	}
+}

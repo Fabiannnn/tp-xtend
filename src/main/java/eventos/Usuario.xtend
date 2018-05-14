@@ -1,5 +1,6 @@
 package eventos
 
+
 import java.time.LocalDate
 import org.uqbar.geodds.Point
 import org.eclipse.xtend.lib.annotations.Accessors

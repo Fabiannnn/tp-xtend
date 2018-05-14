@@ -19,8 +19,7 @@ class Entrada {
 
 // Metodos para devolucion de entradas,   por cancelación o postergacin
 	def void cancelacionDeEvento() {
-		unUsuario.agregarMensaje("El Evento " + this.unEventoAbierto +
-			" fue cancelado. El importe de la entrada le fue devuelto")
+		unUsuario.agregarMensaje("El Evento " + this.unEventoAbierto + " fue cancelado. El importe de la entrada le fue devuelto")
 		vigente = false
 		devolucionEntradaImporteTotal()
 	}

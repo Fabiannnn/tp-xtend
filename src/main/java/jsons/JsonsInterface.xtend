@@ -1,8 +1,6 @@
 package jsons
 
-import com.eclipsesource.json.JsonValue
-import java.util.List
-import repositorio.*
+import repositorio.Repositorio
 
 interface JsonsInterface {
 	def void deserializarJson(String _json, Repositorio _repositorio)

@@ -13,7 +13,7 @@ abstract class Repositorio<T extends Entidad> {
 
 	def void create(T elemento) {
 		elemento.esValido()
-		noEstaEnRepositorio(elemento) // TODO hay que refactorizarlo ver mail julian
+		noEstaEnRepositorio(elemento) //  hay que refactorizarlo ver mail julian esta refactorizado
 		asignarId(elemento)
 		agregarElemento(elemento)
 	}

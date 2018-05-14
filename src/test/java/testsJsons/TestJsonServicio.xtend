@@ -18,7 +18,6 @@ class TestJsonServicio {
 	@Test
 	def void actualizacionConJsondeServicio() {
 		var jsonServicio = new JsonServicio()
-		// var RepositorioServicios repoServicioJson = new RepositorioServicios()
 		var RepositorioServicios repoDeServicios = new RepositorioServicios()
 		jsonText = '''
 			[
@@ -38,7 +37,6 @@ class TestJsonServicio {
 			]
 		'''
 		jsonServicio.deserializarJson(jsonText, repoDeServicios)
-		// repoServicios.(jsonText)
 		Assert.assertEquals(1, repoDeServicios.elementos.size(), 0)
 
 	}
@@ -46,7 +44,6 @@ class TestJsonServicio {
 	@Test
 	def void jsondeServicioCon2Elementos() {
 		var jsonServicio = new JsonServicio()
-		// var RepositorioServicios repoServicioJson = new RepositorioServicios()
 		var RepositorioServicios repoDeServicios = new RepositorioServicios()
 		jsonText2 = '''
 			[
