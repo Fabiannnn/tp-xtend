@@ -2,7 +2,7 @@ package eventos
 
 import java.lang.RuntimeException
 
-class Exception extends RuntimeException {
+class Excepciones extends RuntimeException {
 	
 	new(String msg) {
 		super(msg)

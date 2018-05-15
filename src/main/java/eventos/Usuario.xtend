@@ -1,6 +1,5 @@
 package eventos
 
-
 import java.time.LocalDate
 import org.uqbar.geodds.Point
 import org.eclipse.xtend.lib.annotations.Accessors
@@ -198,26 +197,19 @@ class Usuario implements Entidad {
 
 //interface Entidad
 	override esValido() { // VER COMO REFACTORIZAR  Asi???
-		if (sinNombreUsuario() || sinNombreApellido() ||  sinEmail() || sinFechaNacimiento() ||
+		if (nombreUsuario.nullOrEmpty || nombreApellido.nullOrEmpty || email.nullOrEmpty || sinFechaNacimiento() ||
 			sinUbicacion()) {
 			throw new EventoException("Faltan Datos de Usuario")
 		} else {
 			true
 		}
 	}
-	def sinNombreUsuario(){
-		nombreUsuario === null
-	}
-		def sinNombreApellido(){
-		nombreApellido === null
-	}
-		def sinEmail(){
-		email === null
-	}
-		def sinFechaNacimiento(){
+
+	def sinFechaNacimiento() {
 		fechaNacimiento === null
 	}
-		def sinUbicacion(){
+
+	def sinUbicacion() {
 		coordenadas === null
 	}
 
@@ -229,7 +221,7 @@ class Usuario implements Entidad {
 		id = _nextId
 	}
 
-	override boolean elementoBuscado(String cadena) {
+	override boolean filtroPorTexto(String cadena) {
 		nombreApellido.contains(cadena) || nombreUsuario.contentEquals(cadena)
 	}
 }

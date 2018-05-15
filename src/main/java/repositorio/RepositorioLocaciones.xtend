@@ -9,15 +9,18 @@ import org.uqbar.geodds.Point
 class RepositorioLocaciones extends Repositorio<Locacion> {
 
 	override void recibirListaActualizacionJson(List<Locacion> locaciones) {
-		locaciones.forEach[elemento | actualizarElementoJson(elemento)]
+		locaciones.forEach[elemento|actualizarLocacionConJson(elemento)]
 	}
-	def actualizarElementoJson(Locacion _locacion){
-		if ((!coordenadasIguales(_locacion.punto ))) {//refactorizado
-			create(_locacion)}
-			else{elementos.findFirst(elemento| elemento.distancia(_locacion.punto)==0).nombre = _locacion.nombre
-				}
+
+	def actualizarLocacionConJson(Locacion _locacion) {
+		if ((!coordenadasIguales(_locacion.punto))) {
+			create(_locacion)
+		} else {
+			elementos.findFirst(elemento|elemento.distancia(_locacion.punto) == 0).nombre = _locacion.nombre
+		}
 	}
-	def coordenadasIguales(Point unPunto) {//refactorizado
-		elementos.exists(elemento|elemento.distancia(unPunto)==0)
+
+	def coordenadasIguales(Point unPunto) {
+		elementos.exists(elemento|elemento.distancia(unPunto) == 0)
 	}
 }

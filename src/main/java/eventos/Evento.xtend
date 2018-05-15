@@ -72,7 +72,7 @@ abstract class Evento {
 	}
 
 	def boolean validarDatosCompletos(){
-		if ((nombre===null || fechaDeInicio===null || fechaFinalizacion===null || fechaLimiteConfirmacion === null || locacion === null
+		if ((nombre.nullOrEmpty || fechaDeInicio===null || fechaFinalizacion===null || fechaLimiteConfirmacion === null || locacion === null
 		)){
 			throw new EventoException("Faltan Datos en el Evento")
 		}else {true}

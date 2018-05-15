@@ -8,6 +8,6 @@ interface Entidad {
 
 	def void agregarId(int _nextId)
 
-	def boolean elementoBuscado(String cadena)//TODO cambiar nombre
+	def boolean filtroPorTexto(String cadena)
 
 }

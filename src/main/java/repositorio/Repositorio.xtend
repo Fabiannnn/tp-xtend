@@ -9,11 +9,11 @@ import org.eclipse.xtend.lib.annotations.Accessors
 abstract class Repositorio<T extends Entidad> {
 
 	List<T> elementos = newArrayList
-	int nextId = 1;
+	int proximoId = 1;
 
 	def void create(T elemento) {
 		elemento.esValido()
-		noEstaEnRepositorio(elemento) //  hay que refactorizarlo ver mail julian esta refactorizado
+		noEstaEnRepositorio(elemento) 
 		asignarId(elemento)
 		agregarElemento(elemento)
 	}
@@ -22,8 +22,8 @@ abstract class Repositorio<T extends Entidad> {
 	}
 
 	def void asignarId(T elemento) {
-		elemento.agregarId(nextId)
-		nextId += 1
+		elemento.agregarId(proximoId)
+		proximoId += 1
 	}
 
 	def void agregarElemento(T elemento) {
@@ -58,7 +58,7 @@ abstract class Repositorio<T extends Entidad> {
 	}
 
 	def List<T> search(String value) {
-		return elementos.filter[elementoBuscado(value)].toList()
+		return elementos.filter[filtroPorTexto(value)].toList()
 	}
 
 	def noEstaEnRepositorio(T elemento) {

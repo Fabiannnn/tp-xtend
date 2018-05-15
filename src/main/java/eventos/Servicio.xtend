@@ -57,7 +57,7 @@ class Servicio implements Entidad {
 		id = _nextId
 	}
 
-	override boolean elementoBuscado(String cadena) {
+	override boolean filtroPorTexto(String cadena) {
 		descripcion.startsWith(cadena)
 	}
 }

@@ -12,19 +12,17 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 	}
 
 	override void recibirListaActualizacionJson(List<Usuario> usuarios) {
-		usuarios.forEach[elemento|actualizarElementoJson(elemento)]
+		usuarios.forEach[elemento|actualizarUsuarioConJson(elemento)]
 	}
 
-	def actualizarElementoJson(Usuario _usuarios) {
+	def actualizarUsuarioConJson(Usuario _usuario) {
 
-		if (usuariosIguales(_usuarios.nombreUsuario)) {
-			var int idAux
-			idAux = elementos.findFirst(elemento|(elemento.nombreUsuario.equals(_usuarios.nombreUsuario))).id
-			_usuarios.id = idAux
-			update(_usuarios)
+		if (usuariosIguales(_usuario.nombreUsuario)) {
+			_usuario.id= elementos.findFirst(e|(e.nombreUsuario.equals(_usuario.nombreUsuario))).id
+			update(_usuario)
 
 		} else {
-			this.create(_usuarios)
+			this.create(_usuario)
 		}
 	}
 }

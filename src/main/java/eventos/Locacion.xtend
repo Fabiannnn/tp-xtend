@@ -26,9 +26,8 @@ class Locacion implements Entidad {
 	}
 
 	override esValido() { 
-		if(nombre === null){
+		if(nombre.nullOrEmpty){
 		throw new EventoException("Falta el nombre de la locacion")	
-	//TODO	nombre.nullOrEmpty
 		}
 		if(punto === null){
 		throw new EventoException("Faltan las coordenadas")	
@@ -44,7 +43,7 @@ class Locacion implements Entidad {
 		id = _nextId
 	}
 
-	override elementoBuscado(String cadena) {
+	override filtroPorTexto(String cadena) {
 		nombre.contains(cadena)
 	}
 
