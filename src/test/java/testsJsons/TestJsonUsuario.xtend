@@ -102,6 +102,7 @@ class TestJsonUsuario extends FixtureTest {
 
 		jsonUsuario.deserializarJson(jsonText2, repoUsuario)
 		Assert.assertEquals(3, repoUsuario.elementos.size(), 0)
+		
 	}
 }
    

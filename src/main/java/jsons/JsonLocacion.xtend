@@ -14,8 +14,8 @@ class JsonLocacion implements JsonsInterface {
 	var List<Locacion> locaciones = newArrayList
 
 	override deserializarJson(String texto, Repositorio _repositorio) {
-		var JsonArray datasets = Json.parse(texto).asArray()
-		for (JsonValue locacion : datasets) { // (i = 0; i < datasets.size(); i++) 
+		var JsonArray jsonLocaciones = Json.parse(texto).asArray()
+		for (JsonValue locacion : jsonLocaciones) { 
 			locaciones.add(jsonLocacionAObjeto(locacion))
 		}
 		_repositorio.recibirListaActualizacionJson(locaciones)

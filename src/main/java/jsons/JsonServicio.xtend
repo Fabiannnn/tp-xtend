@@ -15,8 +15,8 @@ class JsonServicio implements JsonsInterface {
 
 
 	override deserializarJson(String texto, Repositorio _repositorio) {
-		var JsonArray datasets = Json.parse(texto).asArray()
-		for (JsonValue servicio : datasets) { // reemplaza a la iteracion... (i = 0; i < datasets.size(); i++) 
+		var JsonArray jsonServicios = Json.parse(texto).asArray()
+		for (JsonValue servicio : jsonServicios) { // reemplaza a la iteracion... (i = 0; i < datasets.size(); i++) 
 			servicios.add(jsonServicioAObjeto(servicio))
 		}
 		_repositorio.recibirListaActualizacionJson(servicios)
@@ -24,13 +24,13 @@ class JsonServicio implements JsonsInterface {
 
 	def jsonServicioAObjeto(JsonValue _ServicioJson) {
 		var Servicio servAuxiliar
-		var JsonObject dataset = _ServicioJson.asObject()
-		val String unaDescripcion = dataset.get("descripcion").asString()
-		val JsonObject tarifaServicio = dataset.get("tarifaServicio").asObject()
+		var JsonObject jsonServicio = _ServicioJson.asObject()
+		val String unaDescripcion = jsonServicio.get("descripcion").asString()
+		val JsonObject tarifaServicio = jsonServicio.get("tarifaServicio").asObject()
 		val String unTipoTarifa = tarifaServicio.get("tipo").asString()
 		val double unValor = tarifaServicio.get("valor").asDouble()
-		val double unaTarifaTraslado = dataset.get("tarifaTraslado").asDouble()
-		val JsonObject unaUbicacion = dataset.get("ubicacion").asObject()
+		val double unaTarifaTraslado = jsonServicio.get("tarifaTraslado").asDouble()
+		val JsonObject unaUbicacion = jsonServicio.get("ubicacion").asObject()
 		val double latitud = unaUbicacion.get("x").asDouble()
 		val double longitud = unaUbicacion.get("y").asDouble()
 		val Point unPunto = new Point(latitud, longitud)

@@ -14,10 +14,10 @@ class RepositorioLocaciones extends Repositorio<Locacion> {
 	def actualizarElementoJson(Locacion _locacion){
 		if ((!coordenadasIguales(_locacion.punto ))) {//refactorizado
 			create(_locacion)}
-			else{elementos.findFirst(elemento|(elemento.punto.x == _locacion.punto.x) && (elemento.punto.y == _locacion.punto.y)).nombre = _locacion.nombre
+			else{elementos.findFirst(elemento| elemento.distancia(_locacion.punto)==0).nombre = _locacion.nombre
 				}
 	}
 	def coordenadasIguales(Point unPunto) {//refactorizado
-		elementos.exists(elemento|(elemento.punto.x == unPunto.x) && (elemento.punto.y == unPunto.y))		
+		elementos.exists(elemento|elemento.distancia(unPunto)==0)
 	}
 }

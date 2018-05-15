@@ -19,8 +19,8 @@ class JsonUsuario implements JsonsInterface {
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy")
 
 	override deserializarJson(String texto, Repositorio _repositorio) {
-		var JsonArray datasets = Json.parse(texto).asArray()
-		for (JsonValue usuario : datasets) { // (i = 0; i < datasets.size(); i++) 
+		var JsonArray jsonUsuarios = Json.parse(texto).asArray()
+		for (JsonValue usuario : jsonUsuarios) {
 			usuarios.add(jsonUsuarioAObjeto(usuario))
 		}
 		_repositorio.recibirListaActualizacionJson(usuarios)
@@ -28,13 +28,13 @@ class JsonUsuario implements JsonsInterface {
 
 	def jsonUsuarioAObjeto(JsonValue _UsuarioJson) {
 		var Usuario usuarioAuxiliar
-		var JsonObject dataset = _UsuarioJson.asObject()
-		val String unNombreUsuario = dataset.get("nombreUsuario").asString()
-		val String unNombreApellido = dataset.get("nombreApellido").asString()
-		val String unEmail = dataset.get("email").asString()
-		val String unaFechaNacimiento = dataset.get("fechaNacimiento").asString()
+		var JsonObject jsonUsuario = _UsuarioJson.asObject()
+		val String unNombreUsuario = jsonUsuario.get("nombreUsuario").asString()
+		val String unNombreApellido = jsonUsuario.get("nombreApellido").asString()
+		val String unEmail = jsonUsuario.get("email").asString()
+		val String unaFechaNacimiento = jsonUsuario.get("fechaNacimiento").asString()
 		val LocalDate unaFN = LocalDate.parse(unaFechaNacimiento, formatter)
-		val JsonObject direccionUsuario = dataset.get("direccion").asObject()
+		val JsonObject direccionUsuario = jsonUsuario.get("direccion").asObject()
 		val JsonObject ubicacion = direccionUsuario.get("coordenadas").asObject()
 		val double latitud = ubicacion.get("x").asDouble()
 		val double longitud = ubicacion.get("y").asDouble()
