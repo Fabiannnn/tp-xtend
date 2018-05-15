@@ -15,7 +15,19 @@ class TestJsonLocacion {
 
 	@Test
 	def void seAgrega2SalonesValidosySeActualizaConJsonYSeVerificaQueNoVuelvaACargarIgualJson() {
-		jsonText = '''[{"x":-34.603759,"y":-58.381586, "nombre":"Salón El Abierto"},{ "x":-34.572224,"y":-58.535651, "nombre":"Estadio Obras" }]'''
+		jsonText = '''[
+		   {
+		      "x":-34.603759,
+		      "y":-58.381586,
+		      "nombre":"Salón El Abierto"
+		   },
+		   {
+		      "x":-44.603759,
+		      "y":-68.381586,
+		      "nombre":"Estadio Obras"
+		   }
+		]'''
+
 		var jsonLocacion = new JsonLocacion()
 		var RepositorioLocaciones repoDeLocaciones = new RepositorioLocaciones()
 		jsonLocacion.deserializarJson(jsonText, repoDeLocaciones)
@@ -27,10 +39,36 @@ class TestJsonLocacion {
 	def void seAgrega2SalonesValidosySeActualizaConJsonYSeotroJsonModificado() {
 		var jsonLocacion = new JsonLocacion()
 		var RepositorioLocaciones repoDeLocaciones = new RepositorioLocaciones()
-		jsonText = '''[{"x":-34.603759,"y":-58.381586, "nombre":"Salón El Abierto"},{ "x":-34.572224,"y":-58.535651, "nombre":"Estadio Obras" }]'''
+		jsonText = '''[
+		   {
+		      "x":-34.603759,
+		      "y":-58.381586,
+		      "nombre":"Salón El Abierto"
+		   },
+		   {
+		      "x":-34.572224,
+		      "y":-58.535651,
+		      "nombre":"Estadio Obras"
+		   }
+		]'''
+
 		jsonLocacion.deserializarJson(jsonText, repoDeLocaciones)
-		jsonText = '''[{"x":-34.603759,"y":-58.388986, "nombre":"Salón El Abierto Otro Lugar"},{ "x":-34.572224,"y":-58.535651, "nombre":"Estadio Obras Modificado" }]'''
+
+		jsonText = '''[
+		   {
+		      "x":-84.603759,
+		      "y":-88.388986,
+		      "nombre":"Salón El Abierto Otro Lugar"
+		   },
+		   {
+		      "x":-34.572224,
+		      "y":-58.535651,
+		      "nombre":"Estadio Obras Modificado"
+		   }
+		]'''
+
 		jsonLocacion.deserializarJson(jsonText, repoDeLocaciones)
+
 		Assert.assertEquals("Estadio Obras Modificado", repoDeLocaciones.searchById(2).nombre)
 		Assert.assertEquals(3, repoDeLocaciones.elementos.size(), 0)
 	}
