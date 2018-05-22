@@ -8,22 +8,22 @@ import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.geodds.Point
 import repositorio.Repositorio
+import com.eclipsesource.json.JsonObject
 
 @Accessors
-class JsonLocacion implements JsonsInterface {
+class JsonLocacion extends JsonsInterface {
 	var List<Locacion> locaciones = newArrayList
 
-	override deserializarJson(String texto, Repositorio _repositorio) {
-		var JsonArray jsonLocaciones = Json.parse(texto).asArray()
-		for (JsonValue locacion : jsonLocaciones) { 
-			locaciones.add(jsonLocacionAObjeto(locacion))
-		}
-		_repositorio.recibirListaActualizacionJson(locaciones)
-	}
+//	override deserializarJson(String texto, Repositorio _repositorio) {
+//		var JsonArray jsonLocaciones = Json.parse(texto).asArray()
+//		for (JsonValue locacion : jsonLocaciones) { 
+//			locaciones.add(jsonLocacionAObjeto(locacion))
+//		}
+//		_repositorio.recibirListaActualizacionJson(locaciones)
+//	}
 
-	def jsonLocacionAObjeto(JsonValue _LocacionJson) {
+	override jsonAObjetoFinal(JsonObject locacionObject) {
 
-		var locacionObject = _LocacionJson.asObject
 		var double latitud = locacionObject.get("x").asDouble()
 		var double longitud = locacionObject.get("y").asDouble()
 		val String unNombre = locacionObject.get("nombre").asString()

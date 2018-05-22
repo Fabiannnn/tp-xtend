@@ -2,7 +2,7 @@ package eventos
 
 interface Entidad {
 
-	def boolean esValido()
+	def void esValido()
 
 	def int getId()
 

@@ -9,22 +9,22 @@ import java.util.List
 import org.uqbar.geodds.Point
 import repositorio.Repositorio
 
-class JsonServicio implements JsonsInterface {
+class JsonServicio extends JsonsInterface {
 
 	var List<Servicio> servicios = newArrayList
 
 
-	override deserializarJson(String texto, Repositorio _repositorio) {
-		var JsonArray jsonServicios = Json.parse(texto).asArray()
-		for (JsonValue servicio : jsonServicios) { // reemplaza a la iteracion... (i = 0; i < datasets.size(); i++) 
-			servicios.add(jsonServicioAObjeto(servicio))
-		}
-		_repositorio.recibirListaActualizacionJson(servicios)
-	}
+//	override deserializarJson(String texto, Repositorio _repositorio) {
+//		var JsonArray jsonServicios = Json.parse(texto).asArray()
+//		for (JsonValue servicio : jsonServicios) { // reemplaza a la iteracion... (i = 0; i < datasets.size(); i++) 
+//			servicios.add(jsonServicioAObjeto(servicio))
+//		}
+//		_repositorio.recibirListaActualizacionJson(servicios)
+//	}
 
-	def jsonServicioAObjeto(JsonValue _ServicioJson) {
+	override jsonAObjetoFinal(JsonObject jsonServicio) {
 		var Servicio servAuxiliar
-		var JsonObject jsonServicio = _ServicioJson.asObject()
+//		var JsonObject jsonServicio = _ServicioJson.asObject()
 		val String unaDescripcion = jsonServicio.get("descripcion").asString()
 		val JsonObject tarifaServicio = jsonServicio.get("tarifaServicio").asObject()
 		val String unTipoTarifa = tarifaServicio.get("tipo").asString()

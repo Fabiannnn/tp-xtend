@@ -35,9 +35,9 @@ abstract class Repositorio<T extends Entidad> {
 	}
 
 	def void update(T _elemento) {
-		if (_elemento.esValido() && existeElId(_elemento)) {
-			reemplazarObjectoExistente(_elemento)
-		}
+		_elemento.esValido()
+		existeElId(_elemento)
+		reemplazarObjectoExistente(_elemento)
 	}
 
 	def boolean existeElId(T _elemento) {

@@ -13,22 +13,22 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Accessors
-class JsonUsuario implements JsonsInterface {
+class JsonUsuario extends JsonsInterface {
 
 	var List<Usuario> usuarios = newArrayList
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy")
 
-	override deserializarJson(String texto, Repositorio _repositorio) {
-		var JsonArray jsonUsuarios = Json.parse(texto).asArray()
-		for (JsonValue usuario : jsonUsuarios) {
-			usuarios.add(jsonUsuarioAObjeto(usuario))
-		}
-		_repositorio.recibirListaActualizacionJson(usuarios)
-	}
+//	override deserializarJson(String texto, Repositorio _repositorio) {
+//		var JsonArray jsonUsuarios = Json.parse(texto).asArray()
+//		for (JsonValue usuario : jsonUsuarios) {
+//			usuarios.add(jsonUsuarioAObjeto(usuario))
+//		}
+//		_repositorio.recibirListaActualizacionJson(usuarios)
+//	}
 
-	def jsonUsuarioAObjeto(JsonValue _UsuarioJson) {
+	override jsonAObjetoFinal(JsonObject jsonUsuario) {
 		var Usuario usuarioAuxiliar
-		var JsonObject jsonUsuario = _UsuarioJson.asObject()
+//		var JsonObject jsonUsuario = _UsuarioJson.asObject()
 		val String unNombreUsuario = jsonUsuario.get("nombreUsuario").asString()
 		val String unNombreApellido = jsonUsuario.get("nombreApellido").asString()
 		val String unEmail = jsonUsuario.get("email").asString()

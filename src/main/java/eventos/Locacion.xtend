@@ -32,7 +32,7 @@ class Locacion implements Entidad {
 		if(punto === null){
 		throw new EventoException("Faltan las coordenadas")	
 		}
-		return true
+//		return true
 	}
 	
 	override getId() {

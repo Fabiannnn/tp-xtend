@@ -197,20 +197,42 @@ class Usuario implements Entidad {
 
 //interface Entidad
 	override esValido() { // VER COMO REFACTORIZAR  Asi???
-		if (nombreUsuario.nullOrEmpty || nombreApellido.nullOrEmpty || email.nullOrEmpty || sinFechaNacimiento() ||
-			sinUbicacion()) {
-			throw new EventoException("Faltan Datos de Usuario")
-		} else {
-			true
+		validarNombreUsuario()
+		validarNombreApellido()
+		validarEMail()
+		validarFechaNacimiento()
+		validarUbicacion()
+	}
+
+	def validarUbicacion() {
+		if (coordenadas === null) {
+			throw new EventoException("Falta Ubicacion")
 		}
 	}
 
-	def sinFechaNacimiento() {
-		fechaNacimiento === null
+	def validarFechaNacimiento() {
+		if (fechaNacimiento === null) {
+			throw new EventoException("Falta Fecha de Nacimiento")
+		}
 	}
 
-	def sinUbicacion() {
-		coordenadas === null
+	def validarEMail() {
+		if (email.nullOrEmpty) {
+			throw new EventoException("Falta e-mail")
+		}
+	}
+
+	def validarNombreApellido() {
+		if (nombreApellido.nullOrEmpty) {
+			throw new EventoException("Falta Nombre y Apellido")
+		}
+	}
+
+	def validarNombreUsuario() {
+		if (nombreUsuario.nullOrEmpty) {
+			throw new EventoException("Falta Nombre de Usuario")
+		}
+
 	}
 
 	override int getId() {
