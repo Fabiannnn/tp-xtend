@@ -40,12 +40,14 @@ abstract class Repositorio<T extends Entidad> {
 		reemplazarObjectoExistente(_elemento)
 	}
 
-	def boolean existeElId(T _elemento) {
-		if (elementos.exists[elementoRepo|elementoRepo.id == _elemento.id]) {
-			true
-		} else {
+	def  existeElId(T _elemento) {
+		if (!(estaEnRepo(_elemento))) {  
 			throw new EventoException("No existe el elemento que se quiere actualizar")
 		}
+	}
+	
+	def boolean estaEnRepo(T _elemento) {
+		elementos.exists[elementoRepo|elementoRepo.id == _elemento.id]
 	}
 
 	def T searchById(int _id) {

@@ -9,10 +9,10 @@ import org.uqbar.geodds.Point
 class RepositorioLocaciones extends Repositorio<Locacion> {
 
 	override void recibirListaActualizacionJson(List<Locacion> locaciones) {
-		locaciones.forEach[elemento|actualizarLocacionConJson(elemento)]
+		locaciones.forEach[elemento|actualizarLocacionConJson(elemento)]// ver si pasa a repositorio abstracto
 	}
 
-	def actualizarLocacionConJson(Locacion _locacion) {
+	def actualizarLocacionConJson(Locacion _locacion) {// actualizarEntidadConJSon seria llamado desde repositorio general
 		if ((!coordenadasIguales(_locacion.punto))) {
 			create(_locacion)
 		} else {

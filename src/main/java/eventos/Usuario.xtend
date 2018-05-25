@@ -19,7 +19,7 @@ class Usuario implements Entidad {
 	boolean esAntisocial
 	Set<Usuario> amigos = newHashSet
 	double radioDeCercania
-	double saldoCuenta = 0.0 // esto se agrego segun issue 8
+	double saldoCuenta = 0.0 // esto se agrego segun issue 8 entrega 1
 	Set<Invitacion> invitaciones = newHashSet
 	Set<String> notificaciones = newHashSet // paraInvitaciones cancelaciones postergaciones
 	Set<Entrada> entradaComprada = newHashSet

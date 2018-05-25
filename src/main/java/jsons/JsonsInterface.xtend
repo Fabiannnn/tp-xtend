@@ -22,8 +22,7 @@ abstract class JsonsInterface<T extends Entidad> {
 	def T jsonAObjeto(JsonValue _Json){
 		var  JsonObject jsonObject = _Json.asObject
 		jsonAObjetoFinal(jsonObject)//template method
-		
 	}
 	
-	def T jsonAObjetoFinal(JsonObject _Json){}//template method
+	def T jsonAObjetoFinal(JsonObject _Json)//template method
 }

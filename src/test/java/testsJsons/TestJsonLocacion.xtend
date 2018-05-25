@@ -5,6 +5,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.junit.Assert
 import org.junit.Test
 import repositorio.RepositorioLocaciones
+import excepciones.EventoException
 
 @Accessors
 class TestJsonLocacion {
@@ -12,6 +13,26 @@ class TestJsonLocacion {
 	RepositorioLocaciones repoLocacionJson
 	RepositorioLocaciones repoDeLocaciones
 	JsonLocacion jsonLocacion
+
+	@Test(expected=EventoException)
+	def void seAgrega2SalonesNoValidosySeActualizaConJson() {
+		jsonText = '''[
+		   {
+		      "x":-44.603759,
+		      "y":-68.31586,
+		      "nombre":"Salón El Abierto"
+		   },
+		   {
+		      "x":-44.603759,
+		      "y":-68.381586,
+		      "nombre":""
+		   }
+		]'''
+
+		var jsonLocacion = new JsonLocacion()
+		var RepositorioLocaciones repoDeLocaciones = new RepositorioLocaciones()
+		jsonLocacion.deserializarJson(jsonText, repoDeLocaciones)
+	}
 
 	@Test
 	def void seAgrega2SalonesValidosySeActualizaConJsonYSeVerificaQueNoVuelvaACargarIgualJson() {
