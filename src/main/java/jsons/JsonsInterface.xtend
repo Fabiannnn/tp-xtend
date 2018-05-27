@@ -9,6 +9,7 @@ import java.util.List
 import repositorio.Repositorio
 
 abstract class JsonsInterface<T extends Entidad> {
+	
 	def void deserializarJson(String _json, Repositorio _repositorio) {
 		var List<T> elementos = newArrayList
 		var JsonArray jsonArray = Json.parse(_json).asArray()
@@ -18,11 +19,10 @@ abstract class JsonsInterface<T extends Entidad> {
 		_repositorio.recibirListaActualizacionJson(elementos)
 	}
 
-	
-	def T jsonAObjeto(JsonValue _Json){
-		var  JsonObject jsonObject = _Json.asObject
-		jsonAObjetoFinal(jsonObject)//template method
+	def T jsonAObjeto(JsonValue _Json) {
+		var JsonObject jsonObject = _Json.asObject
+		jsonAObjetoFinal(jsonObject) // template method
 	}
-	
-	def T jsonAObjetoFinal(JsonObject _Json)//template method
+
+	def T jsonAObjetoFinal(JsonObject _Json) // template method
 }

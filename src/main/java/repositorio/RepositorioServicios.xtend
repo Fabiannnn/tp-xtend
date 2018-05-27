@@ -28,4 +28,8 @@ class RepositorioServicios extends Repositorio<Servicio> {
 		servicios.forEach[elemento|actualizarElementoJson(elemento)]
 	}
 
+	override updateAll() {
+		UpdateService.getServicesUpdates()
+	}
+
 }

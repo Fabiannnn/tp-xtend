@@ -18,11 +18,15 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 	def actualizarUsuarioConJson(Usuario _usuario) {
 
 		if (usuariosIguales(_usuario.nombreUsuario)) {
-			_usuario.id= elementos.findFirst(e|(e.nombreUsuario.equals(_usuario.nombreUsuario))).id
+			_usuario.id = elementos.findFirst(e|(e.nombreUsuario.equals(_usuario.nombreUsuario))).id
 			update(_usuario)
 
 		} else {
 			this.create(_usuario)
 		}
+	}
+
+	override updateAll() {
+		UpdateService.getUserUpdates()
 	}
 }

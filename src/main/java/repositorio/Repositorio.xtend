@@ -10,6 +10,8 @@ abstract class Repositorio<T extends Entidad> {
 
 	List<T> elementos = newArrayList
 	int proximoId = 1;
+	
+	def void updateAll()
 
 	def void create(T elemento) {
 		elemento.esValido()
@@ -18,8 +20,7 @@ abstract class Repositorio<T extends Entidad> {
 		agregarElemento(elemento)
 	}
 
-	def void recibirListaActualizacionJson(List<T> _objeto) {
-	}
+	def void recibirListaActualizacionJson(List<T> _objeto) 
 
 	def void asignarId(T elemento) {
 		elemento.agregarId(proximoId)
@@ -69,3 +70,4 @@ abstract class Repositorio<T extends Entidad> {
 		}
 	}
 }
+

@@ -7,8 +7,6 @@ import org.uqbar.geodds.Point
 
 class JsonServicio extends JsonsInterface {
 
-	var List<Servicio> servicios = newArrayList
-
 	override jsonAObjetoFinal(JsonObject jsonServicio) {
 		var Servicio servAuxiliar
 		val String unaDescripcion = jsonServicio.get("descripcion").asString()
