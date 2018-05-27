@@ -3,6 +3,7 @@ package repositorio
 import eventos.Servicio
 import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.uqbar.updateService.UpdateService
 
 @Accessors
 class RepositorioServicios extends Repositorio<Servicio> {

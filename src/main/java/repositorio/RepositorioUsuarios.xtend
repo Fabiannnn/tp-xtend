@@ -3,6 +3,7 @@ package repositorio
 import org.eclipse.xtend.lib.annotations.Accessors
 import eventos.Usuario
 import java.util.List
+import org.uqbar.updateService.UpdateService
 
 @Accessors
 class RepositorioUsuarios extends Repositorio<Usuario> {
