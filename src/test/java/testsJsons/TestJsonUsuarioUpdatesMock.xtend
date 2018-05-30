@@ -19,7 +19,7 @@ class TestJsonUsuarioUpdatesMock extends FixtureTest {
 	JsonUsuario jsonUsuario
 
 	@Test
-	def void testJsonUsuarioUpdateBasico() {
+	def void testJsonUsuarioUpdateAllBasico() {
 		jsonText = '''[  
 		   {  
 		      "nombreUsuario":"lucas_capo",
@@ -39,10 +39,10 @@ class TestJsonUsuarioUpdatesMock extends FixtureTest {
 		   }
 		]'''
 
-		var jsonUsuario = new JsonUsuario()
 		val updateServiceTemp = mock(typeof(UpdateService))
 		when(updateServiceTemp.getUserUpdates()).thenReturn(jsonText);
-		jsonUsuario.deserializarJson(updateServiceTemp.getUserUpdates(), repoUsuario)
+		repoUsuario.updateService = updateServiceTemp
+		repoUsuario.updateAll
 		Assert.assertEquals(1, repoUsuario.elementos.size(), 0)
 	}
 
@@ -82,10 +82,11 @@ class TestJsonUsuarioUpdatesMock extends FixtureTest {
 		      }
 		   }
 		]'''
-		var jsonUsuario = new JsonUsuario()
+
 		val updateServiceTemp = mock(typeof(UpdateService))
-		when(updateServiceTemp.getUserUpdates()).thenReturn(jsonText);
-		jsonUsuario.deserializarJson(updateServiceTemp.getUserUpdates(), repoUsuario)
+		when(updateServiceTemp.getUserUpdates()).thenReturn(jsonText)
+		repoUsuario.updateService = updateServiceTemp
+		repoUsuario.updateAll
 		Assert.assertEquals(2, repoUsuario.elementos.size(), 0)
 	}
 
@@ -160,12 +161,12 @@ class TestJsonUsuarioUpdatesMock extends FixtureTest {
 		   }
 		]'''
 
-		var jsonUsuario = new JsonUsuario()
 		val updateServiceTemp = mock(typeof(UpdateService))
 		when(updateServiceTemp.getUserUpdates()).thenReturn(jsonText);
-		jsonUsuario.deserializarJson(updateServiceTemp.getUserUpdates(), repoUsuario)
+		repoUsuario.updateService = updateServiceTemp
+		repoUsuario.updateAll
 		when(updateServiceTemp.getUserUpdates()).thenReturn(jsonText2);
-		jsonUsuario.deserializarJson(updateServiceTemp.getUserUpdates(), repoUsuario)
+		repoUsuario.updateAll
 		Assert.assertEquals(3, repoUsuario.elementos.size(), 0)
 		Assert.assertEquals("Lucas Lopez", repoUsuario.searchById(1).nombreApellido)
 		Assert.assertEquals("Lucas Otro", repoUsuario.searchById(2).nombreApellido)
@@ -175,11 +176,7 @@ class TestJsonUsuarioUpdatesMock extends FixtureTest {
 
 	@Test
 	def void seAgrega2UsuariosValidosySeAplicaJsonDe2UnoQueModificaYOtroQueAgrega() {
-		var jsonUsuario = new JsonUsuario()
-		repoUsuario.create(usuario1)
-		repoUsuario.create(usuario2)
-
-		jsonText2 = '''[
+			jsonText2 = '''[
 		   {
 		      "nombreUsuario":"PrimerUsuario",
 		      "nombreApellido":"Diego Maradona",
@@ -216,8 +213,10 @@ class TestJsonUsuarioUpdatesMock extends FixtureTest {
 
 		val updateServiceTemp = mock(typeof(UpdateService))
 		when(updateServiceTemp.getUserUpdates()).thenReturn(jsonText2);
-		jsonUsuario.deserializarJson(updateServiceTemp.getUserUpdates(), repoUsuario)
-
+		repoUsuario.create(usuario1)
+		repoUsuario.create(usuario2)
+		repoUsuario.updateService = updateServiceTemp
+		repoUsuario.updateAll
 		Assert.assertEquals(3, repoUsuario.elementos.size(), 0)
 		Assert.assertEquals("Diego Maradona", repoUsuario.searchById(1).nombreApellido)
 		Assert.assertEquals("Lucas Otro", repoUsuario.searchById(3).nombreApellido)

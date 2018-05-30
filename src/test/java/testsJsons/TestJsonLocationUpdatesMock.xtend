@@ -49,7 +49,7 @@ class TestJsonLocationUpdatesMock {
 	def void testJsonLocacionUpdate() {
 	
 		val updateService = mock(typeof(UpdateService))
-		when(updateService.getLocationUpdates()).thenReturn(jsonText);
+		when(updateService.getLocationUpdates()).thenReturn(jsonText)
 		var RepositorioLocaciones repoDeLocaciones = new RepositorioLocaciones()
 		repoDeLocaciones.updateService = updateService
 		repoDeLocaciones.updateAll
@@ -61,9 +61,9 @@ class TestJsonLocationUpdatesMock {
 		var jsonLocacion = new JsonLocacion()
 		var RepositorioLocaciones repoDeLocaciones = new RepositorioLocaciones()
 		val updateService = mock(typeof(UpdateService))
-		when(updateService.getLocationUpdates()).thenReturn(jsonText);
+		when(updateService.getLocationUpdates()).thenReturn(jsonText)
 		jsonLocacion.deserializarJson(updateService.getLocationUpdates(), repoDeLocaciones)
-		when(updateService.getLocationUpdates()).thenReturn(jsonText2);
+		when(updateService.getLocationUpdates()).thenReturn(jsonText2)
 		jsonLocacion.deserializarJson(updateService.getLocationUpdates(), repoDeLocaciones)
 		Assert.assertEquals("Estadio Obras Modificado", repoDeLocaciones.searchById(2).nombre)
 		Assert.assertEquals(3, repoDeLocaciones.elementos.size(), 0)

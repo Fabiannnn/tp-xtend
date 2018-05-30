@@ -69,22 +69,22 @@ class TestJsonServicioUpdatesMock {
 	@Test
 	def void testJsonServicioUpdateBasico() {
 		val updateService = mock(typeof(UpdateService))
-		var jsonServicio = new JsonServicio()
 		when(updateService.getServiceUpdates()).thenReturn(jsonText);
 		var RepositorioServicios repoDeServicios = new RepositorioServicios()
-		jsonServicio.deserializarJson(updateService.getServiceUpdates(), repoDeServicios)// no puedo invocar directamente updateAll
+		repoDeServicios.updateService = updateService
+		repoDeServicios.updateAll
 		Assert.assertEquals(1, repoDeServicios.elementos.size(), 0)
 	}
 
 	@Test
 	def void testJsonServicioUpdatesobreelUpdateInicialOtroUpdatecon1queModificaYUnoNuevo() {
 		val updateService = mock(typeof(UpdateService))
-		var jsonServicio = new JsonServicio()
 		var RepositorioServicios repoDeServicios = new RepositorioServicios()
+		repoDeServicios.updateService = updateService
 		when(updateService.getServiceUpdates()).thenReturn(jsonText);
-		jsonServicio.deserializarJson(updateService.getServiceUpdates(), repoDeServicios)
+		repoDeServicios.updateAll
 		when(updateService.getServiceUpdates()).thenReturn(jsonText2);
-		jsonServicio.deserializarJson(updateService.getServiceUpdates(), repoDeServicios)
+		repoDeServicios.updateAll
 		Assert.assertEquals(2, repoDeServicios.elementos.size(), 0)
 		Assert.assertEquals(0.00, repoDeServicios.searchById(1).costoPorHora, 0)
 		Assert.assertEquals(5000.00, repoDeServicios.searchById(1).costoFijo, 0)

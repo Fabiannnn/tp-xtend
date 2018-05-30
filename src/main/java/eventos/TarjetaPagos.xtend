@@ -10,7 +10,7 @@ import org.uqbar.ccService.CreditCard
 class TarjetaPagos {
 
 	def pagarEntrada( CreditCard tarjeta, double _precio) {
-			if (respuestaTarjeta(tarjeta,  _precio).statusCode !== 0) { 
+			if (respuestaTarjeta(tarjeta,  _precio).statusCode > 0) { 
 			throw new EventoException(respuestaTarjeta(  tarjeta,  _precio).statusMessage)
 		}
 	}
