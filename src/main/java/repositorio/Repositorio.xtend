@@ -4,13 +4,15 @@ import eventos.Entidad
 import excepciones.EventoException
 import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.uqbar.updateService.UpdateService
 
 @Accessors
 abstract class Repositorio<T extends Entidad> {
 
 	List<T> elementos = newArrayList
 	int proximoId = 1;
-	
+ 	UpdateService updateService 
+ 
 	def void updateAll()
 
 	def void create(T elemento) {

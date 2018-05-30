@@ -4,6 +4,7 @@ import eventos.Servicio
 import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.updateService.UpdateService
+import jsons.JsonServicio
 
 @Accessors
 class RepositorioServicios extends Repositorio<Servicio> {
@@ -29,8 +30,11 @@ class RepositorioServicios extends Repositorio<Servicio> {
 		servicios.forEach[elemento|actualizarElementoJson(elemento)]
 	}
 
-	override updateAll() {
-		UpdateService.getServicesUpdates()
+	override  updateAll() {
+	val	JsonServicio jsonServicio = new JsonServicio
+				jsonServicio.deserializarJson(updateService.getServiceUpdates(), this) 
+	
 	}
+	
 
 }

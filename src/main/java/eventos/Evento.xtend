@@ -8,6 +8,9 @@ import java.util.Set
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.geodds.Point
 import excepciones.EventoException
+import org.uqbar.ccService.CreditCardService
+import org.uqbar.ccService.CreditCard
+import org.uqbar.ccService.CCResponse
 
 @Accessors
 abstract class Evento {
@@ -18,6 +21,7 @@ abstract class Evento {
 	LocalDateTime fechaFinalizacion
 	Locacion locacion
 	LocalDate fechaLimiteConfirmacion
+
 	boolean cancelado = false
 	boolean postergado = false
 	
@@ -90,16 +94,33 @@ class EventoAbierto extends Evento {
 	int edadMinima
 	double precioEntrada
 	Set<Entrada> entradas = newHashSet
-
+		
+//TODO el comprarEntrada tambien debería recibir la tarjeta de crédito????
 	def void comprarEntrada(Usuario elComprador) { // chequea condiciones
-		if ((elComprador.edad() > edadMinima) && fechaAnteriorALaLimite() && hayEntradasDisponibles()) {
-			generarEntrada(elComprador)
-		} 
-		 else {
-		throw new EventoException("No se puede Comprar la Entrada")
-		}
+	puedeComprarEntrada(elComprador)
+	generarEntrada(elComprador)
+		
 	}
 
+
+def puedeComprarEntrada(Usuario elComprador){
+	if ( !edadValida(elComprador) || !fechaAnteriorALaLimite() || !hayEntradasDisponibles()) {    //TODO revisar agregado por pago tarjeta
+			throw new EventoException("No se puede Comprar la Entrada")
+		}
+}
+
+def edadValida(Usuario elComprador) {
+	return elComprador.edad() > edadMinima
+}
+	
+def void comprarConTarjetaDeCredito(Usuario elComprador, CreditCard tarjetaCredito){
+		val TarjetaPagos tarjetaPagos = new TarjetaPagos
+		puedeComprarEntrada(elComprador)
+		tarjetaPagos.pagarEntrada(tarjetaCredito , precioEntrada)
+		generarEntrada(elComprador)
+	}
+	
+	
 	def generarEntrada(Usuario elComprador) { // llega aca si las condiciones de compra se cumplen
 		val nuevaEntrada = new Entrada(this, elComprador)
 		registrarCompraEnEvento(nuevaEntrada)

@@ -15,11 +15,6 @@ class TestJsonLocationUpdatesMock {
 	String jsonText2
 	RepositorioLocaciones repoLocacionJson
 
-//	UpdateService updateServiceTemp
-//	RepositorioLocaciones repoDeLocaciones
-//	JsonLocacion jsonLocacion
-//	UpdateService UpdateLocationServices
-// UpdateService  Mockito(UpdateService.class)
 	@Before
 	def void init() {
 
@@ -52,11 +47,12 @@ class TestJsonLocationUpdatesMock {
 
 	@Test
 	def void testJsonLocacionUpdate() {
-		var jsonLocacion = new JsonLocacion()
-		val updateServiceTemp = mock(typeof(UpdateService))
-		when(updateServiceTemp.getLocationUpdates()).thenReturn(jsonText);
+	
+		val updateService = mock(typeof(UpdateService))
+		when(updateService.getLocationUpdates()).thenReturn(jsonText);
 		var RepositorioLocaciones repoDeLocaciones = new RepositorioLocaciones()
-		jsonLocacion.deserializarJson(updateServiceTemp.getLocationUpdates(), repoDeLocaciones)
+		repoDeLocaciones.updateService = updateService
+		repoDeLocaciones.updateAll
 		Assert.assertEquals(2, repoDeLocaciones.elementos.size(), 0)
 	}
 
@@ -64,12 +60,11 @@ class TestJsonLocationUpdatesMock {
 	def void testJsonLocacionUpdate2() {
 		var jsonLocacion = new JsonLocacion()
 		var RepositorioLocaciones repoDeLocaciones = new RepositorioLocaciones()
-		val updateServiceTemp = mock(typeof(UpdateService))
-		when(updateServiceTemp.getLocationUpdates()).thenReturn(jsonText);
-		jsonLocacion.deserializarJson(updateServiceTemp.getLocationUpdates(), repoDeLocaciones)
-
-		when(updateServiceTemp.getLocationUpdates()).thenReturn(jsonText2);
-		jsonLocacion.deserializarJson(updateServiceTemp.getLocationUpdates(), repoDeLocaciones)
+		val updateService = mock(typeof(UpdateService))
+		when(updateService.getLocationUpdates()).thenReturn(jsonText);
+		jsonLocacion.deserializarJson(updateService.getLocationUpdates(), repoDeLocaciones)
+		when(updateService.getLocationUpdates()).thenReturn(jsonText2);
+		jsonLocacion.deserializarJson(updateService.getLocationUpdates(), repoDeLocaciones)
 		Assert.assertEquals("Estadio Obras Modificado", repoDeLocaciones.searchById(2).nombre)
 		Assert.assertEquals(3, repoDeLocaciones.elementos.size(), 0)
 	}

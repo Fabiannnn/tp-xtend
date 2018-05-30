@@ -7,7 +7,7 @@ import org.junit.Test
 
 @Accessors
 class TestEntrada extends FixtureTest{
-
+//test devolucion entradas
 	@Test
 	def void devolverEntradaConMuchosDiasAnticipacionChequeoPorcentajeDevolucionIgualA80() {
 		Assert.assertEquals(80.0, entradaPrueba.porcentajeDevolucion(), 0)

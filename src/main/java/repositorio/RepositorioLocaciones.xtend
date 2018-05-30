@@ -5,6 +5,7 @@ import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.geodds.Point
 import org.uqbar.updateService.UpdateService
+import jsons.JsonLocacion
 
 @Accessors
 class RepositorioLocaciones extends Repositorio<Locacion> {
@@ -25,9 +26,10 @@ class RepositorioLocaciones extends Repositorio<Locacion> {
 		elementos.exists(elemento|elemento.distancia(unPunto) == 0)
 	}
 	
-	override updateAll() {
-		UpdateService.getLocationUpdates()
-		
+	override  updateAll() {
+	val	JsonLocacion jsonLocacion = new JsonLocacion
+				jsonLocacion.deserializarJson(updateService.getLocationUpdates(), this) 
+	
 	}
 	
 }

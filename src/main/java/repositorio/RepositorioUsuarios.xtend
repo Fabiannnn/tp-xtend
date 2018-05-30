@@ -4,6 +4,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import eventos.Usuario
 import java.util.List
 import org.uqbar.updateService.UpdateService
+import jsons.JsonUsuario
 
 @Accessors
 class RepositorioUsuarios extends Repositorio<Usuario> {
@@ -26,8 +27,9 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 			this.create(_usuario)
 		}
 	}
-
-	override updateAll() {
-		UpdateService.getUserUpdates()
+	override  updateAll() {
+	val	JsonUsuario jsonUsuario = new JsonUsuario
+				jsonUsuario.deserializarJson(updateService.getUserUpdates(), this) 
+	
 	}
 }
