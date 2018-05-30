@@ -94,9 +94,8 @@ class EventoAbierto extends Evento {
 	int edadMinima
 	double precioEntrada
 	Set<Entrada> entradas = newHashSet
-		
-//TODO el comprarEntrada tambien debería recibir la tarjeta de crédito????
-	def void comprarEntrada(Usuario elComprador) { // chequea condiciones
+
+	def void comprarEntrada(Usuario elComprador) { 
 	puedeComprarEntrada(elComprador)
 	generarEntrada(elComprador)
 		
@@ -155,7 +154,7 @@ def void comprarConTarjetaDeCredito(Usuario elComprador, CreditCard tarjetaCredi
 	}
 
 	override fechaAnteriorALaLimite() { 
-		LocalDate.now() <= LocalDate.from(fechaDeInicio)
+		LocalDate.now() <= LocalDate.from(fechaLimiteConfirmacion)
 	}
 	
 	override esExitoso(){

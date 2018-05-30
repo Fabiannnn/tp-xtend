@@ -7,11 +7,13 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.junit.Assert
 import org.junit.Test
 import org.uqbar.geodds.Point
+import java.time.LocalDate
 
 @Accessors
 class TestEventos extends FixtureTest {
 	// TipoDeUsuario usuarioProfesional
 // Se chequea la determinación de capacidad del evento según sea Evento Cerrado o Abierto
+
 	@Test
 	def void capacidadSanMartinEnEventoCerrado_10persona() {
 		Assert.assertEquals(10, reunionChica.capacidadMaxima(), 0)
@@ -90,4 +92,6 @@ class TestEventos extends FixtureTest {
 		usuario1.setUsuarioProfesional()
 		usuario1.organizarEventoAbierto(reunionAbierta)
 	}
+
+	
 }

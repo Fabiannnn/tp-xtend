@@ -4,9 +4,44 @@ import java.time.LocalDateTime
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.junit.Assert
 import org.junit.Test
+import excepciones.EventoException
+import java.time.LocalDate
+import java.time.Period
 
 @Accessors
 class TestEntrada extends FixtureTest{
+	// Test De Compra Entradas Evento Abierto
+	@Test
+	def void usuario2CompraEntradaEventoAbierto() {
+		cumple.comprarEntrada(usuario2)
+		Assert.assertEquals(1, cumple.entradas.size(), 0)
+		Assert.assertEquals(1, usuario2.entradaComprada.size(), 0)
+	}
+
+	@Test(expected=EventoException)
+	def void usuario2CompraEntradaEventoAbiertoSeCambiaLimiteFechaParaNoValide() {
+		cumple.fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(-7))
+		cumple.comprarEntrada(usuario2)
+	}
+	@Test(expected=EventoException)
+	def void usuario2CompraEntradaEventoAbiertoSeCambiaSuperficieParaQueNoValide() {
+		salon_SM.superficie=0
+		cumple.comprarEntrada(usuario2)
+	}
+	
+	@Test(expected=EventoException)
+	def void usuario1CompraEntradaEventoAbiertoNoValidaPorEdad() {
+		cumple.comprarEntrada(usuario1)
+	}
+
+	@Test
+	def void usuario1CompraEntradaEventoAbiertoSeBajaLimiteDeEdadYValida() {
+		cumple.edadMinima = 10
+		cumple.comprarEntrada(usuario1)
+		Assert.assertEquals(1, cumple.entradas.size(), 0)
+		Assert.assertEquals(1, usuario1.entradaComprada.size(), 0)
+
+	}
 //test devolucion entradas
 	@Test
 	def void devolverEntradaConMuchosDiasAnticipacionChequeoPorcentajeDevolucionIgualA80() {
