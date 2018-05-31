@@ -49,6 +49,7 @@ class TestJsonLocationUpdatesMock {
 	def void testJsonLocacionUpdate() {
 	
 		val updateService = mock(typeof(UpdateService))
+		
 		when(updateService.getLocationUpdates()).thenReturn(jsonText)
 		var RepositorioLocaciones repoDeLocaciones = new RepositorioLocaciones()
 		repoDeLocaciones.updateService = updateService

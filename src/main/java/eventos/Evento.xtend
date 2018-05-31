@@ -112,10 +112,15 @@ def edadValida(Usuario elComprador) {
 	return elComprador.edad() > edadMinima
 }
 	
-def void comprarConTarjetaDeCredito(Usuario elComprador, CreditCard tarjetaCredito){
-		val TarjetaPagos tarjetaPagos = new TarjetaPagos
-		puedeComprarEntrada(elComprador)
+def void comprarConTarjetaDeCredito(Usuario elComprador, CreditCard tarjetaCredito, TarjetaPagos tarjetaPagos){
+			puedeComprarEntrada(elComprador)
 		tarjetaPagos.pagarEntrada(tarjetaCredito , precioEntrada)
+		generarEntrada(elComprador)
+	}
+	
+	def void comprarConTarjetaDeCredito2(Usuario elComprador, CreditCard tarjetaCredito, TarjetaPagos tarjetaPagos, CreditCardService serv){
+			puedeComprarEntrada(elComprador)
+		tarjetaPagos.pagarEntrada2(serv, tarjetaCredito , precioEntrada)
 		generarEntrada(elComprador)
 	}
 	
