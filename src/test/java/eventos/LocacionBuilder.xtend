@@ -29,7 +29,7 @@ class LocacionBuilder {
 	}
 
 	def build() {
-		if (nombre !== null && punto !== null ) {
+		if (nombre !== null && punto !== null) {
 			new Locacion() => [
 				it.nombre = nombre
 				it.punto = punto

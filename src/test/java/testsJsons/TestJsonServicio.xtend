@@ -6,7 +6,6 @@ import org.junit.Assert
 import org.junit.Test
 import repositorio.RepositorioServicios
 
-
 @Accessors
 class TestJsonServicio {
 	RepositorioServicios repoDeServicios
@@ -34,9 +33,9 @@ class TestJsonServicio {
 		      }
 		   }
 		]'''
-		
+
 		jsonServicio.deserializarJson(jsonText, repoDeServicios)
-		
+
 		Assert.assertEquals(1, repoDeServicios.elementos.size(), 0)
 	}
 
@@ -71,7 +70,7 @@ class TestJsonServicio {
 		      }
 		   }
 		]'''
-		
+
 		jsonServicio.deserializarJson(jsonText2, repoDeServicios)
 
 		Assert.assertEquals(2, repoDeServicios.elementos.size(), 0)
@@ -108,7 +107,7 @@ class TestJsonServicio {
 		      }
 		   }
 		]'''
-		
+
 		jsonServicio.deserializarJson(jsonText2, repoDeServicios)
 
 		Assert.assertEquals(1, repoDeServicios.elementos.size(), 0)

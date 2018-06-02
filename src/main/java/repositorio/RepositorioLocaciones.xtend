@@ -11,10 +11,10 @@ import jsons.JsonLocacion
 class RepositorioLocaciones extends Repositorio<Locacion> {
 
 	override void recibirListaActualizacionJson(List<Locacion> locaciones) {
-		locaciones.forEach[elemento|actualizarLocacionConJson(elemento)]// ver si pasa a repositorio abstracto
+		locaciones.forEach[elemento|actualizarLocacionConJson(elemento)] // ver si pasa a repositorio abstracto
 	}
 
-	def actualizarLocacionConJson(Locacion _locacion) {// actualizarEntidadConJSon seria llamado desde repositorio general
+	def actualizarLocacionConJson(Locacion _locacion) { // actualizarEntidadConJSon seria llamado desde repositorio general
 		if ((!coordenadasIguales(_locacion.punto))) {
 			create(_locacion)
 		} else {
@@ -25,11 +25,11 @@ class RepositorioLocaciones extends Repositorio<Locacion> {
 	def coordenadasIguales(Point unPunto) {
 		elementos.exists(elemento|elemento.distancia(unPunto) == 0)
 	}
-	
-	override  updateAll() {
-	val	JsonLocacion jsonLocacion = new JsonLocacion
-				jsonLocacion.deserializarJson(updateService.getLocationUpdates(), this) 
-	
+
+	override updateAll() {
+		val JsonLocacion jsonLocacion = new JsonLocacion
+		jsonLocacion.deserializarJson(updateService.getLocationUpdates(), this)
+
 	}
-	
+
 }

@@ -11,18 +11,18 @@ abstract class Repositorio<T extends Entidad> {
 
 	List<T> elementos = newArrayList
 	int proximoId = 1;
- 	UpdateService updateService 
- 
+	UpdateService updateService
+
 	def void updateAll()
 
 	def void create(T elemento) {
 		elemento.esValido()
-		noEstaEnRepositorio(elemento) 
+		noEstaEnRepositorio(elemento)
 		asignarId(elemento)
 		agregarElemento(elemento)
 	}
 
-	def void recibirListaActualizacionJson(List<T> _objeto) 
+	def void recibirListaActualizacionJson(List<T> _objeto)
 
 	def void asignarId(T elemento) {
 		elemento.agregarId(proximoId)
@@ -43,12 +43,12 @@ abstract class Repositorio<T extends Entidad> {
 		reemplazarObjectoExistente(_elemento)
 	}
 
-	def  existeElId(T _elemento) {
-		if (!(estaEnRepo(_elemento))) {  
+	def existeElId(T _elemento) {
+		if (!(estaEnRepo(_elemento))) {
 			throw new EventoException("No existe el elemento que se quiere actualizar")
 		}
 	}
-	
+
 	def boolean estaEnRepo(T _elemento) {
 		elementos.exists[elementoRepo|elementoRepo.id == _elemento.id]
 	}
@@ -72,4 +72,3 @@ abstract class Repositorio<T extends Entidad> {
 		}
 	}
 }
-

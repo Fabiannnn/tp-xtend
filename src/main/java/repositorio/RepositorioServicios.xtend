@@ -30,11 +30,10 @@ class RepositorioServicios extends Repositorio<Servicio> {
 		servicios.forEach[elemento|actualizarElementoJson(elemento)]
 	}
 
-	override  updateAll() {
-	val	JsonServicio jsonServicio = new JsonServicio
-				jsonServicio.deserializarJson(updateService.getServiceUpdates(), this) 
-	
+	override updateAll() {
+		val JsonServicio jsonServicio = new JsonServicio
+		jsonServicio.deserializarJson(updateService.getServiceUpdates(), this)
+
 	}
-	
 
 }

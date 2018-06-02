@@ -26,7 +26,7 @@ class TestServicios extends FixtureTest {
 			coordenadas = new Point(34, 45)
 			esAntisocial = false
 		]
-		
+
 		servicioCatering = new Servicio => [
 			ubicacion = new Point(34.910067, 45) // distancia a reunion chica aproximada 10 km
 			costoFijo = 100

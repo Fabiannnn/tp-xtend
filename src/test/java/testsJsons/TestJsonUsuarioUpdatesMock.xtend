@@ -176,7 +176,7 @@ class TestJsonUsuarioUpdatesMock extends FixtureTest {
 
 	@Test
 	def void seAgrega2UsuariosValidosySeAplicaJsonDe2UnoQueModificaYOtroQueAgrega() {
-			jsonText2 = '''[
+		jsonText2 = '''[
 		   {
 		      "nombreUsuario":"PrimerUsuario",
 		      "nombreApellido":"Diego Maradona",

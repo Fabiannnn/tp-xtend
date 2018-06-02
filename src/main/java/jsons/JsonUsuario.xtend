@@ -3,11 +3,7 @@ package jsons
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.geodds.Point
 import com.eclipsesource.json.JsonObject
-import com.eclipsesource.json.JsonArray
-import com.eclipsesource.json.JsonValue
-import com.eclipsesource.json.Json
 import java.util.List
-import repositorio.Repositorio
 import eventos.Usuario
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -17,7 +13,6 @@ class JsonUsuario extends JsonsInterface {
 
 	var List<Usuario> usuarios = newArrayList
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy")
-
 
 	override jsonAObjetoFinal(JsonObject jsonUsuario) {
 		var Usuario usuarioAuxiliar

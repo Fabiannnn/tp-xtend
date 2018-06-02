@@ -6,7 +6,7 @@ import excepciones.EventoException
 import org.eclipse.xtend.lib.annotations.Accessors
 
 @Accessors
-class TestEventoCerrado extends FixtureTest{
+class TestEventoCerrado extends FixtureTest {
 
 	Invitacion invitacion
 	Invitacion invitacion2
@@ -45,7 +45,7 @@ class TestEventoCerrado extends FixtureTest{
 		Assert.assertEquals(10, reunionChica.cantidadAsistentes(), 0)
 	}
 
-	@Test (expected=EventoException)
+	@Test(expected=EventoException)
 	def seisInvitadosSeInvitan5MasChequeo10PosiblesAsistentes() {
 		invitacion = new Invitacion(reunionChica, usuario1, 5)
 		reunionChica.registrarInvitacionEnEvento(invitacion)
@@ -197,7 +197,7 @@ class TestEventoCerrado extends FixtureTest{
 		Assert.assertFalse(invitacion2.aceptada)
 	}
 
-	@Test 
+	@Test
 	def noRechazoMasivoUsuarioNoAntisocialyFueraRadioCercaniay1AMigos() {
 		invitacion2 = new Invitacion(reunionChica, usuario2, 3)
 		reunionChica.registrarInvitacionEnEvento(invitacion2)

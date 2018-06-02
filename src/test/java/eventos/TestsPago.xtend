@@ -80,64 +80,27 @@ class TestsPago {
 		creditCardService0 = mockearCreditCardService(respuesta0, tarjetaUno, cumple)
 	}
 
-	@Test//(expected=EventoException)
+	// 1) Mockeando TarjetPagos tira error con el mock, no reconoce el metodo pagarEntrada.
+	@Test // (expected=EventoException)
 	def void testCompraConTarjetaQueDaRespuestaCodigo1() {
 		var TarjetaPagos tarjetaPagos3 = new TarjetaPagos()
-			respuesta1 = mockearCCResponse(1, "Transaccion Invalida")
-			val CCResponse = mock(typeof(CCResponse))
+		respuesta1 = mockearCCResponse(1, "Transaccion Invalida")
 		tarjetaPagos3.CCResponse = respuesta1
-	
+
 		when(tarjetaPagos3.respuestaTarjeta(tarjetaUno, cumple.precioEntrada)).thenReturn(tarjetaPagos3.CCResponse)
-				println(tarjetaPagos3.respuestaTarjeta(tarjetaUno, cumple.precioEntrada).statusCode)
+		println(tarjetaPagos3.respuestaTarjeta(tarjetaUno, cumple.precioEntrada).statusCode)
 		cumple.comprarConTarjetaDeCredito(usuario2, tarjetaUno, tarjetaPagos3)
 		println(tarjetaPagos3.respuestaTarjeta(tarjetaUno, cumple.precioEntrada).statusMessage)
-//			cumple.comprarConTarjetaDeCredito(usuario2, tarjetaUno, tarjetaPagos)
-	Assert.assertEquals(1, cumple.entradas.size(), 0)
-
-	}
-	
-	@Test(expected=EventoException)
-	def void testTransaccionInvalida() {
-		var TarjetaPagos tar = new TarjetaPagos()
-		cumple.comprarConTarjetaDeCredito2(usuario2, tarjetaUno, tar, creditCardService)
-
-	}
-	
-	@Test(expected=EventoException)
-	def void testTransaccionError() {
-		var TarjetaPagos tar = new TarjetaPagos()
-		cumple.comprarConTarjetaDeCredito2(usuario2, tarjetaUno, tar, creditCardService2)
-	}
-	
-	@Test
-	def void testTransaccionExitosa() {
-		var TarjetaPagos tar = new TarjetaPagos()
-		cumple.comprarConTarjetaDeCredito2(usuario2, tarjetaUno, tar, creditCardService0)
 		Assert.assertEquals(1, cumple.entradas.size(), 0)
+
 	}
-	
 
 	@Test
 	def testCompraConTarjetaQueDaRespuestaCodigo0SeVerificaCompraEntrada() {
 		val TarjetaPagos tarjeta = new TarjetaPagos
-		// when(tarjetaPagos2.respuestaTarjeta(tarjetaUno, cumple.precioEntrada)).thenReturn(respuesta0)
-		// cumple.comprarConTarjetaDeCredito(usuario2, tarjetaUno, tarjetaPagos2)
 		tarjeta.pagarEntrada(tarjetaUno, cumple.precioEntrada)
-		// println(tarjeta.respuestaTarjeta(tarjetaUno, cumple.precioEntrada).statusMessage)
 		Assert.assertEquals(1, cumple.entradas.size(), 0)
 
-	}
-
-	@Test(expected=EventoException)
-	def testaiuuda() {
-		val TarjetaPagos tarjeta = new TarjetaPagos()
-//		tarjeta.probando()
-	}
-
-	@Test
-	def testProbandoMocks() {
-		println(respuesta2.statusMessage)
-		Assert.assertEquals(2, respuesta2.statusCode, 0)
 	}
 
 	@Test
@@ -148,7 +111,35 @@ class TestsPago {
 		Assert.assertEquals("Error", tarjetapagos.respuestaTarjeta(tarjetaUno, cumple.precioEntrada).statusMessage)
 	}
 
-	// Implementacion de mocks para CreditCard y CCResponse
+	// 2) Test OK mockeando CreditCardService. 
+	// Transacciones Invalida (codigo de error 1).
+	@Test(expected=EventoException)
+	def void testTransaccionInvalida() {
+		var TarjetaPagos tarjetaPagos = new TarjetaPagos()
+		tarjetaPagos.setCreditCardService(creditCardService)
+		cumple.comprarConLaTarjetaDeCredito(usuario2, tarjetaUno, tarjetaPagos)
+
+	}
+
+	// Transacciones Error (codigo de error 2).
+	@Test(expected=EventoException)
+	def void testTransaccionError() {
+		var TarjetaPagos tarjetaPagos = new TarjetaPagos()
+		tarjetaPagos.setCreditCardService(creditCardService2)
+		cumple.comprarConLaTarjetaDeCredito(usuario2, tarjetaUno, tarjetaPagos)
+	}
+
+	// Transacciones Exitosa (codigo de error 0).
+	@Test
+	def void testTransaccionExitosa() {
+		var TarjetaPagos tarjetaPagos = new TarjetaPagos()
+		tarjetaPagos.setCreditCardService(creditCardService0)
+		cumple.comprarConLaTarjetaDeCredito(usuario2, tarjetaUno, tarjetaPagos)
+		Assert.assertEquals(1, cumple.entradas.size(), 0)
+	}
+
+	// Implementacion de mocks
+	// CCResponse
 	def mockearCCResponse(int statusCode, String statusMessage) {
 		val ccresponse = mock(typeof(CCResponse))
 		when(ccresponse.statusCode).thenReturn(statusCode)
@@ -156,6 +147,7 @@ class TestsPago {
 		ccresponse
 	}
 
+	// CreditCard
 	def mockearCreditCard(String unNombre, String unNumero, String unCVV, String unaFechaExpiracion) {
 		val creditcard = mock(typeof(CreditCard))
 		when(creditcard.name).thenReturn(unNombre)
@@ -165,12 +157,14 @@ class TestsPago {
 		creditcard
 	}
 
+	// TarjetaPagos
 	def mockearTarjetaPagos(CCResponse ccresponse, CreditCard cc, EventoAbierto cumple) {
 		val tarjetapagos = mock(typeof(TarjetaPagos))
 		when(tarjetapagos.respuestaTarjeta(cc, cumple.precioEntrada)).thenReturn(ccresponse)
 		tarjetapagos
 	}
-	
+
+	// CreditCardService
 	def mockearCreditCardService(CCResponse ccresponse, CreditCard cc, EventoAbierto cumple) {
 		val service = mock(typeof(CreditCardService))
 		when(service.pay(cc, cumple.precioEntrada)).thenReturn(ccresponse)

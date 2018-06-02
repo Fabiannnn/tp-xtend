@@ -37,27 +37,29 @@ class Servicio implements Entidad {
 		tipoDeTarifa = new TarifaPorPersona
 	}
 
-	override def  esValido() {
-			validarUbicacion()
-			validarDescripcion()
-			validarTarifa()
-		
+	override def esValido() {
+		validarUbicacion()
+		validarDescripcion()
+		validarTarifa()
+
 	}
-	def	validarUbicacion(){
-			if (ubicacion === null){
-				throw new EventoException("Faltan Datos de Ubicacion")
-				
-			}
-			
+
+	def validarUbicacion() {
+		if (ubicacion === null) {
+			throw new EventoException("Faltan Datos de Ubicacion")
+
 		}
-	def	validarDescripcion(){
-			if (descripcion.nullOrEmpty){
-				throw new EventoException("Faltan Datos de descripcion")
-				
-			}
-			
+
+	}
+
+	def validarDescripcion() {
+		if (descripcion.nullOrEmpty) {
+			throw new EventoException("Faltan Datos de descripcion")
+
 		}
-	
+
+	}
+
 	def validarTarifa() {
 		if (tipoDeTarifa !== null) {
 			tipoDeTarifa.validarTipoTarifa(this)

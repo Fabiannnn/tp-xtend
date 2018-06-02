@@ -1,7 +1,6 @@
 package eventos
 
 import java.time.Duration
-
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.Set
@@ -10,7 +9,6 @@ import org.uqbar.geodds.Point
 import excepciones.EventoException
 import org.uqbar.ccService.CreditCardService
 import org.uqbar.ccService.CreditCard
-import org.uqbar.ccService.CCResponse
 
 @Accessors
 abstract class Evento {
@@ -102,25 +100,27 @@ class EventoAbierto extends Evento {
 	}
 
 
-def puedeComprarEntrada(Usuario elComprador){
-	if ( !edadValida(elComprador) || !fechaAnteriorALaLimite() || !hayEntradasDisponibles()) {    //TODO revisar agregado por pago tarjeta
+	def puedeComprarEntrada(Usuario elComprador){
+		if ( !edadValida(elComprador) || !fechaAnteriorALaLimite() || !hayEntradasDisponibles()) {    //TODO revisar agregado por pago tarjeta
 			throw new EventoException("No se puede Comprar la Entrada")
 		}
-}
+	}
 
-def edadValida(Usuario elComprador) {
-	return elComprador.edad() > edadMinima
-}
+	def edadValida(Usuario elComprador) {
+		return elComprador.edad() > edadMinima
+	}
 	
-def void comprarConTarjetaDeCredito(Usuario elComprador, CreditCard tarjetaCredito, TarjetaPagos tarjetaPagos){
+	//Metodo usado cuando mockeamos TarjetaPagos
+	def void comprarConTarjetaDeCredito(Usuario elComprador, CreditCard tarjetaCredito, TarjetaPagos tarjetaPagos){
 			puedeComprarEntrada(elComprador)
 		tarjetaPagos.pagarEntrada(tarjetaCredito , precioEntrada)
 		generarEntrada(elComprador)
 	}
 	
-	def void comprarConTarjetaDeCredito2(Usuario elComprador, CreditCard tarjetaCredito, TarjetaPagos tarjetaPagos, CreditCardService serv){
-			puedeComprarEntrada(elComprador)
-		tarjetaPagos.pagarEntrada2(serv, tarjetaCredito , precioEntrada)
+	//Metodo usado cuando mockeamos el CreditCardService
+	def void comprarConLaTarjetaDeCredito(Usuario elComprador, CreditCard tarjetaCredito, TarjetaPagos tarjetaPagos){
+		puedeComprarEntrada(elComprador)
+		tarjetaPagos.pagarLaEntrada(tarjetaCredito , precioEntrada)
 		generarEntrada(elComprador)
 	}
 	

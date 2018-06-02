@@ -27,9 +27,10 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 			this.create(_usuario)
 		}
 	}
-	override  updateAll() {
-	val	JsonUsuario jsonUsuario = new JsonUsuario
-				jsonUsuario.deserializarJson(updateService.getUserUpdates(), this) 
-	
+
+	override updateAll() {
+		val JsonUsuario jsonUsuario = new JsonUsuario
+		jsonUsuario.deserializarJson(updateService.getUserUpdates(), this)
+
 	}
 }

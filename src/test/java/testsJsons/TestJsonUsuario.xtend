@@ -3,7 +3,6 @@ package testsJsons
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.junit.Assert
 import org.junit.Test
-import repositorio.RepositorioUsuarios
 import jsons.JsonUsuario
 import eventos.FixtureTest
 
@@ -33,10 +32,10 @@ class TestJsonUsuario extends FixtureTest {
 		      }
 		   }
 		]'''
-		
+
 		var jsonUsuario = new JsonUsuario()
 		jsonUsuario.deserializarJson(jsonText, repoUsuario)
-		
+
 		Assert.assertEquals(1, repoUsuario.elementos.size(), 0)
 	}
 
@@ -76,10 +75,10 @@ class TestJsonUsuario extends FixtureTest {
 		      }
 		   }
 		]'''
-		
+
 		var jsonUsuario = new JsonUsuario()
 		jsonUsuario.deserializarJson(jsonText, repoUsuario)
-		
+
 		Assert.assertEquals(2, repoUsuario.elementos.size(), 0)
 	}
 
@@ -119,7 +118,7 @@ class TestJsonUsuario extends FixtureTest {
 		      }
 		   }
 		]'''
-		
+
 		jsonText2 = '''[
 		   {
 		      "nombreUsuario":"lucas_lucas",
@@ -158,7 +157,7 @@ class TestJsonUsuario extends FixtureTest {
 		var jsonUsuario = new JsonUsuario()
 		jsonUsuario.deserializarJson(jsonText, repoUsuario)
 		jsonUsuario.deserializarJson(jsonText2, repoUsuario)
-		
+
 		Assert.assertEquals(3, repoUsuario.elementos.size(), 0)
 		Assert.assertEquals("Lucas Lopez", repoUsuario.searchById(1).nombreApellido)
 		Assert.assertEquals("Lucas Otro", repoUsuario.searchById(2).nombreApellido)
@@ -209,7 +208,7 @@ class TestJsonUsuario extends FixtureTest {
 		]'''
 
 		jsonUsuario.deserializarJson(jsonText2, repoUsuario)
-		
+
 		Assert.assertEquals(5, repoUsuario.elementos.size(), 0)
 	}
 
@@ -255,9 +254,8 @@ class TestJsonUsuario extends FixtureTest {
 		]'''
 
 		jsonUsuario.deserializarJson(jsonText2, repoUsuario)
-		
+
 		Assert.assertEquals(3, repoUsuario.elementos.size(), 0)
 		Assert.assertEquals("Diego Maradona", repoUsuario.searchById(2).nombreApellido)
 	}
 }
-   
