@@ -6,6 +6,7 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.uqbar.geodds.Point
+import servicios.Servicio
 
 @Accessors
 class TestServicios extends FixtureTest {

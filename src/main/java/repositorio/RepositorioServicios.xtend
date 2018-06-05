@@ -1,10 +1,9 @@
 package repositorio
 
-import eventos.Servicio
 import java.util.List
-import org.eclipse.xtend.lib.annotations.Accessors
-import org.uqbar.updateService.UpdateService
 import jsons.JsonServicio
+import org.eclipse.xtend.lib.annotations.Accessors
+import servicios.Servicio
 
 @Accessors
 class RepositorioServicios extends Repositorio<Servicio> {

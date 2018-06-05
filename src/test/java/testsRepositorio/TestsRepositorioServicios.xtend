@@ -1,14 +1,13 @@
 package testsRepositorio
 
 import eventos.FixtureTest
-import eventos.Servicio
-
+import excepciones.EventoException
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.junit.Assert
-import org.junit.Test
-import excepciones.EventoException
 import org.junit.Before
+import org.junit.Test
 import org.uqbar.geodds.Point
+import servicios.Servicio
 
 @Accessors
 class TestsRepositorioServicios extends FixtureTest {

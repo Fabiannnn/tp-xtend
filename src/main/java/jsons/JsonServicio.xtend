@@ -1,9 +1,8 @@
 package jsons
 
 import com.eclipsesource.json.JsonObject
-import eventos.Servicio
-import java.util.List
 import org.uqbar.geodds.Point
+import servicios.Servicio
 
 class JsonServicio extends JsonsInterface {
 
