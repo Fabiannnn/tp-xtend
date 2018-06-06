@@ -20,17 +20,26 @@ class Servicio implements Entidad {
 	Point ubicacion
 	int id
 
-	def double costoTotal(Evento unEvento) {
-		costoBaseServicio(unEvento) + costoTraslado(unEvento)
+	def double costoTotal(Evento evento) {
+		tipoDeServicio.costoTotal(evento, this)
 	}
 
-def double costoBaseServicio(Evento unEvento){
-	tipoDeTarifa.costo(this, unEvento)
-}
+	def double costoBaseServicio(Evento unEvento){
+		tipoDeTarifa.costo(this, unEvento)
+	}
+	
 	def double costoTraslado(Evento unEvento) {
 		costoPorKm * unEvento.locacion.distancia(ubicacion)
 	}
+	
+	def void agregarServicio(Servicio servicio) {
+		tipoDeServicio.agregarServicio(servicio)
+	}
 
+	def void setServicioMultiple() {
+		tipoDeServicio = new ServicioMultiple()
+	}
+	
 	def void setTarifaFija() {
 		tipoDeTarifa = new TarifaFija()
 	}

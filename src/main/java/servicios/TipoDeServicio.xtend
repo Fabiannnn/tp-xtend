@@ -1,7 +1,9 @@
 package servicios
 
-abstract class TipoDeServicio {
-	def double costoDeTraslado (Servicio servicio)
+import eventos.Evento
 
-	def double costoTotal(Servicio servicio)
+interface TipoDeServicio {
+//	def double costoDeTraslado (Evento evento, Servicio servicio)
+	def double costoTotal(Evento evento, Servicio servicio)
+	def void agregarServicio(Servicio servicio)
 }
