@@ -2,30 +2,31 @@ package servicios
 
 import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
+import eventos.Evento
 
 @Accessors
-class ServicioMultiple extends TipoDeServicio {
+class ServicioMultiple implements TipoDeServicio {
 	
-	val descuento = 0d
+	val descuento = 0d // se pasa como un porcentaje de 0 a 100
 	List<Servicio> serviciosMultiples = newArrayList
 	
-	override double costoDeTraslado(Servicio servicio) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-		// fijar como hace calcula el costo de traslado
+	override double costoTotal(Evento evento, Servicio servicio) {
+		(costoBaseServicios(evento) * factorDescuento) + costoTrasladoServicios(evento) 
 	}
 	
-	override double costoTotal(Servicio servicio) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-		// fijar como recolecta el costo de cada servicio asociado 
-		// suma el costo de traslado mas el costo total con el descuento aplicado
+	def double costoTrasladoServicios(Evento evento) {
+		serviciosMultiples.map[ unServicio | unServicio.costoTraslado(evento)].max()
 	}
 	
-	def double aplicarDescuento(Servicio servicio) {
-		return servicio.costoTotal - (servicio.costoTotal * descuento)
+	def double costoBaseServicios(Evento evento) {
+		serviciosMultiples.fold(0d,[acum, unServicio | acum + unServicio.costoBaseServicio(evento)])
 	}
 	
-	def agregarServicio(Servicio servicio) {
+	def double factorDescuento() {
+		1-(descuento/100)
+	}
+	
+	override agregarServicio(Servicio servicio) {
 		serviciosMultiples.add(servicio)
 	}
-	
 }

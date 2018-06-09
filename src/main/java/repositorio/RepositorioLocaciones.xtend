@@ -2,10 +2,9 @@ package repositorio
 
 import eventos.Locacion
 import java.util.List
+import jsons.JsonLocacion
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.geodds.Point
-import org.uqbar.updateService.UpdateService
-import jsons.JsonLocacion
 
 @Accessors
 class RepositorioLocaciones extends Repositorio<Locacion> {

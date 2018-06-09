@@ -1,11 +1,16 @@
+
 package servicios
 
-class ServicioSimple extends TipoDeServicio {
-	
-	override double costoTotal(Servicio servicio) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+import excepciones.EventoException
+import eventos.Evento
+
+class ServicioSimple implements TipoDeServicio {
+
+	override double costoTotal(Evento evento, Servicio servicio) {
+		servicio.costoBaseServicio(evento) + servicio.costoTraslado(evento)
 	}
-	
-	// agregar costo de traslado
-	
+
+	override void agregarServicio(Servicio servicio) {
+		throw new EventoException("No puede agregar un servicio a un servicio simple")
+	}
 }

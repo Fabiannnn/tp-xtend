@@ -75,30 +75,32 @@ class Usuario implements Entidad {
 		if (unEventoAbierto.validarDatosEvento()) {
 			if (tipoDeUsuario.puedoOrganizarElEventoAbierto(this, unEventoAbierto)) {
 				unEventoAbierto.organizador = this
-				eventosOrganizados.add(
-					unEventoAbierto
-				)
+				eventosOrganizados.add(unEventoAbierto)	
+					unEventoAbierto.notificar()
 			} else {
 				throw new EventoException("El Usuario No puede organizar el evento")
 			}
 		}
 	}
-
-	def agregarAmigoALaLista(Usuario unAmigo) {
-		amigos.add(unAmigo)
-	}
-
 // Este cambio ya lo vio Rodrigo
 	def organizarEventoCerrado(EventoCerrado unEventoCerrado) {
 		if (unEventoCerrado.validarDatosEvento()) {
 			if (tipoDeUsuario.puedoOrganizarElEventoCerrado(this, unEventoCerrado)) {
 				unEventoCerrado.organizador = this
-				eventosOrganizados.add(unEventoCerrado)
+				eventosOrganizados.add(unEventoCerrado)			//TODO activar observers
+				
 			} else {
 				throw new EventoException("No se puede organizar el evento")
 			}
 		}
 	}
+
+	
+	def agregarAmigoALaLista(Usuario unAmigo) {
+		amigos.add(unAmigo)
+	}
+
+
 
 	def cancelarUnEvento(Evento unEvento) {
 		if (tipoDeUsuario.puedeCancelarEventos()) {

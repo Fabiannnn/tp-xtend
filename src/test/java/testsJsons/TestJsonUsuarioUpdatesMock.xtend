@@ -1,14 +1,14 @@
 package testsJsons
 
+import eventos.FixtureTest
+import jsons.JsonUsuario
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.junit.Assert
-import org.junit.Before
 import org.junit.Test
-import static org.mockito.Mockito.*
 import org.uqbar.updateService.UpdateService
 import repositorio.RepositorioUsuarios
-import jsons.JsonUsuario
-import eventos.FixtureTest
+
+import static org.mockito.Mockito.*
 
 @Accessors
 class TestJsonUsuarioUpdatesMock extends FixtureTest {

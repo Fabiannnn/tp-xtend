@@ -1,14 +1,15 @@
 package eventos
 
+import excepciones.EventoException
 import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.util.List
 import java.util.Set
+import notificaciones.EventoObserver
 import org.eclipse.xtend.lib.annotations.Accessors
-import org.uqbar.geodds.Point
-import excepciones.EventoException
-import org.uqbar.ccService.CreditCardService
 import org.uqbar.ccService.CreditCard
+import org.uqbar.geodds.Point
 
 @Accessors
 abstract class Evento {
@@ -19,6 +20,7 @@ abstract class Evento {
 	LocalDateTime fechaFinalizacion
 	Locacion locacion
 	LocalDate fechaLimiteConfirmacion
+	List<EventoObserver> eventoObservers
 
 	boolean cancelado = false
 	boolean postergado = false
@@ -40,7 +42,12 @@ abstract class Evento {
 	def double distancia(Point ubicacion) {
 		locacion.distancia(ubicacion)
 	}
-
+	def void agregarEventoObserver(EventoObserver eventoObserver){
+		eventoObservers.add(eventoObserver)
+	}
+	def void notificar(){
+		eventoObservers.forEach[unObserver | unObserver.notificar(this)]
+	}
 	def fechaAnteriorALaLimite() { 
 		LocalDate.now() <= LocalDate.from(this.fechaLimiteConfirmacion)
 	}
@@ -94,9 +101,8 @@ class EventoAbierto extends Evento {
 	Set<Entrada> entradas = newHashSet
 
 	def void comprarEntrada(Usuario elComprador) { 
-	puedeComprarEntrada(elComprador)
-	generarEntrada(elComprador)
-		
+		puedeComprarEntrada(elComprador)
+		generarEntrada(elComprador)
 	}
 
 
