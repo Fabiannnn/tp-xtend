@@ -24,7 +24,8 @@ class NotificacionAAmigosObserver implements EventoObserver {
 
 		listaDeAmigosMails(unEvento.organizador).forEach [ unMailAmigo |
 			unMail.to = unMailAmigo
-			unMailServer.sendMail(unMail)
+	//		unMailServer.sendMail(unMail)   TODO  habilitar sacar el println y mockear en el test el envio de mail
+		println (unMailAmigo)
 		]
 	}
 

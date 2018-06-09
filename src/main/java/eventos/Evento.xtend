@@ -20,7 +20,7 @@ abstract class Evento {
 	LocalDateTime fechaFinalizacion
 	Locacion locacion
 	LocalDate fechaLimiteConfirmacion
-	List<EventoObserver> eventoObservers
+	List<EventoObserver> eventoObservers = newArrayList
 
 	boolean cancelado = false
 	boolean postergado = false

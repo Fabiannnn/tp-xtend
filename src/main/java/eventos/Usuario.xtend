@@ -88,7 +88,7 @@ class Usuario implements Entidad {
 			if (tipoDeUsuario.puedoOrganizarElEventoCerrado(this, unEventoCerrado)) {
 				unEventoCerrado.organizador = this
 				eventosOrganizados.add(unEventoCerrado)			//TODO activar observers
-				
+				unEventoCerrado.notificar()
 			} else {
 				throw new EventoException("No se puede organizar el evento")
 			}
