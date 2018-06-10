@@ -14,21 +14,20 @@ class TestsNotificacionesObservers extends FixtureTest {
 	// testeo de org evento Abierto observer lista a amigos El mailservice esta comentado tira un println
 	@Test
 	def void unEventoAbiertoSeteaObserverDeAmigos() {
-		val MailService _MailService = new MailService
-		val NotificacionAAmigosObserver unNotificarAAmigos = new NotificacionAAmigosObserver(_MailService)
+//		val MailService _MailService = new MailService
+		val NotificacionAAmigosObserver unNotificarAAmigos = new NotificacionAAmigosObserver()
 		usuario1.setUsuarioProfesional()
 		usuario1.agregarAmigoALaLista(usuario2)
 		reunionAbierta.agregarEventoObserver(unNotificarAAmigos)
 		usuario1.organizarEventoAbierto(reunionAbierta)
-		Assert.assertEquals(1, unNotificarAAmigos.cantidadMailsEnviados(), 0)
+		Assert.assertEquals(1, usuario2.notificaciones.size(), 0)
 	}
 	
 
 	@Test
 	def void unEventoAbiertoSeteaObserverNotificarAQuienSoyAmigoObserver() {
-		val MailService _MailService = new MailService
-		val NotificarAQuienSoyAmigoObserver unNotificarAQuienMeTieneDeAmigo = new NotificarAQuienSoyAmigoObserver(
-			_MailService)
+		//val MailService _MailService = new MailService
+		val NotificarAQuienSoyAmigoObserver unNotificarAQuienMeTieneDeAmigo = new NotificarAQuienSoyAmigoObserver()
 		usuario1.setUsuarioProfesional()
 		usuario1.agregarAmigoALaLista(usuario2)
 		unNotificarAQuienMeTieneDeAmigo._repoUsuario = repoUsuario
@@ -40,7 +39,8 @@ class TestsNotificacionesObservers extends FixtureTest {
 		usuario3.nombreUsuario = "TercerUsuario"
 		repoUsuario.create(usuario3)
 		usuario1.organizarEventoAbierto(reunionAbierta)
-		Assert.assertEquals(1, unNotificarAQuienMeTieneDeAmigo.cantidadMailsEnviados(), 0)
+		Assert.assertEquals(1, usuario2.notificaciones.size(), 0)
+		Assert.assertEquals(0, usuario3.notificaciones.size(), 0)
 	}
 
 }

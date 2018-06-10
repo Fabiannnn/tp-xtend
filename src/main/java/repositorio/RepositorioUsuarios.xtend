@@ -33,9 +33,9 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 
 	}
 	
-	def listadoMailsDeMisAmigos(Usuario _usuario) {
+	def listadoDeMisAmigos(Usuario _usuario) {
 		var unaLista = elementos.filter [ unUsuario | unUsuario.esMiAmigo(_usuario)]
-		return unaLista.map[ unUsuario| unUsuario.getEmail()]
+		return unaLista//     .map[ unUsuario| unUsuario.getEmail()]
 	}
 	
 
