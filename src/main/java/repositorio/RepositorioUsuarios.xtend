@@ -32,4 +32,12 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 		jsonUsuario.deserializarJson(updateService.getUserUpdates(), this)
 
 	}
+	
+	def listadoMailsDeMisAmigos(Usuario _usuario) {
+		var unaLista = elementos.filter [ unUsuario | unUsuario.esMiAmigo(_usuario)]
+		return unaLista.map[ unUsuario| unUsuario.getEmail()]
+	}
+	
+
+	
 }

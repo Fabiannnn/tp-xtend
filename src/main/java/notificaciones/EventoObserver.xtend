@@ -2,6 +2,6 @@ package notificaciones
 
 import eventos.Evento
 
-interface EventoObserver {
+interface  EventoObserver {
 		def void notificar (Evento unEvento)
 }

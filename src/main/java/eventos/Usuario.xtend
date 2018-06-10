@@ -27,6 +27,11 @@ class Usuario implements Entidad {
 	Set<Evento> eventosOrganizados = newHashSet
 	int id
 
+def esMiAmigo(Usuario _Usuario){
+	return amigos.contains(_Usuario)
+	
+}
+
 // Métodos relacionados con Invitaciones a Eventos Cerrados
 	def recibirInvitacion(Invitacion invitacion) {
 		invitaciones.add(invitacion)
@@ -75,8 +80,9 @@ class Usuario implements Entidad {
 		if (unEventoAbierto.validarDatosEvento()) {
 			if (tipoDeUsuario.puedoOrganizarElEventoAbierto(this, unEventoAbierto)) {
 				unEventoAbierto.organizador = this
-				eventosOrganizados.add(unEventoAbierto)	
 					unEventoAbierto.notificar()
+				eventosOrganizados.add(unEventoAbierto)	
+
 			} else {
 				throw new EventoException("El Usuario No puede organizar el evento")
 			}
@@ -87,8 +93,9 @@ class Usuario implements Entidad {
 		if (unEventoCerrado.validarDatosEvento()) {
 			if (tipoDeUsuario.puedoOrganizarElEventoCerrado(this, unEventoCerrado)) {
 				unEventoCerrado.organizador = this
-				eventosOrganizados.add(unEventoCerrado)			//TODO activar observers
 				unEventoCerrado.notificar()
+				eventosOrganizados.add(unEventoCerrado)			//TODO activar observers
+
 			} else {
 				throw new EventoException("No se puede organizar el evento")
 			}

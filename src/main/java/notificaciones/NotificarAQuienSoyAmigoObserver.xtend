@@ -6,32 +6,36 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.mailService.Mail
 import org.uqbar.mailService.MailService
 import java.util.List
+import repositorio.RepositorioUsuarios
 
 @Accessors
-class NotificacionAAmigosObserver implements EventoObserver {
+class NotificarAQuienSoyAmigoObserver implements EventoObserver {
 	MailService unMailServer
 	Mail unMail
 	List<String>MailsReceptores = newArrayList  //Puesto para Testear
-
+List<String>MailsDistribucion = newArrayList
+RepositorioUsuarios _repoUsuario = new RepositorioUsuarios
 	new(MailService mailService) {
 		unMailServer = mailService
 	}
 
 	override  notificar(Evento unEvento) {
-		unMail = new Mail => [
+	 unMail = new Mail => [
 			from = unEvento.organizador.getEmail
 			subject = subjectMensaje(unEvento)
 			text = textoMensaje(unEvento)
 		]
-		listaDeAmigosMails(unEvento.organizador).forEach [ unMailAmigo |
+		listaDeMails( unEvento.organizador).forEach [ unMailAmigo |		
 			unMail.to = unMailAmigo
-			unMailServer.sendMail(unMail) //  TODO  habilitar sacar el println  en el test el envio de mail
+			unMailServer.sendMail(unMail) //  TODO  habilitar sacar el println  en el test el envio de mai
+
 			MailsReceptores.add(unMailAmigo) // Puesto para Poder Testear
+			
 		]
 	}
 
-	def listaDeAmigosMails(Usuario unUsuario) {
-		unUsuario.getAmigos.map[amigo|amigo.getEmail()]
+	def listaDeMails( Usuario _Usuario) {
+		_repoUsuario.listadoMailsDeMisAmigos(_Usuario)
 	}
 
 	def String subjectMensaje(Evento unEvento) {
