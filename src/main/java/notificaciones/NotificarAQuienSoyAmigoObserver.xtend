@@ -9,7 +9,7 @@ import java.util.List
 import repositorio.RepositorioUsuarios
 
 @Accessors
-class NotificarAQuienSoyAmigoObserver implements EventoObserver {
+class NotificarAQuienSoyAmigoObserver extends EventoObserverAC {
 //	MailService unMailServer
 //	Mail unMail
 //	List<String>MailsReceptores = newArrayList  //Puesto para Testear
@@ -20,7 +20,7 @@ class NotificarAQuienSoyAmigoObserver implements EventoObserver {
 //	}
 
 	override  notificar(Evento unEvento) {
-		listaDeUsuariosQueSoyAmigo(unEvento.organizador).forEach [ usuario | usuario.notificaciones.add(this.textoMensaje(unEvento))]
+		listaDeUsuariosQueSoyAmigo(unEvento.organizador, _repoUsuario).forEach [ usuario | usuario.notificaciones.add(this.textoMensaje(unEvento))]
 
 //	 unMail = new Mail => [
 //			from = unEvento.organizador.getEmail
@@ -36,18 +36,18 @@ class NotificarAQuienSoyAmigoObserver implements EventoObserver {
 //		]
 	}
 
-	def listaDeUsuariosQueSoyAmigo(Usuario _Usuario) {
-		_repoUsuario.listadoDeMisAmigos(_Usuario)
-	}
+//	def listaDeUsuariosQueSoyAmigo(Usuario _Usuario) {
+//		_repoUsuario.listadoDeMisAmigos(_Usuario)
+//	}
 
 //	def String subjectMensaje(Evento unEvento) {
 //		return "Nuevo Evento " + unEvento.nombre
 //	}
 
-	def String textoMensaje(Evento unEvento) {
-		return "Invitacion Especial para mis Amigos al nuevo Evento " + unEvento.nombre + unEvento.fechaDeInicio
-	}
-	
+//	def String textoMensaje(Evento unEvento) {
+//		return "Invitacion Especial  al nuevo Evento " + unEvento.nombre + unEvento.fechaDeInicio
+//	}
+//	
 //	def cantidadMailsEnviados() {
 //		return MailsReceptores.size()
 //	}

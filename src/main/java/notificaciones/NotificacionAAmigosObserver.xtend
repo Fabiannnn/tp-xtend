@@ -8,7 +8,7 @@ import org.uqbar.mailService.MailService
 import java.util.List
 
 @Accessors
-class NotificacionAAmigosObserver implements EventoObserver {
+class NotificacionAAmigosObserver extends EventoObserverAC {
 //	MailService unMailServer
 //	Mail unMail
 //	List<String>MailsReceptores = newArrayList  //Puesto para Testear
@@ -34,18 +34,18 @@ class NotificacionAAmigosObserver implements EventoObserver {
 		
 	}
 
-	def listaDeAmigosMails(Usuario unUsuario) {
-		unUsuario.getAmigos.map[amigo|amigo.getEmail()]
-	}
+//	def listaDeAmigosMails(Usuario unUsuario) {
+//		unUsuario.getAmigos.map[amigo|amigo.getEmail()]
+//	}
 //
 //	def String subjectMensaje(Evento unEvento) {
 //		return "Nuevo Evento " + unEvento.nombre
 //	}
-
-	def String textoMensaje(Evento unEvento) {
-		return "Invitacion Especial para mis Amigos al nuevo Evento " + unEvento.nombre + unEvento.fechaDeInicio
-	}
-	
+//
+//	def String textoMensaje(Evento unEvento) {
+//		return "Invitacion Especial para mis Amigos al nuevo Evento " + unEvento.nombre + unEvento.fechaDeInicio
+//	}
+//	
 //	def cantidadMailsEnviados() {
 //		return MailsReceptores.size()
 //	}
