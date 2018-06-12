@@ -21,6 +21,7 @@ abstract class Evento {
 	Locacion locacion
 	LocalDate fechaLimiteConfirmacion
 	List<EventoObserverAC> eventoObservers = newArrayList
+	List<Usuario> artistas = newArrayList
 
 	boolean cancelado = false
 	boolean postergado = false
@@ -86,6 +87,8 @@ abstract class Evento {
 			throw new EventoException("Faltan Datos en el Evento")
 		}else {true}
 	}
+	
+	abstract def boolean usuariosCercanosAlEvento(Point usuarioLocacion, Double radioCercania)
 
 	override toString() {
 		nombre
@@ -99,6 +102,7 @@ class EventoAbierto extends Evento {
 	int edadMinima
 	double precioEntrada
 	Set<Entrada> entradas = newHashSet
+	
 
 	def void comprarEntrada(Usuario elComprador) { 
 		puedeComprarEntrada(elComprador)
@@ -183,6 +187,10 @@ class EventoAbierto extends Evento {
 	override cantidadAsistentes(){
 		entradas.filter[entradas | entradas.vigente===true].size()		
 	}
+	
+	override usuariosCercanosAlEvento(Point usuarioLocacion, Double radioCercania) {
+		locacion.estaDentroDelRadioDeCercania(usuarioLocacion, radioCercania)
+	}
 
 }
 
@@ -262,8 +270,12 @@ class EventoCerrado extends Evento {
 		val coefFracaso =0.5
 		invitados.filter[invitacion | invitacion.aceptada!==false].size()/ invitados.size()< coefFracaso
 	}
-def ejecutarOrdenesDeInvitacion(){
-	val ConfirmacionAsincronica procesamientoAsincronico = new ConfirmacionAsincronica
-	procesamientoAsincronico.ejecutar(this)
-}
+//	def ejecutarOrdenesDeInvitacion(){
+//		val ConfirmacionAsincronica procesamientoAsincronico = new ConfirmacionAsincronica
+//		procesamientoAsincronico.ejecutar(this)
+//	}
+
+	override usuariosCercanosAlEvento(Point usuarioLocacion, Double radioCercania) {
+		throw new EventoException("No se puede notificar al usuario.")
+	}
 }

@@ -16,7 +16,7 @@ class NotificarAQuienSoyAmigoObserver extends EventoObserverAC {
 //		unMailServer = mailService
 //	}
 	override notificar(Evento unEvento) {
-		listaDeUsuariosQueSoyAmigo(unEvento.organizador, _repoUsuario).forEach [ usuario |
+		listaDeUsuariosANotificar(unEvento.organizador, _repoUsuario).forEach [ usuario |
 			usuario.notificaciones.add(this.textoMensaje(unEvento))
 		]
 
@@ -34,7 +34,7 @@ class NotificarAQuienSoyAmigoObserver extends EventoObserverAC {
 //		]
 	}
 
-//	def listaDeUsuariosQueSoyAmigo(Usuario _Usuario) {
+//	def listaDeUsuariosANotificar(Usuario _Usuario) {
 //		_repoUsuario.listadoDeMisAmigos(_Usuario)
 //	}
 //	def String subjectMensaje(Evento unEvento) {

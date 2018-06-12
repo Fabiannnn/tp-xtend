@@ -8,8 +8,8 @@ abstract class EventoObserverAC {
 	//RepositorioUsuarios _repoUsuario1 = new RepositorioUsuarios
 
 	def void notificar(Evento unEvento)
-
-	def listaDeUsuariosQueSoyAmigo(Usuario _Usuario, RepositorioUsuarios _repoUsuario) {
+	
+	def listaDeUsuariosANotificar(Usuario _Usuario, RepositorioUsuarios _repoUsuario) {
 		_repoUsuario.listadoDeMisAmigos(_Usuario)
 	}
 

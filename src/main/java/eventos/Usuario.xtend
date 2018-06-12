@@ -7,6 +7,7 @@ import java.util.Set
 import java.time.Period
 import java.time.LocalDateTime
 import excepciones.EventoException
+import java.util.List
 
 @Accessors
 class Usuario implements Entidad {
@@ -26,10 +27,15 @@ class Usuario implements Entidad {
 	TipoDeUsuario tipoDeUsuario
 	Set<Evento> eventosOrganizados = newHashSet
 	int id
+	List<Usuario> fanArtistas = newArrayList
 
 	def esMiAmigo(Usuario _Usuario) {
 		return amigos.contains(_Usuario)
 
+	}
+	
+	def boolean fanDeUnArtista(Usuario _usuario) {
+		fanArtistas.contains(_usuario)
 	}
 
 // Métodos relacionados con Invitaciones a Eventos Cerrados

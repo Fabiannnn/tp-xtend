@@ -37,7 +37,7 @@ def listaDeDistribucionQueVivenCerca(Evento unEvento, RepositorioUsuarios _repoU
 }
 	
 	def listaDeDistribucion(Evento unEvento, RepositorioUsuarios _repoUsuarios) {
-		return listaDeUsuariosQueSoyAmigo(unEvento.organizador, _repoUsuarios )+(unEvento.organizador.amigos)
+		return listaDeUsuariosANotificar(unEvento.organizador, _repoUsuarios )+(unEvento.organizador.amigos)
 		
 	}
 		def cantidadMailsEnviados() {
@@ -59,7 +59,7 @@ def listaDeDistribucionQueVivenCerca(Evento unEvento, RepositorioUsuarios _repoU
 
 
 //	override  notificar(Evento unEvento) {
-//		listaDeUsuariosQueSoyAmigo(unEvento.organizador, _repoUsuario).forEach [ usuario | usuario.notificaciones.add(this.textoMensaje(unEvento))]
+//		listaDeUsuariosANotificar(unEvento.organizador, _repoUsuario).forEach [ usuario | usuario.notificaciones.add(this.textoMensaje(unEvento))]
 
 //	 unMail = new Mail => [
 //			from = unEvento.organizador.getEmail
@@ -75,7 +75,7 @@ def listaDeDistribucionQueVivenCerca(Evento unEvento, RepositorioUsuarios _repoU
 //		]
 //	}
 
-//	def listaDeUsuariosQueSoyAmigo(Usuario _Usuario) {
+//	def listaDeUsuariosANotificar(Usuario _Usuario) {
 //		_repoUsuario.listadoDeMisAmigos(_Usuario)
 //	}
 
