@@ -27,10 +27,10 @@ class Usuario implements Entidad {
 	Set<Evento> eventosOrganizados = newHashSet
 	int id
 
-def esMiAmigo(Usuario _Usuario){
-	return amigos.contains(_Usuario)
-	
-}
+	def esMiAmigo(Usuario _Usuario) {
+		return amigos.contains(_Usuario)
+
+	}
 
 // Métodos relacionados con Invitaciones a Eventos Cerrados
 	def recibirInvitacion(Invitacion invitacion) {
@@ -43,15 +43,18 @@ def esMiAmigo(Usuario _Usuario){
 	}
 
 	def rechazarInvitacion(Invitacion invitacion) {
-		if (equals(invitacion.unUsuario) && invitacion.fechaParaConfirmar())
-			invitacion.rechazar()
+		invitacion.verificaRechazo(this)
+//		if (equals(invitacion.unUsuario) && invitacion.fechaParaConfirmar())
+//			invitacion.rechazar()
 	}
 
 	def aceptarInvitacion(Invitacion invitacion, int cantidadAcompanantes) {
-		if (equals(invitacion.unUsuario) && (invitacion.cantidadDeAcompanantes >= cantidadAcompanantes) &&
-			invitacion.fechaParaConfirmar()) {
-			invitacion.aceptar(cantidadAcompanantes)
-		}
+		invitacion.verificaAceptacion(this, cantidadAcompanantes)
+		
+//		if (equals(invitacion.unUsuario) && (invitacion.cantidadDeAcompanantes >= cantidadAcompanantes) &&
+//			invitacion.fechaParaConfirmar()) {
+//			invitacion.aceptar(cantidadAcompanantes)
+//		}
 	}
 
 	def invitarAUnEventoCerrado(EventoCerrado unEventoCerrado, Usuario elInvitado, int unaCantidadDeAcompanantes) {
@@ -80,34 +83,31 @@ def esMiAmigo(Usuario _Usuario){
 		if (unEventoAbierto.validarDatosEvento()) {
 			if (tipoDeUsuario.puedoOrganizarElEventoAbierto(this, unEventoAbierto)) {
 				unEventoAbierto.organizador = this
-					unEventoAbierto.notificar()
-				eventosOrganizados.add(unEventoAbierto)	
+				unEventoAbierto.notificar()
+				eventosOrganizados.add(unEventoAbierto)
 
 			} else {
 				throw new EventoException("El Usuario No puede organizar el evento")
 			}
 		}
 	}
+
 // Este cambio ya lo vio Rodrigo
 	def organizarEventoCerrado(EventoCerrado unEventoCerrado) {
 		if (unEventoCerrado.validarDatosEvento()) {
 			if (tipoDeUsuario.puedoOrganizarElEventoCerrado(this, unEventoCerrado)) {
 				unEventoCerrado.organizador = this
 				unEventoCerrado.notificar()
-				eventosOrganizados.add(unEventoCerrado)			//TODO activar observers
-
+				eventosOrganizados.add(unEventoCerrado) // TODO activar observers
 			} else {
 				throw new EventoException("No se puede organizar el evento")
 			}
 		}
 	}
 
-	
 	def agregarAmigoALaLista(Usuario unAmigo) {
 		amigos.add(unAmigo)
 	}
-
-
 
 	def cancelarUnEvento(Evento unEvento) {
 		if (tipoDeUsuario.puedeCancelarEventos()) {
@@ -191,6 +191,24 @@ def esMiAmigo(Usuario _Usuario){
 		}
 	}
 
+def definirRechazoAsincronico(Invitacion invitacion){
+	tipoDeUsuario.puedeConfirmacionAsincronica()
+	invitacion.asincronico=false
+}
+def definirAceptacionAsincronica(Invitacion invitacion, int acompanantes){
+	tipoDeUsuario.puedeConfirmacionAsincronica()
+	invitacion.asincronico=true
+	invitacion.cantidadDeAcompanantesConfirmados=acompanantes
+}
+def anularOrdenAsincronica(Invitacion invitacion){
+	tipoDeUsuario.puedeConfirmacionAsincronica()
+	if (invitacion.asincronico === null){
+		throw new EventoException("No existe confirmacion asincronica para anular")
+	}
+	invitacion.asincronico=null
+	invitacion.cantidadDeAcompanantesConfirmados=0
+}
+
 // Seteo de tipo de usuarios
 	def void setUsuarioFree() {
 		tipoDeUsuario = new UsuarioFree
@@ -269,6 +287,8 @@ interface TipoDeUsuario {
 
 	def boolean sePuedeEntregarInvitacion(EventoCerrado unEvento)
 
+	def boolean puedeConfirmacionAsincronica()
+
 }
 
 @Accessors
@@ -313,6 +333,10 @@ class UsuarioFree implements TipoDeUsuario {
 		unUsuario.eventosOrganizados.filter[evento|evento.fechaDeInicio.month == unaFecha.month].size() <
 			cantidadMaximaEventosMensuales
 	}
+
+	override boolean puedeConfirmacionAsincronica() {
+		throw new EventoException("El usuario free no puede Confirmar Asincronicamente")
+	}
 }
 
 @Accessors
@@ -341,6 +365,10 @@ class UsuarioAmateur implements TipoDeUsuario {
 	def boolean noSuperaElLimiteDeEventosSimultaneos(Usuario unUsuario) {
 		unUsuario.eventosOrganizados.filter[evento|evento.fechaFinalizacion > LocalDateTime.now()].size() <
 			limiteEventosSimultaneos
+	}
+
+	override boolean puedeConfirmacionAsincronica() {
+		throw new EventoException("El usuario amateur no puede Confirmar Asincronicamente")
 	}
 }
 
@@ -375,6 +403,10 @@ class UsuarioProfesional implements TipoDeUsuario {
 	def boolean noSuperaElLimite(Usuario unUsuario, LocalDateTime unaFecha) {
 		unUsuario.eventosOrganizados.filter[evento|evento.fechaDeInicio.month == unaFecha.month].size() <
 			cantidadMaximaEventosMensuales
+	}
+
+	override boolean puedeConfirmacionAsincronica() {
+		true
 	}
 
 }

@@ -14,23 +14,23 @@ class NotificarAContactosCercanosObserver extends EventoObserverAC{
 		RepositorioUsuarios _repoUsuario = new RepositorioUsuarios
 		MailService unMailServer
 		Mail unMail
-//		List<String>MailsReceptores = newArrayList  //Puesto para Testear
-//		List<String>MailsDistribucion = newArrayList
-//		new(MailService mailService) {
-//		unMailServer = mailService
-//		}
+		List<String>MailsReceptores = newArrayList  //Puesto para Testear
+		List<String>MailsDistribucion = newArrayList
+		new(MailService mailService) {
+		unMailServer = mailService
+		}
 	override  notificar(Evento unEvento) {
 	   listaDeDistribucionQueVivenCerca(unEvento , _repoUsuario).forEach [ usuario | usuario.notificaciones.add(this.textoMensaje(unEvento))]
-//	   	 unMail = new Mail => [
-//			from = unEvento.organizador.getEmail
-//			subject = subjectMensaje(unEvento)
-//			text = textoMensaje(unEvento)
-//		]
-//	 	 listaDeDistribucionQueVivenCerca(unEvento, _repoUsuario).forEach [ unMailAmigo |
-//			unMail.to = unMailAmigo.toString
-//			unMailServer.sendMail(unMail) 
-//			MailsReceptores.add(unMailAmigo.toString) // Puesto para Poder Testear
-//		]
+	   	 unMail = new Mail => [
+			from = unEvento.organizador.getEmail
+			subject = subjectMensaje(unEvento)
+			text = textoMensaje(unEvento)
+		]
+	 	 listaDeDistribucionQueVivenCerca(unEvento, _repoUsuario).forEach [ unMailAmigo |
+			unMail.to = unMailAmigo.toString
+			unMailServer.sendMail(unMail) 
+			MailsReceptores.add(unMailAmigo.toString) // Puesto para Poder Testear
+		]
 	}
 	
 def listaDeDistribucionQueVivenCerca(Evento unEvento, RepositorioUsuarios _repoUsuario){

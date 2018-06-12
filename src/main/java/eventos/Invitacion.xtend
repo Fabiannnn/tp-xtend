@@ -12,6 +12,7 @@ class Invitacion {
 	int cantidadDeAcompanantes
 	Boolean aceptada = null
 	int cantidadDeAcompanantesConfirmados = 0
+	Boolean asincronico = null
 
 	new(EventoCerrado elEventoCerrado, Usuario elUsuario, int laCantidadDeAcompanantes) {
 		unEventoCerrado = elEventoCerrado
@@ -19,12 +20,25 @@ class Invitacion {
 		cantidadDeAcompanantes = laCantidadDeAcompanantes
 	}
 
+	def verificaRechazo(Usuario _usuario) {
+		if (this.unUsuario == _usuario && fechaParaConfirmar()) {
+			rechazar()
+		}
+	}
+
 	def rechazar() {
-		this.aceptada = false
+		aceptada = false
 	}
 
 	def boolean fechaParaConfirmar() {
 		unEventoCerrado.fechaAnteriorALaLimite()
+	}
+
+	def verificaAceptacion(Usuario _usuario, int _cantidadAcompanantes) {
+		if (this.unUsuario == _usuario && (this.cantidadDeAcompanantes >= _cantidadAcompanantes) &&
+			this.fechaParaConfirmar()) {
+			aceptar(_cantidadAcompanantes)
+		}
 	}
 
 	def aceptar(int unaCantidadDeAcompanantes) {

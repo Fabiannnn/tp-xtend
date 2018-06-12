@@ -262,5 +262,8 @@ class EventoCerrado extends Evento {
 		val coefFracaso =0.5
 		invitados.filter[invitacion | invitacion.aceptada!==false].size()/ invitados.size()< coefFracaso
 	}
-
+def ejecutarOrdenesDeInvitacion(){
+	val ConfirmacionAsincronica procesamientoAsincronico = new ConfirmacionAsincronica
+	procesamientoAsincronico.ejecutar(this)
+}
 }
