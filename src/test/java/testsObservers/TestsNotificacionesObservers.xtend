@@ -1,19 +1,16 @@
 package testsObservers
 
 import eventos.FixtureTest
-import notificaciones.EventoObserverAC
+import eventos.Usuario
+import java.time.LocalDate
 import notificaciones.NotificacionAAmigosObserver
+import notificaciones.NotificarAContactosCercanosObserver
 import notificaciones.NotificarAQuienSoyAmigoObserver
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.junit.Assert
 import org.junit.Test
-import org.uqbar.mailService.MailService
-import repositorio.RepositorioUsuarios
-import eventos.Usuario
-import java.time.LocalDate
 import org.uqbar.geodds.Point
-import notificaciones.NotificarAContactosCercanosObserver
-import java.util.List
+import org.uqbar.mailService.MailService
 
 @Accessors
 class TestsNotificacionesObservers extends FixtureTest {
@@ -50,10 +47,10 @@ class TestsNotificacionesObservers extends FixtureTest {
 		Assert.assertEquals(1, usuario2.notificaciones.size(), 0)
 		Assert.assertEquals(1, usuario3.notificaciones.size(), 0)
 	}
-@Test
+
+	@Test
 	def void unEventoAbiertoSeteaObserverNotificarAContactosCercanos_1AmigoCerca_1ContLejano() {
 		// val	RepositorioUsuarios _repoUsuario = new RepositorioUsuarios
-
 		val Usuario usuario4 = new Usuario => [
 			nombreUsuario = "cuartoUsuario"
 			email = "mail1"
@@ -71,10 +68,12 @@ class TestsNotificacionesObservers extends FixtureTest {
 			radioDeCercania = 2000
 		]
 
-		val NotificarAContactosCercanosObserver unNotificarAContactosCercanos = new NotificarAContactosCercanosObserver()
+		val MailService _MailService = new MailService
+		val NotificarAContactosCercanosObserver unNotificarAContactosCercanos = new NotificarAContactosCercanosObserver(
+			_MailService)
 		unNotificarAContactosCercanos._repoUsuario = repoUsuario
-		reunionAbierta.agregarEventoObserver(unNotificarAContactosCercanos)	
-		
+		reunionAbierta.agregarEventoObserver(unNotificarAContactosCercanos)
+
 		usuario1.setUsuarioProfesional()
 		usuario1.agregarAmigoALaLista(usuario5)
 		usuario4.agregarAmigoALaLista(usuario1)
@@ -89,10 +88,10 @@ class TestsNotificacionesObservers extends FixtureTest {
 		Assert.assertEquals(1, usuario5.notificaciones.size(), 0)
 
 	}
+
 	@Test
 	def void unEventoAbiertoSeteaObserverNotificarAContactosCercanos_1Amigolejos_1ContCerca() {
 		// val	RepositorioUsuarios _repoUsuario = new RepositorioUsuarios
-
 		val Usuario usuario4 = new Usuario => [
 			nombreUsuario = "cuartoUsuario"
 			email = "mail1"
@@ -101,21 +100,23 @@ class TestsNotificacionesObservers extends FixtureTest {
 			coordenadas = new Point(100, 50)
 			radioDeCercania = 2
 		]
-		val Usuario usuario5 = new Usuario => [
-			nombreUsuario = "QUintoUsuario"
-			email = "mail1"
-			nombreApellido = "Pepe Argento"
-			fechaNacimiento = LocalDate.of(2002, 05, 15)
-			coordenadas = new Point(35, 45)
-			radioDeCercania = 2000
-		]
-				usuario2.coordenadas = new Point(35.0, 47.0)
+//		val Usuario usuario5 = new Usuario => [
+//			nombreUsuario = "QUintoUsuario"
+//			email = "mail1"
+//			nombreApellido = "Pepe Argento"
+//			fechaNacimiento = LocalDate.of(2002, 05, 15)
+//			coordenadas = new Point(35, 45)
+//			radioDeCercania = 2000
+//		]
+		usuario2.coordenadas = new Point(35.0, 47.0)
 		usuario2.radioDeCercania = 2000000.0
 
-		val NotificarAContactosCercanosObserver unNotificarAContactosCercanos = new NotificarAContactosCercanosObserver()
+		val MailService _MailService = new MailService
+		val NotificarAContactosCercanosObserver unNotificarAContactosCercanos = new NotificarAContactosCercanosObserver(
+			_MailService)
 		unNotificarAContactosCercanos._repoUsuario = repoUsuario
-		reunionAbierta.agregarEventoObserver(unNotificarAContactosCercanos)	
-		
+		reunionAbierta.agregarEventoObserver(unNotificarAContactosCercanos)
+
 		usuario1.setUsuarioProfesional()
 		usuario1.agregarAmigoALaLista(usuario4)
 		usuario2.agregarAmigoALaLista(usuario1)
@@ -131,56 +132,58 @@ class TestsNotificacionesObservers extends FixtureTest {
 
 	}
 
-//	@Test
-//	def void unEventoAbiertoSeteaObserverNotificarAContactosCercanos() {
-//		// val	RepositorioUsuarios _repoUsuario = new RepositorioUsuarios
-//		 val MailService _MailService = new MailService
-//		val Usuario usuario4 = new Usuario => [
-//			nombreUsuario = "cuartoUsuario"
-//			email = "mail1"
-//			nombreApellido = "Pepe Argento"
-//			fechaNacimiento = LocalDate.of(2002, 05, 15)
-//			coordenadas = new Point(100, 50)
-//			radioDeCercania = 2
-//		]
-//		val Usuario usuario5 = new Usuario => [
-//			nombreUsuario = "QUintoUsuario"
-//			email = "mail1"
-//			nombreApellido = "Pepe Argento"
-//			fechaNacimiento = LocalDate.of(2002, 05, 15)
-//			coordenadas = new Point(35, 45)
-//			radioDeCercania = 2000
-//		]
-//		usuario3.nombreUsuario = "TercerUsuario"
-//		usuario2.coordenadas = new Point(35.0, 47.0)
-//		usuario2.radioDeCercania = 2000000.0
-//		usuario3.radioDeCercania = 2000000.0
-//		val NotificarAContactosCercanosObserver unNotificarAContactosCercanos = new NotificarAContactosCercanosObserver()
-//		usuario1.setUsuarioProfesional()
-//		usuario1.agregarAmigoALaLista(usuario2)
-//		usuario1.agregarAmigoALaLista(usuario4)
-//		unNotificarAContactosCercanos._repoUsuario = repoUsuario
-//		reunionAbierta.agregarEventoObserver(unNotificarAContactosCercanos)
-//		usuario1.agregarAmigoALaLista(usuario2)
-//		usuario1.agregarAmigoALaLista(usuario4)		
-//		usuario1.agregarAmigoALaLista(usuario5)		
-//		usuario4.agregarAmigoALaLista(usuario1)
-//		usuario3.agregarAmigoALaLista(usuario1)
-//		usuario5.agregarAmigoALaLista(usuario1)
-//	
-//		repoUsuario.create(usuario1)
-//		repoUsuario.create(usuario2)
-//		repoUsuario.create(usuario3)
-//		repoUsuario.create(usuario4)
-//		repoUsuario.create(usuario5)
-//
-//		usuario1.organizarEventoAbierto(reunionAbierta)
-//		Assert.assertEquals(0, usuario1.notificaciones.size(), 0)
-//		Assert.assertEquals(1, usuario2.notificaciones.size(), 0)
-//		Assert.assertEquals(1, usuario3.notificaciones.size(), 0)
-//		Assert.assertEquals(0, usuario4.notificaciones.size(), 0)
-//		Assert.assertEquals(1, usuario5.notificaciones.size(), 0)
-//
-//	}
+	@Test
+	def void unEventoAbiertoSeteaObserverNotificarAContactosCercanos() {
+		// val	RepositorioUsuarios _repoUsuario = new RepositorioUsuarios
+		val MailService _MailService = new MailService
+		val Usuario usuario4 = new Usuario => [
+			nombreUsuario = "cuartoUsuario"
+			email = "mail1"
+			nombreApellido = "Pepe Argento"
+			fechaNacimiento = LocalDate.of(2002, 05, 15)
+			coordenadas = new Point(100, 50)
+			radioDeCercania = 2
+		]
+		val Usuario usuario5 = new Usuario => [
+			nombreUsuario = "QUintoUsuario"
+			email = "mail1"
+			nombreApellido = "Pepe Argento"
+			fechaNacimiento = LocalDate.of(2002, 05, 15)
+			coordenadas = new Point(35, 45)
+			radioDeCercania = 2000
+		]
+		usuario3.nombreUsuario = "TercerUsuario"
+		usuario2.coordenadas = new Point(35.0, 47.0)
+		usuario2.radioDeCercania = 2000000.0
+		usuario3.radioDeCercania = 2000000.0
+
+		val NotificarAContactosCercanosObserver unNotificarAContactosCercanos = new NotificarAContactosCercanosObserver(
+			_MailService)
+		usuario1.setUsuarioProfesional()
+		usuario1.agregarAmigoALaLista(usuario2)
+		usuario1.agregarAmigoALaLista(usuario4)
+		unNotificarAContactosCercanos._repoUsuario = repoUsuario
+		reunionAbierta.agregarEventoObserver(unNotificarAContactosCercanos)
+		usuario1.agregarAmigoALaLista(usuario2)
+		usuario1.agregarAmigoALaLista(usuario4)
+		usuario1.agregarAmigoALaLista(usuario5)
+		usuario4.agregarAmigoALaLista(usuario1)
+		usuario3.agregarAmigoALaLista(usuario1)
+		usuario5.agregarAmigoALaLista(usuario1)
+
+		repoUsuario.create(usuario1)
+		repoUsuario.create(usuario2)
+		repoUsuario.create(usuario3)
+		repoUsuario.create(usuario4)
+		repoUsuario.create(usuario5)
+
+		usuario1.organizarEventoAbierto(reunionAbierta)
+		Assert.assertEquals(0, usuario1.notificaciones.size(), 0)
+		Assert.assertEquals(1, usuario2.notificaciones.size(), 0)
+		Assert.assertEquals(1, usuario3.notificaciones.size(), 0)
+		Assert.assertEquals(0, usuario4.notificaciones.size(), 0)
+		Assert.assertEquals(1, usuario5.notificaciones.size(), 0)
+
+	}
 
 }

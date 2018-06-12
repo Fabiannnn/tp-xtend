@@ -1,11 +1,7 @@
 package notificaciones
 
 import eventos.Evento
-import eventos.Usuario
 import org.eclipse.xtend.lib.annotations.Accessors
-import org.uqbar.mailService.Mail
-import org.uqbar.mailService.MailService
-import java.util.List
 
 @Accessors
 class NotificacionAAmigosObserver extends EventoObserverAC {
@@ -16,11 +12,9 @@ class NotificacionAAmigosObserver extends EventoObserverAC {
 //	new(MailService mailService) {
 //		unMailServer = mailService
 //	}
+	override notificar(Evento unEvento) {
+		unEvento.organizador.amigos.forEach[usuario|usuario.notificaciones.add(this.textoMensaje(unEvento))]
 
-	override  notificar(Evento unEvento) {
-		unEvento.organizador.amigos.forEach [ usuario | usuario.notificaciones.add(this.textoMensaje(unEvento))]
-		
-		
 //		unMail = new Mail => [
 //			from = unEvento.organizador.getEmail
 //			subject = subjectMensaje(unEvento)
@@ -29,9 +23,7 @@ class NotificacionAAmigosObserver extends EventoObserverAC {
 //		listaDeAmigosMails(unEvento.organizador).forEach [ unMailAmigo |
 //			unMail.to = unMailAmigo
 //			unMailServer.sendMail(unMail) //  TODO  habilitar sacar el println  en el test el envio de mail
-
-	//		MailsReceptores.add(unMailAmigo) // Puesto para Poder Testear
-		
+	// MailsReceptores.add(unMailAmigo) // Puesto para Poder Testear
 	}
 
 //	def listaDeAmigosMails(Usuario unUsuario) {

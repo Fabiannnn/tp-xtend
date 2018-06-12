@@ -1,12 +1,10 @@
 package notificaciones
 
 import eventos.Evento
-import org.eclipse.xtend.lib.annotations.Accessors
-import eventos.Usuario
+import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.mailService.Mail
 import org.uqbar.mailService.MailService
-import java.util.List
 import repositorio.RepositorioUsuarios
 
 @Accessors

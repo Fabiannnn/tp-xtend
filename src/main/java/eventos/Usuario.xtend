@@ -50,7 +50,7 @@ class Usuario implements Entidad {
 
 	def aceptarInvitacion(Invitacion invitacion, int cantidadAcompanantes) {
 		invitacion.verificaAceptacion(this, cantidadAcompanantes)
-		
+
 //		if (equals(invitacion.unUsuario) && (invitacion.cantidadDeAcompanantes >= cantidadAcompanantes) &&
 //			invitacion.fechaParaConfirmar()) {
 //			invitacion.aceptar(cantidadAcompanantes)
@@ -191,23 +191,25 @@ class Usuario implements Entidad {
 		}
 	}
 
-def definirRechazoAsincronico(Invitacion invitacion){
-	tipoDeUsuario.puedeConfirmacionAsincronica()
-	invitacion.asincronico=false
-}
-def definirAceptacionAsincronica(Invitacion invitacion, int acompanantes){
-	tipoDeUsuario.puedeConfirmacionAsincronica()
-	invitacion.asincronico=true
-	invitacion.cantidadDeAcompanantesConfirmados=acompanantes
-}
-def anularOrdenAsincronica(Invitacion invitacion){
-	tipoDeUsuario.puedeConfirmacionAsincronica()
-	if (invitacion.asincronico === null){
-		throw new EventoException("No existe confirmacion asincronica para anular")
+	def definirRechazoAsincronico(Invitacion invitacion) {
+		tipoDeUsuario.puedeConfirmacionAsincronica()
+		invitacion.asincronico = false
 	}
-	invitacion.asincronico=null
-	invitacion.cantidadDeAcompanantesConfirmados=0
-}
+
+	def definirAceptacionAsincronica(Invitacion invitacion, int acompanantes) {
+		tipoDeUsuario.puedeConfirmacionAsincronica()
+		invitacion.asincronico = true
+		invitacion.cantidadDeAcompanantesConfirmados = acompanantes
+	}
+
+	def anularOrdenAsincronica(Invitacion invitacion) {
+		tipoDeUsuario.puedeConfirmacionAsincronica()
+		if (invitacion.asincronico === null) {
+			throw new EventoException("No existe confirmacion asincronica para anular")
+		}
+		invitacion.asincronico = null
+		invitacion.cantidadDeAcompanantesConfirmados = 0
+	}
 
 // Seteo de tipo de usuarios
 	def void setUsuarioFree() {

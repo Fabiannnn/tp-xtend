@@ -24,14 +24,14 @@ class Servicio implements Entidad {
 		tipoDeServicio.costoTotal(evento, this)
 	}
 
-	def double costoBaseServicio(Evento unEvento){
+	def double costoBaseServicio(Evento unEvento) {
 		tipoDeTarifa.costo(this, unEvento)
 	}
-	
+
 	def double costoTraslado(Evento unEvento) {
 		costoPorKm * unEvento.locacion.distancia(ubicacion)
 	}
-	
+
 	def void agregarServicio(Servicio servicio) {
 		tipoDeServicio.agregarServicio(servicio)
 	}
@@ -39,7 +39,7 @@ class Servicio implements Entidad {
 	def void setServicioMultiple() {
 		tipoDeServicio = new ServicioMultiple()
 	}
-	
+
 	def void setTarifaFija() {
 		tipoDeTarifa = new TarifaFija()
 	}
@@ -91,5 +91,3 @@ class Servicio implements Entidad {
 		descripcion.startsWith(cadena)
 	}
 }
-
-
