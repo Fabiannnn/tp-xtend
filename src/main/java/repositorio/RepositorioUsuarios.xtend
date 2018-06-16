@@ -5,6 +5,7 @@ import java.util.List
 import jsons.JsonUsuario
 import org.eclipse.xtend.lib.annotations.Accessors
 import eventos.Evento
+import java.util.Set
 
 @Accessors
 class RepositorioUsuarios extends Repositorio<Usuario> {
@@ -35,24 +36,19 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 	}
 
 	def listadoDeMisAmigos(Usuario _usuario) {
-		var unaLista = elementos.filter[unUsuario|unUsuario.esMiAmigo(_usuario)]
-		return unaLista // .map[ unUsuario| unUsuario.getEmail()]
+		elementos.filter[unUsuario|unUsuario.esMiAmigo(_usuario)].toSet
 	}
 	
 	def listadoUsuariosCercanosEvento(Evento unEvento) {
-		var unaLista = elementos.filter[usuario | unEvento.usuariosCercanosAlEvento(usuario.coordenadas, usuario.radioDeCercania)]
+		var unaLista = elementos.filter[usuario | unEvento.usuariosCercanosAlEvento(usuario)]
 		return unaLista
 	}
 	
-	def listadoUsuariosFansDeArtistasDeUnEvento(List<Usuario> artistas) {
+	def listadoUsuariosFansDeArtistasDeUnEvento(Set<String> artistas ) {
 		//Tiene que traer una lista con los usuarios que son fans de algun artista del evento.
-		val unaLista = newArrayList
-		elementos.forEach [ usuario | 
-			artistas.forEach [ artista | if(usuario.fanDeUnArtista(artista))
-				unaLista.add(usuario)
-			]
-		]
-		return unaLista
+		
+		elementos.filter[ usuario | usuario.soyFanDeAlgunoDeLosArtistas(artistas)]
+	
 	}
 
 }

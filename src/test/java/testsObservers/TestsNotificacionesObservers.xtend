@@ -12,6 +12,7 @@ import org.junit.Test
 import org.uqbar.geodds.Point
 import org.uqbar.mailService.MailService
 import notificaciones.NotificarAUsuariosCercanosAlEventoObserver
+import notificaciones.NotificarAUsuariosFansDeUnArtista
 
 @Accessors
 class TestsNotificacionesObservers extends FixtureTest {
@@ -161,8 +162,6 @@ class TestsNotificacionesObservers extends FixtureTest {
 		val NotificarAContactosCercanosObserver unNotificarAContactosCercanos = new NotificarAContactosCercanosObserver(
 			_MailService)
 		usuario1.setUsuarioProfesional()
-		usuario1.agregarAmigoALaLista(usuario2)
-		usuario1.agregarAmigoALaLista(usuario4)
 		unNotificarAContactosCercanos._repoUsuario = repoUsuario
 		reunionAbierta.agregarEventoObserver(unNotificarAContactosCercanos)
 		usuario1.agregarAmigoALaLista(usuario2)
@@ -179,6 +178,7 @@ class TestsNotificacionesObservers extends FixtureTest {
 		repoUsuario.create(usuario5)
 
 		usuario1.organizarEventoAbierto(reunionAbierta)
+
 		Assert.assertEquals(0, usuario1.notificaciones.size(), 0)
 		Assert.assertEquals(1, usuario2.notificaciones.size(), 0)
 		Assert.assertEquals(1, usuario3.notificaciones.size(), 0)
@@ -186,7 +186,7 @@ class TestsNotificacionesObservers extends FixtureTest {
 		Assert.assertEquals(1, usuario5.notificaciones.size(), 0)
 
 	}
-	
+
 	@Test
 	def void unEventoAbiertoSeteaObserverNotificarAUsuariosCercanosAlEvento_1UsuarioCercano() {
 		val Usuario usuario4 = new Usuario => [
@@ -207,6 +207,7 @@ class TestsNotificacionesObservers extends FixtureTest {
 		]
 
 		val NotificarAUsuariosCercanosAlEventoObserver NotificarUsuariosCercanos = new NotificarAUsuariosCercanosAlEventoObserver()
+
 		usuario1.setUsuarioProfesional()
 		repoUsuario.create(usuario1)
 		repoUsuario.create(usuario4)
@@ -220,4 +221,43 @@ class TestsNotificacionesObservers extends FixtureTest {
 
 	}
 
+	@Test
+	def void unEventoAbiertoSeteaObserverFans2artistas3usuario2esfansotrono() {
+		val Usuario usuario4 = new Usuario => [
+			nombreUsuario = "cuartoUsuario"
+			email = "mail1"
+			nombreApellido = "Pepe Argento"
+			fechaNacimiento = LocalDate.of(2002, 05, 15)
+			coordenadas = new Point(100, 50)
+			radioDeCercania = 2
+		]
+		val Usuario usuario5 = new Usuario => [
+			nombreUsuario = "QUintoUsuario"
+			email = "mail1"
+			nombreApellido = "Pepe Argento"
+			fechaNacimiento = LocalDate.of(2002, 05, 15)
+			coordenadas = new Point(35, 45)
+			radioDeCercania = 2000
+		]
+		reunionAbierta.artistas.add("Madonna")
+		reunionAbierta.artistas.add("Lennon")
+		usuario4.fanArtistas.add("Madonna")
+		usuario5.fanArtistas.add("Messi")
+		usuario2.fanArtistas.add("Lennon")
+		val MailService _MailService = new MailService
+		val NotificarAUsuariosFansDeUnArtista NotificarAUsuariosFans = new NotificarAUsuariosFansDeUnArtista(
+			_MailService)
+		usuario1.setUsuarioProfesional()
+		repoUsuario.create(usuario1)
+		repoUsuario.create(usuario4)
+		repoUsuario.create(usuario5)
+		repoUsuario.create(usuario2)
+		NotificarAUsuariosFans._repoUsuario = repoUsuario
+		reunionAbierta.agregarEventoObserver(NotificarAUsuariosFans)
+		usuario1.organizarEventoAbierto(reunionAbierta)
+
+		Assert.assertEquals(1, usuario2.notificaciones.size(), 0)
+		Assert.assertEquals(1, usuario4.notificaciones.size(), 0)
+		Assert.assertEquals(0, usuario5.notificaciones.size(), 0)
+	}
 }

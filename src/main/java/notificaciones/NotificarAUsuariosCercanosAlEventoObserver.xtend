@@ -10,7 +10,7 @@ class NotificarAUsuariosCercanosAlEventoObserver extends EventoObserverAC {
 
 	override notificar(Evento unEvento) {
 		listaDeUsuariosCercanos(unEvento, _repoUsuario).forEach [ usuario |
-			usuario.notificaciones.add(this.textoMensaje(unEvento))
+			usuario.recibirNotificacion(this.textoMensaje(unEvento))
 		]
 	}
 	

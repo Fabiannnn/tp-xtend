@@ -14,7 +14,7 @@ class Invitacion {
 	int cantidadDeAcompanantesConfirmados = 0
 	Boolean asincronico = null
 
-	new(EventoCerrado elEventoCerrado, Usuario elUsuario, int laCantidadDeAcompanantes) {
+	new(EventoCerrado elEventoCerrado, Usuario elUsuario, int laCantidadDeAcompanantes) {//clase de ordenes para aceptar y rechazar 
 		unEventoCerrado = elEventoCerrado
 		unUsuario = elUsuario
 		cantidadDeAcompanantes = laCantidadDeAcompanantes

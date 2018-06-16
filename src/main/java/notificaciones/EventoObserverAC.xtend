@@ -20,4 +20,5 @@ abstract class EventoObserverAC {
 	def String subjectMensaje(Evento unEvento) {
 		return "Nuevo Evento " + unEvento.nombre
 	}
+
 }

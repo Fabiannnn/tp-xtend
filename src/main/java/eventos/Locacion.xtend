@@ -17,8 +17,8 @@ class Locacion implements Entidad {
 		punto.distance(otroPunto)
 	}
 
-	def estaDentroDelRadioDeCercania(Point otroPunto, double radioCercania) {
-		distancia(otroPunto) <= radioCercania
+	def estaDentroDelRadioDeCercania(Usuario usuario) {
+		distancia(usuario.coordenadas) <= usuario.radioDeCercania
 	}
 
 	def capacidadMaxima() {

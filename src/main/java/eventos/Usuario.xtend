@@ -1,13 +1,12 @@
 package eventos
 
-import java.time.LocalDate
-import org.uqbar.geodds.Point
-import org.eclipse.xtend.lib.annotations.Accessors
-import java.util.Set
-import java.time.Period
-import java.time.LocalDateTime
 import excepciones.EventoException
-import java.util.List
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.Period
+import java.util.Set
+import org.eclipse.xtend.lib.annotations.Accessors
+import org.uqbar.geodds.Point
 
 @Accessors
 class Usuario implements Entidad {
@@ -27,16 +26,37 @@ class Usuario implements Entidad {
 	TipoDeUsuario tipoDeUsuario
 	Set<Evento> eventosOrganizados = newHashSet
 	int id
-	List<Usuario> fanArtistas = newArrayList
+	Set<String> fanArtistas = newHashSet
 
 	def esMiAmigo(Usuario _Usuario) {
 		return amigos.contains(_Usuario)
 
 	}
 	
-	def boolean fanDeUnArtista(Usuario _usuario) {
-		fanArtistas.contains(_usuario)
+	def getAmigos() {
+		amigos
 	}
+	
+	def getEmail() {
+		email
+	}
+	
+	def recibirNotificacion(String textoNotificacion){
+		notificaciones.add(textoNotificacion)
+	}
+	
+	def boolean fanDeUnArtista(String artista) {
+		fanArtistas.exists[artistaUsuario | artistaUsuario.equals(artista)]
+	}
+
+//TODO metodo recibir lista de artistas
+
+def boolean soyFanDeAlgunoDeLosArtistas(Set<String> artistas){
+	artistas.exists[artista | this.fanDeUnArtista(artista)]
+}
+
+
+
 
 // Métodos relacionados con Invitaciones a Eventos Cerrados
 	def recibirInvitacion(Invitacion invitacion) {
@@ -162,7 +182,7 @@ class Usuario implements Entidad {
 	}
 
 	def esDentroDelRadioDeCercania(Invitacion invitacion) {
-		invitacion.ubicacion().estaDentroDelRadioDeCercania(coordenadas, radioDeCercania)
+		invitacion.ubicacion().estaDentroDelRadioDeCercania(this)
 	}
 
 	def rechazoMasivo() {

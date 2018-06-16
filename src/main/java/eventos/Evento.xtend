@@ -4,12 +4,11 @@ import excepciones.EventoException
 import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.util.List
 import java.util.Set
+import notificaciones.EventoObserverAC
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.ccService.CreditCard
 import org.uqbar.geodds.Point
-import notificaciones.EventoObserverAC
 
 @Accessors
 abstract class Evento {
@@ -20,9 +19,8 @@ abstract class Evento {
 	LocalDateTime fechaFinalizacion
 	Locacion locacion
 	LocalDate fechaLimiteConfirmacion
-	List<EventoObserverAC> eventoObservers = newArrayList
-	List<Usuario> artistas = newArrayList
-
+	Set<EventoObserverAC> eventoObservers = newHashSet
+	Set<String> artistas = newHashSet
 	boolean cancelado = false
 	boolean postergado = false
 	
@@ -33,13 +31,19 @@ abstract class Evento {
 	abstract def void cancelarElEvento()
 
 	abstract def boolean esExitoso()
-
-	abstract def int cantidadAsistentes()//agregado para eventos abiertos entradas vendidas vigentes y cerrados posibles asistentes
 	
+	abstract def void ejecutarOrdenesDeInvitacion()
+
+	abstract def int cantidadAsistentes()   //agregado para eventos abiertos entradas vendidas vigentes y cerrados posibles asistentes
+
 	def double duracion() {
 		Duration.between(fechaDeInicio, fechaFinalizacion).getSeconds() / 3600.0
 	}
-
+	
+	def amigosDelOrganizador(){
+		organizador.getAmigos()
+	}
+	
 	def double distancia(Point ubicacion) {
 		locacion.distancia(ubicacion)
 	}
@@ -88,7 +92,7 @@ abstract class Evento {
 		}else {true}
 	}
 	
-	abstract def boolean usuariosCercanosAlEvento(Point usuarioLocacion, Double radioCercania)
+	abstract def boolean usuariosCercanosAlEvento(Usuario usuario) 
 
 	override toString() {
 		nombre
@@ -108,7 +112,10 @@ class EventoAbierto extends Evento {
 		puedeComprarEntrada(elComprador)
 		generarEntrada(elComprador)
 	}
-
+	
+	override  ejecutarOrdenesDeInvitacion(){
+		throw new EventoException("Un EventoAbierto no puede ejecutar ordenes de Invitacion")
+	}
 
 	def puedeComprarEntrada(Usuario elComprador){
 		if ( !edadValida(elComprador) || !fechaAnteriorALaLimite() || !hayEntradasDisponibles()) {    //TODO revisar agregado por pago tarjeta
@@ -188,8 +195,8 @@ class EventoAbierto extends Evento {
 		entradas.filter[entradas | entradas.vigente===true].size()		
 	}
 	
-	override usuariosCercanosAlEvento(Point usuarioLocacion, Double radioCercania) {
-		locacion.estaDentroDelRadioDeCercania(usuarioLocacion, radioCercania)
+	override usuariosCercanosAlEvento(Usuario usuario) {
+		locacion.estaDentroDelRadioDeCercania(usuario)
 	}
 
 }
@@ -270,12 +277,12 @@ class EventoCerrado extends Evento {
 		val coefFracaso =0.5
 		invitados.filter[invitacion | invitacion.aceptada!==false].size()/ invitados.size()< coefFracaso
 	}
-//	def ejecutarOrdenesDeInvitacion(){
-//		val ConfirmacionAsincronica procesamientoAsincronico = new ConfirmacionAsincronica
-//		procesamientoAsincronico.ejecutar(this)
-//	}
+	override ejecutarOrdenesDeInvitacion(){
+		val ConfirmacionAsincronica procesamientoAsincronico = new ConfirmacionAsincronica
+		procesamientoAsincronico.ejecutar(this)
+	}
 
-	override usuariosCercanosAlEvento(Point usuarioLocacion, Double radioCercania) {
+	override usuariosCercanosAlEvento(Usuario usuario) {
 		throw new EventoException("No se puede notificar al usuario.")
 	}
 }
