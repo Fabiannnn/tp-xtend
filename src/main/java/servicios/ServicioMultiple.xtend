@@ -7,7 +7,7 @@ import eventos.Evento
 @Accessors
 class ServicioMultiple implements TipoDeServicio {
 
-	val descuento = 0d // se pasa como un porcentaje de 0 a 100
+var Double descuento = 0d // se pasa como un porcentaje de 0 a 100
 	List<Servicio> serviciosMultiples = newArrayList
 
 	override double costoTotal(Evento evento, Servicio servicio) {
@@ -25,8 +25,14 @@ class ServicioMultiple implements TipoDeServicio {
 	def double factorDescuento() {
 		1 - (descuento / 100)
 	}
-
+	override setDescuento(Double unDescuento){
+		descuento = unDescuento
+		
+	}
 	override agregarServicio(Servicio servicio) {
 		serviciosMultiples.add(servicio)
 	}
+		override double getDescuento(){
+			descuento
+		}
 }

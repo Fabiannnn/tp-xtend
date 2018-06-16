@@ -12,4 +12,12 @@ class ServicioSimple implements TipoDeServicio {
 	override void agregarServicio(Servicio servicio) {
 		throw new EventoException("No puede agregar un servicio a un servicio simple")
 	}
+
+	override setDescuento(Double unDescuento) {
+		throw new EventoException("Un servicio simple NoTiene Descuentos")
+	}
+
+	override double getDescuento() {
+		throw new EventoException("Un servicio simple NoTiene Descuentos")
+	}
 }
