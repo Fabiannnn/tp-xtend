@@ -1,11 +1,10 @@
 package eventos
 
-import org.eclipse.xtend.lib.annotations.Accessors
-import org.junit.Test
-import org.junit.Assert
-import excepciones.EventoException
 import ordenes.Aceptacion
 import ordenes.Rechazo
+import org.eclipse.xtend.lib.annotations.Accessors
+import org.junit.Assert
+import org.junit.Test
 
 @Accessors
 class TestConfirmacionAsincronica extends FixtureTest {
@@ -86,4 +85,109 @@ class TestConfirmacionAsincronica extends FixtureTest {
 		Assert.assertEquals(0, reunionChica.cantidadAsistentes(), 0)
 		Assert.assertEquals(1, usuario1.notificaciones.size(), 0)
 	}
+
+	// nuevos test de aceptacion y rechazo asincronicos:
+	// #################################################//
+	@Test
+	def aceptacionAsincronicaDeUnaInvitacionYVerificarNotificacion() {
+		invitacion = new Invitacion(reunionChica, usuario1, 3)
+		reunionChica.registrarInvitacionEnEvento(invitacion)
+		usuario1.setUsuarioProfesional
+
+		usuario1.tipoDeUsuario.aceptacionAsincronica(invitacion)
+		reunionChica.ejecutarOrdenesDeInvitacion()
+		Assert.assertEquals(4, reunionChica.cantidadAsistentes(), 0)
+		Assert.assertEquals(1, usuario1.notificaciones.size(), 0)
+	}
+
+	@Test
+	def rechazoAsincronicoDeUnaInvitacionYVerificarNotificacion() {
+		invitacion = new Invitacion(reunionChica, usuario1, 3)
+		reunionChica.registrarInvitacionEnEvento(invitacion)
+		usuario1.setUsuarioProfesional
+
+		usuario1.tipoDeUsuario.rechazoAsincronico(invitacion)
+		reunionChica.ejecutarOrdenesDeInvitacion()
+		Assert.assertEquals(0, reunionChica.cantidadAsistentes(), 0)
+		Assert.assertEquals(1, usuario1.notificaciones.size(), 0)
+	}
+
+	@Test
+	def aceptacionyLuegoAceptacionAsincronicaYVerificarNotificacion() {
+		invitacion = new Invitacion(reunionChica, usuario1, 3)
+		reunionChica.registrarInvitacionEnEvento(invitacion)
+		usuario1.setUsuarioProfesional
+
+		usuario1.tipoDeUsuario.aceptacionAsincronica(invitacion)
+		invitacion.aceptar(invitacion.cantidadDeAcompanantes)
+		reunionChica.ejecutarOrdenesDeInvitacion()
+		Assert.assertEquals(4, reunionChica.cantidadAsistentes(), 0)
+		Assert.assertEquals(1, usuario1.notificaciones.size(), 0)
+	}
+
+	@Test
+	def rechazoYLuegoAceptacionAsincronicaYVerificarNotificacion() {
+		invitacion = new Invitacion(reunionChica, usuario1, 3)
+		reunionChica.registrarInvitacionEnEvento(invitacion)
+		usuario1.setUsuarioProfesional
+
+		usuario1.tipoDeUsuario.aceptacionAsincronica(invitacion)
+		invitacion.rechazar()
+		reunionChica.ejecutarOrdenesDeInvitacion()
+		Assert.assertEquals(0, reunionChica.cantidadAsistentes(), 0)
+		Assert.assertEquals(1, usuario1.notificaciones.size(), 0)
+	}
+
+	@Test
+	def aceptacionYLuegoRechazoAsincronicoYVerificarNotificacion() {
+		invitacion = new Invitacion(reunionChica, usuario1, 3)
+		reunionChica.registrarInvitacionEnEvento(invitacion)
+		usuario1.setUsuarioProfesional
+
+		usuario1.tipoDeUsuario.rechazoAsincronico(invitacion)
+		invitacion.aceptar(invitacion.cantidadDeAcompanantes)
+		reunionChica.ejecutarOrdenesDeInvitacion()
+		Assert.assertEquals(4, reunionChica.cantidadAsistentes(), 0)
+		Assert.assertEquals(1, usuario1.notificaciones.size(), 0)
+	}
+
+	@Test
+	def rechazoYLuegoRechazoAsincronicoYVerificarNotificacion() {
+		invitacion = new Invitacion(reunionChica, usuario1, 3)
+		reunionChica.registrarInvitacionEnEvento(invitacion)
+		usuario1.setUsuarioProfesional
+
+		usuario1.tipoDeUsuario.rechazoAsincronico(invitacion)
+		invitacion.rechazar()
+		reunionChica.ejecutarOrdenesDeInvitacion()
+		Assert.assertEquals(0, reunionChica.cantidadAsistentes(), 0)
+		Assert.assertEquals(1, usuario1.notificaciones.size(), 0)
+	}
+
+	@Test
+	def aceptacionAsincronicaYRemocionOrdenAsincronicaYVerificarNotificacion() {
+		invitacion = new Invitacion(reunionChica, usuario1, 3)
+		reunionChica.registrarInvitacionEnEvento(invitacion)
+		usuario1.setUsuarioProfesional
+
+		usuario1.tipoDeUsuario.aceptacionAsincronica(invitacion)
+		usuario1.tipoDeUsuario.removerOrdenAsincronica(invitacion)
+		reunionChica.ejecutarOrdenesDeInvitacion()
+		Assert.assertEquals(0, reunionChica.cantidadAsistentes(), 0)
+		Assert.assertEquals(0, usuario1.notificaciones.size(), 0)
+	}
+
+	@Test
+	def rechazoAsincronicoYRemocionOrdenAsincronicaYVerificarNotificacion() {
+		invitacion = new Invitacion(reunionChica, usuario1, 3)
+		reunionChica.registrarInvitacionEnEvento(invitacion)
+		usuario1.setUsuarioProfesional
+
+		usuario1.tipoDeUsuario.rechazoAsincronico(invitacion)
+		usuario1.tipoDeUsuario.removerOrdenAsincronica(invitacion)
+		reunionChica.ejecutarOrdenesDeInvitacion()
+		Assert.assertEquals(0, reunionChica.cantidadAsistentes(), 0)
+		Assert.assertEquals(0, usuario1.notificaciones.size(), 0)
+	}
+
 }

@@ -309,4 +309,12 @@ class EventoCerrado extends Evento {
 	override usuariosCercanosAlEvento(Usuario usuario) {
 		throw new EventoException("No se puede notificar al usuario.")
 	}
+	
+	def removerOrdenAsincronica(Invitacion unaInvitacion){
+		val invitacion = invitados.findFirst[invitacion|invitacion.unUsuario === unaInvitacion.unUsuario]
+		invitados.remove(invitacion)
+		val orden = ordenes.findFirst[orden|orden.invitacion.unUsuario === unaInvitacion.unUsuario]
+		ordenes.remove(orden)
+	}
+	
 }
