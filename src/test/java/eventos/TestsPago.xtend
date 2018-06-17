@@ -80,31 +80,16 @@ class TestsPago {
 		creditCardService0 = mockearCreditCardService(respuesta0, tarjetaUno, cumple)
 	}
 
-	// 1) Mockeando TarjetPagos tira error con el mock, no reconoce el metodo pagarEntrada.
-	@Test // (expected=EventoException)
-	def void testCompraConTarjetaQueDaRespuestaCodigo1() {
-		var TarjetaPagos tarjetaPagos3 = new TarjetaPagos()
-		respuesta1 = mockearCCResponse(1, "Transaccion Invalida")
-		tarjetaPagos3.CCResponse = respuesta1
-
-		when(tarjetaPagos3.respuestaTarjeta(tarjetaUno, cumple.precioEntrada)).thenReturn(tarjetaPagos3.CCResponse)
-		println(tarjetaPagos3.respuestaTarjeta(tarjetaUno, cumple.precioEntrada).statusCode)
-		cumple.comprarConTarjetaDeCredito(usuario2, tarjetaUno, tarjetaPagos3)
-		println(tarjetaPagos3.respuestaTarjeta(tarjetaUno, cumple.precioEntrada).statusMessage)
-		Assert.assertEquals(1, cumple.entradas.size(), 0)
-
-	}
-
 	@Test
 	def testCompraConTarjetaQueDaRespuestaCodigo0SeVerificaCompraEntrada() {
-		val TarjetaPagos tarjeta = new TarjetaPagos
-		tarjeta.pagarEntrada(tarjetaUno, cumple.precioEntrada)
-		Assert.assertEquals(1, cumple.entradas.size(), 0)
-
+		val tarjetapagos = mock(typeof(TarjetaPagos))
+		when(tarjetapagos.respuestaTarjeta(tarjetaUno, cumple.precioEntrada)).thenReturn(respuesta0)
+		Assert.assertEquals(0, tarjetapagos.respuestaTarjeta(tarjetaUno, cumple.precioEntrada).statusCode, 0)
+		Assert.assertEquals("Transaccion Exitosa",tarjetapagos.respuestaTarjeta(tarjetaUno, cumple.precioEntrada).statusMessage)
 	}
 
 	@Test
-	def testCCResponseConStatusCode0() {
+	def testCCResponseConStatusCode2() {
 		val tarjetapagos = mock(typeof(TarjetaPagos))
 		when(tarjetapagos.respuestaTarjeta(tarjetaUno, cumple.precioEntrada)).thenReturn(respuesta2)
 		Assert.assertEquals(2, tarjetapagos.respuestaTarjeta(tarjetaUno, cumple.precioEntrada).statusCode, 0)

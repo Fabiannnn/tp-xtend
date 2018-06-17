@@ -9,6 +9,7 @@ import notificaciones.EventoObserverAC
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.ccService.CreditCard
 import org.uqbar.geodds.Point
+import ordenes.Orden
 
 @Accessors
 abstract class Evento {
@@ -23,6 +24,7 @@ abstract class Evento {
 	Set<String> artistas = newHashSet
 	boolean cancelado = false
 	boolean postergado = false
+	Set<Orden> ordenes= newHashSet
 	
 	abstract def boolean esUnFracaso()
 
@@ -97,6 +99,11 @@ abstract class Evento {
 	override toString() {
 		nombre
 	}
+	
+	def recibirOrden(Orden orden) {
+		ordenes.add(orden)
+	}
+	
 }
 
 
@@ -277,11 +284,28 @@ class EventoCerrado extends Evento {
 		val coefFracaso =0.5
 		invitados.filter[invitacion | invitacion.aceptada!==false].size()/ invitados.size()< coefFracaso
 	}
+	
 	override ejecutarOrdenesDeInvitacion(){
-		val ConfirmacionAsincronica procesamientoAsincronico = new ConfirmacionAsincronica
-		procesamientoAsincronico.ejecutar(this)
-	}
+		if(fechaAnteriorALaLimite()) {
+			ordenes.forEach [ orden | orden.ejecutarOrden(this)]
+					ordenes.clear
+		}else{
+			throw new EventoException ("Las ordenes no se pueden ejecutar por que el evento expiro") 
+		}
 
+	}
+	
+	//	try {
+	//		if(fechaAnteriorALaLimite()) {
+	//			ordenes.forEach [ orden | orden.ejecutarOrden(this)]
+	//		}
+	//	}
+	//		catch EventoExcedioCapacidadMaxima {
+	//			ordenes.clear()
+	//		}
+	//val ConfirmacionAsincronica procesamientoAsincronico = new ConfirmacionAsincronica
+	//procesamientoAsincronico.ejecutar(this)
+	
 	override usuariosCercanosAlEvento(Usuario usuario) {
 		throw new EventoException("No se puede notificar al usuario.")
 	}

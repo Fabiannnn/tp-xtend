@@ -7,6 +7,7 @@ import java.time.Period
 import java.util.Set
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.geodds.Point
+import ordenes.Orden
 
 @Accessors
 class Usuario implements Entidad {
@@ -28,35 +29,33 @@ class Usuario implements Entidad {
 	int id
 	Set<String> fanArtistas = newHashSet
 
+
+
 	def esMiAmigo(Usuario _Usuario) {
 		return amigos.contains(_Usuario)
 
 	}
-	
+
 	def getAmigos() {
 		amigos
 	}
-	
+
 	def getEmail() {
 		email
 	}
-	
-	def recibirNotificacion(String textoNotificacion){
+
+	def recibirNotificacion(String textoNotificacion) {
 		notificaciones.add(textoNotificacion)
 	}
-	
+
 	def boolean fanDeUnArtista(String artista) {
-		fanArtistas.exists[artistaUsuario | artistaUsuario.equals(artista)]
+		fanArtistas.exists[artistaUsuario|artistaUsuario.equals(artista)]
 	}
 
-//TODO metodo recibir lista de artistas
-
-def boolean soyFanDeAlgunoDeLosArtistas(Set<String> artistas){
-	artistas.exists[artista | this.fanDeUnArtista(artista)]
-}
-
-
-
+//metodo recibir lista de artistas
+	def boolean soyFanDeAlgunoDeLosArtistas(Set<String> artistas) {
+		artistas.exists[artista|this.fanDeUnArtista(artista)]
+	}
 
 // Métodos relacionados con Invitaciones a Eventos Cerrados
 	def recibirInvitacion(Invitacion invitacion) {
@@ -217,26 +216,25 @@ def boolean soyFanDeAlgunoDeLosArtistas(Set<String> artistas){
 		}
 	}
 
-	def definirRechazoAsincronico(Invitacion invitacion) {
-		tipoDeUsuario.puedeConfirmacionAsincronica()
-		invitacion.asincronico = false
-	}
-
-	def definirAceptacionAsincronica(Invitacion invitacion, int acompanantes) {
-		tipoDeUsuario.puedeConfirmacionAsincronica()
-		invitacion.asincronico = true
-		invitacion.cantidadDeAcompanantesConfirmados = acompanantes
-	}
-
-	def anularOrdenAsincronica(Invitacion invitacion) {
-		tipoDeUsuario.puedeConfirmacionAsincronica()
-		if (invitacion.asincronico === null) {
-			throw new EventoException("No existe confirmacion asincronica para anular")
-		}
-		invitacion.asincronico = null
-		invitacion.cantidadDeAcompanantesConfirmados = 0
-	}
-
+//	def definirRechazoAsincronico(Invitacion invitacion) {
+//		tipoDeUsuario.puedeConfirmacionAsincronica()
+//		invitacion.asincronico = false
+//	}
+//
+//	def definirAceptacionAsincronica(Invitacion invitacion, int acompanantes) {
+//		tipoDeUsuario.puedeConfirmacionAsincronica()
+//		invitacion.asincronico = true
+//		invitacion.cantidadDeAcompanantesConfirmados = acompanantes
+//	}
+//
+//	def anularOrdenAsincronica(Invitacion invitacion) {
+//		tipoDeUsuario.puedeConfirmacionAsincronica()
+//		if (invitacion.asincronico === null) {
+//			throw new EventoException("No existe confirmacion asincronica para anular")
+//		}
+//		invitacion.asincronico = null
+//		invitacion.cantidadDeAcompanantesConfirmados = 0
+//	}
 // Seteo de tipo de usuarios
 	def void setUsuarioFree() {
 		tipoDeUsuario = new UsuarioFree
@@ -315,7 +313,7 @@ interface TipoDeUsuario {
 
 	def boolean sePuedeEntregarInvitacion(EventoCerrado unEvento)
 
-	def boolean puedeConfirmacionAsincronica()
+	def void agregarOrdenAsincronica(Evento evento, Orden orden)
 
 }
 
@@ -362,7 +360,7 @@ class UsuarioFree implements TipoDeUsuario {
 			cantidadMaximaEventosMensuales
 	}
 
-	override boolean puedeConfirmacionAsincronica() {
+	override agregarOrdenAsincronica(Evento evento, Orden orden) {
 		throw new EventoException("El usuario free no puede Confirmar Asincronicamente")
 	}
 }
@@ -395,7 +393,7 @@ class UsuarioAmateur implements TipoDeUsuario {
 			limiteEventosSimultaneos
 	}
 
-	override boolean puedeConfirmacionAsincronica() {
+	override agregarOrdenAsincronica(Evento evento, Orden orden) {
 		throw new EventoException("El usuario amateur no puede Confirmar Asincronicamente")
 	}
 }
@@ -433,8 +431,8 @@ class UsuarioProfesional implements TipoDeUsuario {
 			cantidadMaximaEventosMensuales
 	}
 
-	override boolean puedeConfirmacionAsincronica() {
-		true
+	override agregarOrdenAsincronica(Evento evento, Orden orden) {
+		evento.recibirOrden(orden)
 	}
 
 }

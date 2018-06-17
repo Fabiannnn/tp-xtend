@@ -14,7 +14,7 @@ class Invitacion {
 	int cantidadDeAcompanantesConfirmados = 0
 	Boolean asincronico = null
 
-	new(EventoCerrado elEventoCerrado, Usuario elUsuario, int laCantidadDeAcompanantes) {//clase de ordenes para aceptar y rechazar 
+	new(EventoCerrado elEventoCerrado, Usuario elUsuario, int laCantidadDeAcompanantes) { // clase de ordenes para aceptar y rechazar 
 		unEventoCerrado = elEventoCerrado
 		unUsuario = elUsuario
 		cantidadDeAcompanantes = laCantidadDeAcompanantes
@@ -28,6 +28,27 @@ class Invitacion {
 
 	def rechazar() {
 		aceptada = false
+	}
+
+	def getUsuario() {
+		unUsuario
+	}
+
+	def getEventoCerrado() {
+		return unEventoCerrado
+	}
+
+	def estaPendiente() {
+		return aceptada === null
+	}
+
+	def aceptarseCompleto() {
+		aceptada = true
+		cantidadDeAcompanantesConfirmados = cantidadDeAcompanantes
+	}
+
+	def enviarNotificacionAlUsuario(String textoNotificacion) {
+		this.usuario.recibirNotificacion(textoNotificacion)
 	}
 
 	def boolean fechaParaConfirmar() {
