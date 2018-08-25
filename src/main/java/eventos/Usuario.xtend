@@ -10,8 +10,10 @@ import org.uqbar.geodds.Point
 import ordenes.Orden
 import ordenes.Aceptacion
 import ordenes.Rechazo
+import org.uqbar.commons.model.annotations.Observable
 
 @Accessors
+@Observable
 class Usuario implements Entidad {
 
 	String nombreUsuario
@@ -323,6 +325,7 @@ interface TipoDeUsuario {
 }
 
 @Accessors
+@Observable
 class UsuarioFree implements TipoDeUsuario {
 
 	val limiteEventosSimultaneos = 1
@@ -384,6 +387,7 @@ class UsuarioFree implements TipoDeUsuario {
 }
 
 @Accessors
+@Observable
 class UsuarioAmateur implements TipoDeUsuario {
 
 	val limiteEventosSimultaneos = 5
@@ -430,6 +434,7 @@ class UsuarioAmateur implements TipoDeUsuario {
 }
 
 @Accessors
+@Observable
 class UsuarioProfesional implements TipoDeUsuario {
 
 	val cantidadMaximaEventosMensuales = 20

@@ -3,8 +3,10 @@ package eventos
 import org.eclipse.xtend.lib.annotations.Accessors
 import java.time.LocalDate
 import java.time.LocalDateTime
+import org.uqbar.commons.model.annotations.Observable
 
 @Accessors
+@Observable
 class Invitacion {
 
 	EventoCerrado unEventoCerrado

@@ -10,8 +10,10 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.ccService.CreditCard
 import org.uqbar.geodds.Point
 import ordenes.Orden
+import org.uqbar.commons.model.annotations.Observable
 
 @Accessors
+@Observable
 abstract class Evento {
 	
 	String nombre
@@ -108,6 +110,7 @@ abstract class Evento {
 
 
 @Accessors
+@Observable
 class EventoAbierto extends Evento {
 	
 	int edadMinima
@@ -209,6 +212,7 @@ class EventoAbierto extends Evento {
 }
 
 @Accessors
+@Observable
 class EventoCerrado extends Evento {
 	
 	static val COEF_EXITO = 0.9

@@ -4,8 +4,10 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import java.time.LocalDate
 import java.time.Period
 import java.time.LocalDateTime
+import org.uqbar.commons.model.annotations.Observable
 
 @Accessors
+@Observable
 class Entrada {
 
 	EventoAbierto unEventoAbierto

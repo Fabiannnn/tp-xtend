@@ -5,8 +5,10 @@ import org.uqbar.geodds.Point
 import excepciones.EventoException
 import eventos.Entidad
 import eventos.Evento
+import org.uqbar.commons.model.annotations.Observable
 
 @Accessors
+@Observable
 class Servicio implements Entidad {
 	String descripcion
 	TipoDeTarifa tipoDeTarifa

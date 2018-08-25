@@ -2,7 +2,11 @@ package servicios
 
 import excepciones.EventoException
 import eventos.Evento
+import org.uqbar.commons.model.annotations.Observable
+import org.eclipse.xtend.lib.annotations.Accessors
 
+@Accessors
+@Observable
 class ServicioSimple implements TipoDeServicio {
 
 	override double costoTotal(Evento evento, Servicio servicio) {

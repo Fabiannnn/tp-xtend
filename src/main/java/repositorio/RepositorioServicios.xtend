@@ -4,8 +4,10 @@ import java.util.List
 import jsons.JsonServicio
 import org.eclipse.xtend.lib.annotations.Accessors
 import servicios.Servicio
+import org.uqbar.commons.model.annotations.Observable
 
 @Accessors
+@Observable
 class RepositorioServicios extends Repositorio<Servicio> {
 
 	def descripcionesIguales(String unaDescripcion) {

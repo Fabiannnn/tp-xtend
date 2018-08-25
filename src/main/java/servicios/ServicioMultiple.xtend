@@ -3,8 +3,10 @@ package servicios
 import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
 import eventos.Evento
+import org.uqbar.commons.model.annotations.Observable
 
 @Accessors
+@Observable
 class ServicioMultiple implements TipoDeServicio {
 
 var Double descuento = 0d // se pasa como un porcentaje de 0 a 100

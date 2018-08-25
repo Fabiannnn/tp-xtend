@@ -3,8 +3,10 @@ package eventos
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.geodds.Point
 import excepciones.EventoException
+import org.uqbar.commons.model.annotations.Observable
 
 @Accessors
+@Observable
 class Locacion implements Entidad {
 
 	String nombre
