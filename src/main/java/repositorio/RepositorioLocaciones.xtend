@@ -9,7 +9,7 @@ import org.uqbar.commons.model.annotations.Observable
 
 @Accessors
 @Observable
-class RepositorioLocaciones extends Repositorio<Locacion> {
+ class RepositorioLocaciones extends Repositorio<Locacion> {
 
 	override void recibirListaActualizacionJson(List<Locacion> locaciones) {
 		locaciones.forEach[elemento|actualizarLocacionConJson(elemento)] // ver si pasa a repositorio abstracto
