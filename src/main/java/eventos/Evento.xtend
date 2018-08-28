@@ -6,11 +6,11 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.Set
 import notificaciones.EventoObserverAC
+import ordenes.Orden
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.ccService.CreditCard
-import org.uqbar.geodds.Point
-import ordenes.Orden
 import org.uqbar.commons.model.annotations.Observable
+import org.uqbar.geodds.Point
 
 @Accessors
 @Observable
@@ -190,17 +190,20 @@ class EventoAbierto extends Evento {
 	}
 	
 	override esExitoso(){
-		(!cancelado  && !postergado && ventaExitosa())
-		!this.cancelado  && !this.postergado && ventaExitosa()
+	(!cancelado  && !postergado && ventaExitosa())
+	
 	}
 	
-	def ventaExitosa(){
-		entradas.filter[entradas | entradas.vigente===true].size()/entradas.size() >= 0.9
+	def boolean ventaExitosa(){ //TODO
+		if(!(entradas.size()==0)){((cantidadAsistentes()*100)/ entradas.size() )>= 90 }else{false}
+
 	}
 	
-	override esUnFracaso(){
-		entradas.filter[entradas | entradas.vigente===true].size()/capacidadMaxima() < 0.5
+
+	override esUnFracaso(){				//FUNCIONA     
+		cantidadAsistentes() /capacidadMaxima() < 0.5
 	}
+	
 	override cantidadAsistentes(){
 		entradas.filter[entradas | entradas.vigente===true].size()		
 	}
@@ -272,21 +275,25 @@ class EventoCerrado extends Evento {
 		invitados.forall[invitacion | invitacion.NotificacionDePostergacion(fechaDeInicio,fechaFinalizacion,fechaLimiteConfirmacion)]
 	}
 
-	override esExitoso(){
-		!cancelado  && asistenciaExitosa()
+	override boolean esExitoso(){
+	(!cancelado  && asistenciaExitosa())
 	}
 
-	def asistenciaExitosa(){
-		invitados.filter[invitacion | invitacion.aceptada===true].size()/ invitados.size() >= COEF_EXITO
+	def boolean asistenciaExitosa(){  
+	if (! (invitados.size()==0)){	(((invitacionesAceptadas() *100)/ invitados.size()	) >= 90)}else{false}
+	}
+	
+	def int invitacionesAceptadas() {
+		invitados.filter[invitacion | invitacion.aceptada===true].size()
 	}
 
 	override esUnFracaso(){
-		!cancelado  && LocalDateTime.now().isAfter(fechaFinalizacion) && asistenciaFracaso()
+	!cancelado  && LocalDateTime.now().isAfter(fechaFinalizacion) && asistenciaFracaso()
 	}
 
-	def asistenciaFracaso(){
-		val coefFracaso =0.5
-		invitados.filter[invitacion | invitacion.aceptada!==false].size()/ invitados.size()< coefFracaso
+	def asistenciaFracaso(){ 
+	if(!(invitados.size()==0)){
+		invitados.filter[invitacion | invitacion.aceptada!==false].size() / invitados.size() < 0.5}else{false}
 	}
 	
 	override ejecutarOrdenesDeInvitacion(){
@@ -298,18 +305,7 @@ class EventoCerrado extends Evento {
 		}
 
 	}
-	
-	//	try {
-	//		if(fechaAnteriorALaLimite()) {
-	//			ordenes.forEach [ orden | orden.ejecutarOrden(this)]
-	//		}
-	//	}
-	//		catch EventoExcedioCapacidadMaxima {
-	//			ordenes.clear()
-	//		}
-	//val ConfirmacionAsincronica procesamientoAsincronico = new ConfirmacionAsincronica
-	//procesamientoAsincronico.ejecutar(this)
-	
+
 	override usuariosCercanosAlEvento(Usuario usuario) {
 		throw new EventoException("No se puede notificar al usuario.")
 	}
