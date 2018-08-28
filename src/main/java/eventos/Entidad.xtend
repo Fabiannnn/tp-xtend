@@ -1,5 +1,6 @@
 package eventos
 
+
 interface Entidad {
 
 	def void esValido()
