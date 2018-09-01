@@ -2,7 +2,9 @@ package servicios
 
 import eventos.Evento
 import excepciones.EventoException
+import org.uqbar.commons.model.annotations.Observable
 
+@Observable
 class TarifaFija implements TipoDeTarifa {
 	override double costo(Servicio unServicio, Evento unEvento) {
 		unServicio.costoFijo

@@ -2,7 +2,9 @@ package servicios
 
 import eventos.Evento
 import excepciones.EventoException
+import org.uqbar.commons.model.annotations.Observable
 
+@Observable
 class TarifaPorPersona implements TipoDeTarifa {
 	override double costo(Servicio unServicio, Evento unEvento) {
 		Math.max((costoBasePorCapacidad(unServicio, unEvento)), (unEvento.cantidadAsistentes() *
