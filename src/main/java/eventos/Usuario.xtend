@@ -217,25 +217,6 @@ class Usuario implements Entidad {
 		}
 	}
 
-//	def definirRechazoAsincronico(Invitacion invitacion) {
-//		tipoDeUsuario.puedeConfirmacionAsincronica()
-//		invitacion.asincronico = false
-//	}
-//
-//	def definirAceptacionAsincronica(Invitacion invitacion, int acompanantes) {
-//		tipoDeUsuario.puedeConfirmacionAsincronica()
-//		invitacion.asincronico = true
-//		invitacion.cantidadDeAcompanantesConfirmados = acompanantes
-//	}
-//
-//	def anularOrdenAsincronica(Invitacion invitacion) {
-//		tipoDeUsuario.puedeConfirmacionAsincronica()
-//		if (invitacion.asincronico === null) {
-//			throw new EventoException("No existe confirmacion asincronica para anular")
-//		}
-//		invitacion.asincronico = null
-//		invitacion.cantidadDeAcompanantesConfirmados = 0
-//	}
 // Seteo de tipo de usuarios
 	def void setUsuarioFree() {
 		tipoDeUsuario = new UsuarioFree

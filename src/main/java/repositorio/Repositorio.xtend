@@ -6,9 +6,10 @@ import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.updateService.UpdateService
 import org.uqbar.commons.model.annotations.Observable
+import org.uqbar.commons.model.annotations.TransactionalAndObservable
 
 @Accessors
-@Observable
+@TransactionalAndObservable
 abstract class Repositorio<T extends Entidad> {
 
 	List<T> elementos = newArrayList
