@@ -32,7 +32,11 @@ class Usuario implements Entidad {
 	Set<Evento> eventosOrganizados = newHashSet
 	int id
 	Set<String> fanArtistas = newHashSet
-
+	
+	
+def int eventosPorLocacion(Locacion _locacion){
+	eventosOrganizados.filter[evento|evento.locacion === _locacion].size
+}
 	def esMiAmigo(Usuario _Usuario) {
 		return amigos.contains(_Usuario)
 	}

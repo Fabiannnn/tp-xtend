@@ -7,10 +7,14 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import eventos.Evento
 import java.util.Set
 import org.uqbar.commons.model.annotations.Observable
+import eventos.Locacion
 
 @Accessors
 @Observable
 class RepositorioUsuarios extends Repositorio<Usuario> {
+	def int eventosPorLocacionTotal(Locacion _locacion){
+		elementos.fold(0)[acum, usuario | usuario.eventosPorLocacion(_locacion) + acum]
+	}
 
 	def usuariosIguales(String _nombreUsuario) {
 		elementos.exists(elemento|elemento.nombreUsuario.contentEquals(_nombreUsuario))

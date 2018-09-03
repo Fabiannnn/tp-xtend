@@ -43,7 +43,7 @@ abstract class Evento {
 	def double duracion() {
 		Duration.between(fechaDeInicio, fechaFinalizacion).getSeconds() / 3600.0
 	}
-	
+
 	def amigosDelOrganizador(){
 		organizador.getAmigos()
 	}
