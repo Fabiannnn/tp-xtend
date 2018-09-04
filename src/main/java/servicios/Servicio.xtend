@@ -21,18 +21,26 @@ class Servicio implements Entidad {
 	double costoPorKm = 0
 	Point ubicacion
 	int id
-	
-	def costoCompleto(){
-		(costoServicio +" "+ costoMinimo)
+
+	def getTiposDeServicios() {
+		#[ServicioMultiple, ServicioSimple]
 	}
-	def  costoServicio(){
-		if (tipoDeTarifa instanceof TarifaFija){
-			return (costoFijo + " TF ") 
-		}
-		else if (tipoDeTarifa instanceof TarifaPorHora){
+	def getTiposDeTarifas() {
+		#[TarifaPorHora, TarifaPorPersona, TarifaFija]
+	}
+
+	def costoCompleto() {
+		(costoServicio + " " + costoMinimo)
+	}
+
+	def costoServicio() {
+		if (tipoDeTarifa instanceof TarifaFija) {
+			return (costoFijo + " TF ")
+		} else if (tipoDeTarifa instanceof TarifaPorHora) {
 			return (costoPorHora + " TH ")
+		} else {
+			return (costoPorPersona + " TPP ")
 		}
-		else{return (costoPorPersona + " TPP ")}
 	}
 
 	def double costoTotal(Evento evento) {
