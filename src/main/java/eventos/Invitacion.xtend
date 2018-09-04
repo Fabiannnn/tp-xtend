@@ -21,6 +21,9 @@ class Invitacion {
 		unUsuario = elUsuario
 		cantidadDeAcompanantes = laCantidadDeAcompanantes
 	}
+	def  estaAceptada(){
+		aceptada
+	}
 
 	def verificaRechazo(Usuario _usuario) {
 		if (this.unUsuario == _usuario && fechaParaConfirmar()) {

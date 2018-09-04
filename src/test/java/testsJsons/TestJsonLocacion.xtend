@@ -6,8 +6,10 @@ import org.junit.Assert
 import org.junit.Test
 import repositorio.RepositorioLocaciones
 import excepciones.EventoException
+import org.uqbar.commons.model.annotations.Observable
 
 @Accessors
+@Observable
 class TestJsonLocacion {
 	String jsonText
 	RepositorioLocaciones repoLocacionJson

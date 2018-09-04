@@ -11,6 +11,7 @@ import ordenes.Orden
 import ordenes.Aceptacion
 import ordenes.Rechazo
 import org.uqbar.commons.model.annotations.Observable
+import java.util.List
 
 @Accessors
 @Observable
@@ -32,11 +33,26 @@ class Usuario implements Entidad {
 	Set<Evento> eventosOrganizados = newHashSet
 	int id
 	Set<String> fanArtistas = newHashSet
-	
-	
-def int eventosPorLocacion(Locacion _locacion){
-	eventosOrganizados.filter[evento|evento.locacion === _locacion].size
-}
+
+	def getTiposDeUsuarios() {
+		#[UsuarioFree, UsuarioAmateur,UsuarioProfesional]
+	}
+	def invitacionesRecibidas() {
+		invitaciones
+	}
+
+	def entradasCompradas() {
+		entradaComprada
+	}
+
+	def eventosOrganizadosPor() {
+		eventosOrganizados
+	}
+
+	def int eventosPorLocacion(Locacion _locacion) {
+		eventosOrganizados.filter[evento|evento.locacion === _locacion].size
+	}
+
 	def esMiAmigo(Usuario _Usuario) {
 		return amigos.contains(_Usuario)
 	}
@@ -300,11 +316,11 @@ interface TipoDeUsuario {
 	def boolean sePuedeEntregarInvitacion(EventoCerrado unEvento)
 
 	def void agregarOrdenAsincronica(Evento evento, Orden orden)
-	
+
 	def void aceptacionAsincronica(Invitacion invitacion)
-	
+
 	def void rechazoAsincronico(Invitacion invitacion)
-	
+
 	def void removerOrdenAsincronica(Invitacion invitacion)
 
 }
@@ -356,19 +372,19 @@ class UsuarioFree implements TipoDeUsuario {
 	override agregarOrdenAsincronica(Evento evento, Orden orden) {
 		throw new EventoException("El usuario free no puede Confirmar Asincronicamente")
 	}
-	
+
 	override aceptacionAsincronica(Invitacion invitacion) {
 		throw new EventoException("Un usuario free no puede aceptar invitacion de forma asincronica")
 	}
-	
+
 	override rechazoAsincronico(Invitacion invitacion) {
 		throw new EventoException("Un usuario free no puede rechazar una invitacion de forma asincronica")
 	}
-	
-	override def void removerOrdenAsincronica(Invitacion invitacion){
+
+	override def void removerOrdenAsincronica(Invitacion invitacion) {
 		throw new EventoException("Un usuario free no puede remover ordenes asincronicas")
 	}
-	
+
 }
 
 @Accessors
@@ -407,12 +423,12 @@ class UsuarioAmateur implements TipoDeUsuario {
 	override aceptacionAsincronica(Invitacion invitacion) {
 		throw new EventoException("Un usuario amateur no puede aceptar invitacion de forma asincronica")
 	}
-	
+
 	override rechazoAsincronico(Invitacion invitacion) {
 		throw new EventoException("Un usuario amateur no puede rechazar una invitacion de forma asincronica")
 	}
-	
-	override def void removerOrdenAsincronica(Invitacion invitacion){
+
+	override def void removerOrdenAsincronica(Invitacion invitacion) {
 		throw new EventoException("Un usuario amateur no puede remover ordenes asincronicas")
 	}
 
@@ -456,22 +472,20 @@ class UsuarioProfesional implements TipoDeUsuario {
 		evento.recibirOrden(orden)
 	}
 
-	// 
-	
+	//
 	override void aceptacionAsincronica(Invitacion invitacion) {
 		val Aceptacion aceptacion = new Aceptacion(invitacion)
 		invitacion.eventoCerrado.recibirOrden(aceptacion)
 	}
-	
+
 	override void rechazoAsincronico(Invitacion invitacion) {
 		val Rechazo rechazo = new Rechazo(invitacion)
 		invitacion.eventoCerrado.recibirOrden(rechazo)
 	}
-	
-	override def void removerOrdenAsincronica(Invitacion invitacion){
+
+	override def void removerOrdenAsincronica(Invitacion invitacion) {
 		invitacion.eventoCerrado.removerOrdenAsincronica(invitacion)
 	}
-	
-	//
 
+//
 }

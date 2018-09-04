@@ -5,8 +5,10 @@ import eventos.Locacion
 import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.geodds.Point
+import org.uqbar.commons.model.annotations.Observable
 
 @Accessors
+@Observable
 class JsonLocacion extends JsonsInterface {
 	var List<Locacion> locaciones = newArrayList
 
