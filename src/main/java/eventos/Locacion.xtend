@@ -10,10 +10,11 @@ import org.uqbar.commons.model.annotations.Observable
 class Locacion implements Entidad {
 
 	String nombre
-	Point punto
+	public Point punto= new Point(0.0,0.0)
 	double superficie
 	val personasPorMetroCuadrado = 0.8
 	int id
+
 
 	def double distancia(Point otroPunto) {
 		punto.distance(otroPunto)
