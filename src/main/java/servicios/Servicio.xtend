@@ -67,7 +67,7 @@ class Servicio implements Entidad {
 		tipoDeTarifa = new TarifaPorPersona
 	}
 
-	override def esValido() {
+	override esValido() {
 		validarUbicacion()
 		validarDescripcion()
 		validarTarifa()

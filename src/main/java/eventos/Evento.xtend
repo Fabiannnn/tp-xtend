@@ -218,7 +218,7 @@ class EventoAbierto extends Evento {
 @Observable
 class EventoCerrado extends Evento {
 	
-	static val COEF_EXITO = 0.9
+	//static val COEF_EXITO = 0.9
 
 	Set<Invitacion> invitados = newHashSet
 	int capacidadMaxima = 0
@@ -249,7 +249,7 @@ class EventoCerrado extends Evento {
 		elInvitado.recibirInvitacion(nuevaInvitacion)
 	}
 
-	override def int cantidadAsistentes() {
+	override int cantidadAsistentes() {
 		invitados.fold(0)[acum, invitados|acum + invitados.posiblesAsistentes()]
 	}
 

@@ -7,7 +7,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.geodds.Point
 
 @Accessors
-class JsonLocacion extends JsonsInterface {
+class JsonLocacion extends JsonsInterface<Locacion> {
 	var List<Locacion> locaciones = newArrayList
 
 	override jsonAObjetoFinal(JsonObject locacionObject) {

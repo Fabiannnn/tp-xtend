@@ -9,7 +9,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Accessors
-class JsonUsuario extends JsonsInterface {
+class JsonUsuario extends JsonsInterface<Usuario> {
 
 	var List<Usuario> usuarios = newArrayList
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy")

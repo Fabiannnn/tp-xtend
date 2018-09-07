@@ -1,15 +1,15 @@
 package repositorio
 
+import eventos.Evento
 import eventos.Usuario
 import java.util.List
+import java.util.Set
 import jsons.JsonUsuario
 import org.eclipse.xtend.lib.annotations.Accessors
-import eventos.Evento
-import java.util.Set
-import org.uqbar.commons.model.annotations.Observable
+import org.uqbar.commons.model.annotations.TransactionalAndObservable
 
 @Accessors
-@Observable
+@TransactionalAndObservable
 class RepositorioUsuarios extends Repositorio<Usuario> {
 
 	def usuariosIguales(String _nombreUsuario) {

@@ -4,7 +4,7 @@ import com.eclipsesource.json.JsonObject
 import org.uqbar.geodds.Point
 import servicios.Servicio
 
-class JsonServicio extends JsonsInterface {
+class JsonServicio extends JsonsInterface<Servicio> {
 
 	override jsonAObjetoFinal(JsonObject jsonServicio) {
 		var Servicio servAuxiliar

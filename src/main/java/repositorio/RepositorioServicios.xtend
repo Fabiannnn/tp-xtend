@@ -3,11 +3,11 @@ package repositorio
 import java.util.List
 import jsons.JsonServicio
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.uqbar.commons.model.annotations.TransactionalAndObservable
 import servicios.Servicio
-import org.uqbar.commons.model.annotations.Observable
 
 @Accessors
-@Observable
+@TransactionalAndObservable
 class RepositorioServicios extends Repositorio<Servicio> {
 
 	def descripcionesIguales(String unaDescripcion) {
