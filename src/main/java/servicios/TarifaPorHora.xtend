@@ -6,6 +6,7 @@ import org.uqbar.commons.model.annotations.Observable
 
 @Observable
 class TarifaPorHora implements TipoDeTarifa {
+	//public val tipoTarifa="Por Hora"
 	override double costo(Servicio unServicio, Evento unEvento) {
 		unServicio.costoPorHora * unEvento.duracion + unServicio.costoMinimo
 	}
@@ -15,5 +16,8 @@ class TarifaPorHora implements TipoDeTarifa {
 			throw new EventoException("Falta establecer costo por hora")
 		}
 		return true
+	}
+		override String tipoTarifa(){
+		"Por Hora"
 	}
 }

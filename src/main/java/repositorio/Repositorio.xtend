@@ -12,7 +12,7 @@ import org.uqbar.updateService.UpdateService
 abstract class Repositorio<T extends Entidad> {
 
 	public List<T> elementos = newArrayList
-	public int proximoId = 1;
+	public int proximoId = 1
 	public UpdateService updateService
 
 	def void updateAll()

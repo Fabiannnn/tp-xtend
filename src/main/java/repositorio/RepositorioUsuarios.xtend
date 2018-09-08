@@ -1,6 +1,7 @@
 package repositorio
 
 import eventos.Evento
+import eventos.Locacion
 import eventos.Usuario
 import java.util.List
 import java.util.Set
@@ -11,6 +12,9 @@ import org.uqbar.commons.model.annotations.TransactionalAndObservable
 @Accessors
 @TransactionalAndObservable
 class RepositorioUsuarios extends Repositorio<Usuario> {
+	def int eventosPorLocacionTotal(Locacion _locacion){
+		elementos.fold(0)[acum, usuario | usuario.eventosPorLocacion(_locacion) + acum]
+	}
 
 	def usuariosIguales(String _nombreUsuario) {
 		elementos.exists(elemento|elemento.nombreUsuario.contentEquals(_nombreUsuario))

@@ -8,6 +8,11 @@ import org.eclipse.xtend.lib.annotations.Accessors
 @Accessors
 @Observable
 class ServicioSimple implements TipoDeServicio {
+	val tipoServicio = "Simple"
+
+	override tipoServicio() {
+		tipoServicio
+	}
 
 	override double costoTotal(Evento evento, Servicio servicio) {
 		servicio.costoBaseServicio(evento) + servicio.costoTraslado(evento)

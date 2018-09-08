@@ -43,7 +43,7 @@ abstract class Evento {
 	def double duracion() {
 		Duration.between(fechaDeInicio, fechaFinalizacion).getSeconds() / 3600.0
 	}
-	
+
 	def amigosDelOrganizador(){
 		organizador.getAmigos()
 	}
@@ -218,7 +218,7 @@ class EventoAbierto extends Evento {
 @Observable
 class EventoCerrado extends Evento {
 	
-	//static val COEF_EXITO = 0.9
+	static val COEF_EXITO = 0.9
 
 	Set<Invitacion> invitados = newHashSet
 	int capacidadMaxima = 0
@@ -249,7 +249,7 @@ class EventoCerrado extends Evento {
 		elInvitado.recibirInvitacion(nuevaInvitacion)
 	}
 
-	override int cantidadAsistentes() {
+	override def int cantidadAsistentes() {
 		invitados.fold(0)[acum, invitados|acum + invitados.posiblesAsistentes()]
 	}
 

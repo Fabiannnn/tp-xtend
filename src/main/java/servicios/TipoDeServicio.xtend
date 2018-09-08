@@ -1,6 +1,8 @@
 package servicios
 
 import eventos.Evento
+import java.util.List
+import org.uqbar.commons.model.annotations.Observable
 
 interface TipoDeServicio {
 
@@ -11,4 +13,7 @@ interface TipoDeServicio {
 	def void setDescuento(Double unDescuento)
 
 	def double getDescuento()
+
+	def String tipoServicio()
+
 }

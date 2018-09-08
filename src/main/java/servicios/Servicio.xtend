@@ -6,6 +6,7 @@ import excepciones.EventoException
 import eventos.Entidad
 import eventos.Evento
 import org.uqbar.commons.model.annotations.Observable
+import java.util.List
 
 @Accessors
 @Observable
@@ -19,20 +20,30 @@ class Servicio implements Entidad {
 	double porcentajeCostoMinimo = 0
 	double costoPorPersona = 0
 	double costoPorKm = 0
-	Point ubicacion
+	public Point ubicacion= new Point(0.0,0.0)
 	int id
-	
-	def costoCompleto(){
-		(costoServicio +" "+ costoMinimo)
+
+
+	def  List<TipoDeServicio> getTiposDeServicios() {
+		#[new ServicioMultiple, new ServicioSimple]
 	}
-	def  costoServicio(){
-		if (tipoDeTarifa instanceof TarifaFija){
-			return (costoFijo + " TF ") 
-		}
-		else if (tipoDeTarifa instanceof TarifaPorHora){
+
+	def  List<TipoDeTarifa> getTiposDeTarifas(){
+		#[new TarifaPorHora, new TarifaPorPersona, new TarifaFija]
+	}
+
+	def costoCompleto() {
+		(costoServicio + " " + costoMinimo)
+	}
+
+	def costoServicio() {
+		if (tipoDeTarifa instanceof TarifaFija) {
+			return (costoFijo + " TF ")
+		} else if (tipoDeTarifa instanceof TarifaPorHora) {
 			return (costoPorHora + " TH ")
+		} else {
+			return (costoPorPersona + " TPP ")
 		}
-		else{return (costoPorPersona + " TPP ")}
 	}
 
 	def double costoTotal(Evento evento) {

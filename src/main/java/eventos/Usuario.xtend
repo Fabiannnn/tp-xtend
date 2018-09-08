@@ -4,13 +4,16 @@ import excepciones.EventoException
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.Period
+import java.util.ArrayList
+import java.util.List
 import java.util.Set
-import org.eclipse.xtend.lib.annotations.Accessors
-import org.uqbar.geodds.Point
-import ordenes.Orden
 import ordenes.Aceptacion
+import ordenes.Orden
 import ordenes.Rechazo
+import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.commons.model.annotations.Observable
+import org.uqbar.commons.model.annotations.TransactionalAndObservable
+import org.uqbar.geodds.Point
 
 @Accessors
 @Observable
@@ -33,6 +36,26 @@ class Usuario implements Entidad {
 	int id
 	Set<String> fanArtistas = newHashSet
 
+	def  List<TipoDeUsuario> getTiposDeUsuarios() {
+		#[new UsuarioFree, new UsuarioAmateur, new UsuarioProfesional]
+	}
+
+	def invitacionesRecibidas() {
+		invitaciones
+	}
+
+	def entradasCompradas() {
+		entradaComprada
+	}
+
+	def eventosOrganizadosPor() {
+		eventosOrganizados
+	}
+
+	def int eventosPorLocacion(Locacion _locacion) {
+		eventosOrganizados.filter[evento|evento.locacion === _locacion].size
+	}
+
 	def esMiAmigo(Usuario _Usuario) {
 		return amigos.contains(_Usuario)
 	}
@@ -43,6 +66,7 @@ class Usuario implements Entidad {
 
 	def getEmail() {
 		email
+	
 	}
 
 	def recibirNotificacion(String textoNotificacion) {
@@ -296,19 +320,20 @@ interface TipoDeUsuario {
 	def boolean sePuedeEntregarInvitacion(EventoCerrado unEvento)
 
 	def void agregarOrdenAsincronica(Evento evento, Orden orden)
-	
+
 	def void aceptacionAsincronica(Invitacion invitacion)
-	
+
 	def void rechazoAsincronico(Invitacion invitacion)
-	
+
 	def void removerOrdenAsincronica(Invitacion invitacion)
+	def  String nom()
 
 }
 
 @Accessors
 @Observable
 class UsuarioFree implements TipoDeUsuario {
-
+    val nom="Free"
 	val limiteEventosSimultaneos = 1
 	val maximoPersonasPorEventoCerrado = 50
 	val cantidadMaximaEventosMensuales = 3
@@ -352,25 +377,29 @@ class UsuarioFree implements TipoDeUsuario {
 	override agregarOrdenAsincronica(Evento evento, Orden orden) {
 		throw new EventoException("El usuario free no puede Confirmar Asincronicamente")
 	}
-	
+
 	override aceptacionAsincronica(Invitacion invitacion) {
 		throw new EventoException("Un usuario free no puede aceptar invitacion de forma asincronica")
 	}
-	
+
 	override rechazoAsincronico(Invitacion invitacion) {
 		throw new EventoException("Un usuario free no puede rechazar una invitacion de forma asincronica")
 	}
-	
-	override def void removerOrdenAsincronica(Invitacion invitacion){
+
+	override def void removerOrdenAsincronica(Invitacion invitacion) {
 		throw new EventoException("Un usuario free no puede remover ordenes asincronicas")
 	}
 	
+	override nom() {
+		nom
+	}
+
 }
 
 @Accessors
 @Observable
 class UsuarioAmateur implements TipoDeUsuario {
-
+val nom="Amateur"
 	val limiteEventosSimultaneos = 5
 	val maximoInvitacionesEventoCerrado = 50
 	boolean puedoOrganizarElEventoAbierto = true
@@ -403,21 +432,23 @@ class UsuarioAmateur implements TipoDeUsuario {
 	override aceptacionAsincronica(Invitacion invitacion) {
 		throw new EventoException("Un usuario amateur no puede aceptar invitacion de forma asincronica")
 	}
-	
+
 	override rechazoAsincronico(Invitacion invitacion) {
 		throw new EventoException("Un usuario amateur no puede rechazar una invitacion de forma asincronica")
 	}
-	
-	override def void removerOrdenAsincronica(Invitacion invitacion){
+
+	override def void removerOrdenAsincronica(Invitacion invitacion) {
 		throw new EventoException("Un usuario amateur no puede remover ordenes asincronicas")
 	}
-
+	override nom() {
+		nom
+	}
 }
 
 @Accessors
 @Observable
 class UsuarioProfesional implements TipoDeUsuario {
-
+val nom="Profesional"
 	val cantidadMaximaEventosMensuales = 20
 
 	override boolean puedoOrganizarElEventoAbierto(Usuario unOrganizador, EventoAbierto unEventoAbierto) {
@@ -452,22 +483,22 @@ class UsuarioProfesional implements TipoDeUsuario {
 		evento.recibirOrden(orden)
 	}
 
-	// 
-	
+	//
 	override void aceptacionAsincronica(Invitacion invitacion) {
 		val Aceptacion aceptacion = new Aceptacion(invitacion)
 		invitacion.eventoCerrado.recibirOrden(aceptacion)
 	}
-	
+
 	override void rechazoAsincronico(Invitacion invitacion) {
 		val Rechazo rechazo = new Rechazo(invitacion)
 		invitacion.eventoCerrado.recibirOrden(rechazo)
 	}
-	
-	override def void removerOrdenAsincronica(Invitacion invitacion){
+
+	override def void removerOrdenAsincronica(Invitacion invitacion) {
 		invitacion.eventoCerrado.removerOrdenAsincronica(invitacion)
 	}
-	
-	//
-
+	override nom() {
+		nom
+	}
+//
 }

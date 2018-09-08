@@ -6,6 +6,7 @@ import org.uqbar.commons.model.annotations.Observable
 
 @Observable
 class TarifaFija implements TipoDeTarifa {
+// 	val tipoTarifa="Fija"
 	override double costo(Servicio unServicio, Evento unEvento) {
 		unServicio.costoFijo
 	}
@@ -15,5 +16,8 @@ class TarifaFija implements TipoDeTarifa {
 			throw new EventoException("Falta establecer costo fijo")
 		}
 		return true
+	}
+	override  tipoTarifa(){
+		"Fija"
 	}
 }

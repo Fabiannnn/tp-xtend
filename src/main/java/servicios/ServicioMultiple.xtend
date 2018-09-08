@@ -8,9 +8,14 @@ import org.uqbar.commons.model.annotations.Observable
 @Accessors
 @Observable
 class ServicioMultiple implements TipoDeServicio {
+	val tipoServicio = "Múltiple"
 
-var Double descuento = 0d // se pasa como un porcentaje de 0 a 100
+	var Double descuento = 0d // se pasa como un porcentaje de 0 a 100
 	List<Servicio> serviciosMultiples = newArrayList
+
+	override  tipoServicio() {
+		tipoServicio
+	}
 
 	override double costoTotal(Evento evento, Servicio servicio) {
 		(costoBaseServicios(evento) * factorDescuento) + costoTrasladoServicios(evento)
@@ -27,14 +32,17 @@ var Double descuento = 0d // se pasa como un porcentaje de 0 a 100
 	def double factorDescuento() {
 		1 - (descuento / 100)
 	}
-	override setDescuento(Double unDescuento){
+
+	override setDescuento(Double unDescuento) {
 		descuento = unDescuento
-		
+
 	}
+
 	override agregarServicio(Servicio servicio) {
 		serviciosMultiples.add(servicio)
 	}
-		override double getDescuento(){
-			descuento
-		}
+
+	override double getDescuento() {
+		descuento
+	}
 }
