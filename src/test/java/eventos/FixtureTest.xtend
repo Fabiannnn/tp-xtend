@@ -53,7 +53,7 @@ abstract class FixtureTest {
 			superficie = 45
 		]
 		salon_3 = new Locacion => [
-			nombre = "Sanse"
+			nombre = "salon_3"
 			punto = new Point(35, 65)
 			superficie = 100
 		]
