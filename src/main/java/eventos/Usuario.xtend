@@ -4,15 +4,14 @@ import excepciones.EventoException
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.Period
-import java.util.ArrayList
 import java.util.List
 import java.util.Set
 import ordenes.Aceptacion
 import ordenes.Orden
 import ordenes.Rechazo
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.uqbar.commons.model.annotations.Dependencies
 import org.uqbar.commons.model.annotations.Observable
-import org.uqbar.commons.model.annotations.TransactionalAndObservable
 import org.uqbar.geodds.Point
 
 @Accessors
@@ -23,7 +22,7 @@ class Usuario implements Entidad {
 	String nombreApellido
 	String email
 	LocalDate fechaNacimiento
-	Point coordenadas
+	Point coordenadas = new Point(0, 0)
 	boolean esAntisocial
 	Set<Usuario> amigos = newHashSet
 	double radioDeCercania
@@ -36,9 +35,19 @@ class Usuario implements Entidad {
 	int id
 	Set<String> fanArtistas = newHashSet
 
-	def  List<TipoDeUsuario> getTiposDeUsuarios() {
+	def List<TipoDeUsuario> getTiposDeUsuarios() {
 		#[new UsuarioFree, new UsuarioAmateur, new UsuarioProfesional]
 	}
+	
+//	@Dependencies("coordenadas")
+//	def getCoordenadasX() {
+//		return coordenadas.latitude
+//	}
+//	
+//	@Dependencies("coordenadas")
+//	def getCoordenadasY() {
+//		return coordenadas.longitude
+//	}
 
 	def invitacionesRecibidas() {
 		invitaciones
@@ -66,7 +75,7 @@ class Usuario implements Entidad {
 
 	def getEmail() {
 		email
-	
+
 	}
 
 	def recibirNotificacion(String textoNotificacion) {
@@ -326,14 +335,15 @@ interface TipoDeUsuario {
 	def void rechazoAsincronico(Invitacion invitacion)
 
 	def void removerOrdenAsincronica(Invitacion invitacion)
-	def  String nom()
+
+	def String nom()
 
 }
 
 @Accessors
 @Observable
 class UsuarioFree implements TipoDeUsuario {
-    val nom="Free"
+	val nom = "Free"
 	val limiteEventosSimultaneos = 1
 	val maximoPersonasPorEventoCerrado = 50
 	val cantidadMaximaEventosMensuales = 3
@@ -389,7 +399,7 @@ class UsuarioFree implements TipoDeUsuario {
 	override def void removerOrdenAsincronica(Invitacion invitacion) {
 		throw new EventoException("Un usuario free no puede remover ordenes asincronicas")
 	}
-	
+
 	override nom() {
 		nom
 	}
@@ -399,7 +409,7 @@ class UsuarioFree implements TipoDeUsuario {
 @Accessors
 @Observable
 class UsuarioAmateur implements TipoDeUsuario {
-val nom="Amateur"
+	val nom = "Amateur"
 	val limiteEventosSimultaneos = 5
 	val maximoInvitacionesEventoCerrado = 50
 	boolean puedoOrganizarElEventoAbierto = true
@@ -440,6 +450,7 @@ val nom="Amateur"
 	override def void removerOrdenAsincronica(Invitacion invitacion) {
 		throw new EventoException("Un usuario amateur no puede remover ordenes asincronicas")
 	}
+
 	override nom() {
 		nom
 	}
@@ -448,7 +459,7 @@ val nom="Amateur"
 @Accessors
 @Observable
 class UsuarioProfesional implements TipoDeUsuario {
-val nom="Profesional"
+	val nom = "Profesional"
 	val cantidadMaximaEventosMensuales = 20
 
 	override boolean puedoOrganizarElEventoAbierto(Usuario unOrganizador, EventoAbierto unEventoAbierto) {
@@ -497,6 +508,7 @@ val nom="Profesional"
 	override def void removerOrdenAsincronica(Invitacion invitacion) {
 		invitacion.eventoCerrado.removerOrdenAsincronica(invitacion)
 	}
+
 	override nom() {
 		nom
 	}

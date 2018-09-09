@@ -7,9 +7,10 @@ import eventos.Entidad
 import eventos.Evento
 import org.uqbar.commons.model.annotations.Observable
 import java.util.List
+import org.uqbar.commons.model.annotations.TransactionalAndObservable
 
 @Accessors
-@Observable
+@TransactionalAndObservable
 class Servicio implements Entidad {
 	String descripcion
 	TipoDeTarifa tipoDeTarifa
