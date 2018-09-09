@@ -1,8 +1,6 @@
 package servicios
 
 import eventos.Evento
-import java.util.List
-import org.uqbar.commons.model.annotations.Observable
 
 interface TipoDeServicio {
 

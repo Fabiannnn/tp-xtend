@@ -12,8 +12,8 @@ import org.uqbar.commons.model.annotations.TransactionalAndObservable
 @Accessors
 @TransactionalAndObservable
 class RepositorioUsuarios extends Repositorio<Usuario> {
-	def int eventosPorLocacionTotal(Locacion _locacion){
-		elementos.fold(0)[acum, usuario | usuario.eventosPorLocacion(_locacion) + acum]
+	def int eventosPorLocacionTotal(Locacion _locacion) {
+		elementos.fold(0)[acum, usuario|usuario.eventosPorLocacion(_locacion) + acum]
 	}
 
 	def usuariosIguales(String _nombreUsuario) {
@@ -44,17 +44,16 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 	def listadoDeMisAmigos(Usuario _usuario) {
 		elementos.filter[unUsuario|unUsuario.esMiAmigo(_usuario)].toSet
 	}
-	
+
 	def listadoUsuariosCercanosEvento(Evento unEvento) {
-		var unaLista = elementos.filter[usuario | unEvento.usuariosCercanosAlEvento(usuario)]
+		var unaLista = elementos.filter[usuario|unEvento.usuariosCercanosAlEvento(usuario)]
 		return unaLista
 	}
-	
-	def listadoUsuariosFansDeArtistasDeUnEvento(Set<String> artistas ) {
-		//Tiene que traer una lista con los usuarios que son fans de algun artista del evento.
-		
-		elementos.filter[ usuario | usuario.soyFanDeAlgunoDeLosArtistas(artistas)]
-	
+
+	def listadoUsuariosFansDeArtistasDeUnEvento(Set<String> artistas) {
+		// Tiene que traer una lista con los usuarios que son fans de algun artista del evento.
+		elementos.filter[usuario|usuario.soyFanDeAlgunoDeLosArtistas(artistas)]
+
 	}
 
 }

@@ -1,21 +1,19 @@
 package eventos
 
-import org.eclipse.xtend.lib.annotations.Accessors
-import org.uqbar.geodds.Point
 import excepciones.EventoException
-import org.uqbar.commons.model.annotations.Observable
+import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.commons.model.annotations.TransactionalAndObservable
+import org.uqbar.geodds.Point
 
 @Accessors
 @TransactionalAndObservable
 class Locacion implements Entidad {
 
 	String nombre
-	public Point punto= new Point(0.0,0.0)
+	public Point punto = new Point(0.0, 0.0)
 	double superficie
 	val personasPorMetroCuadrado = 0.8
 	int id
-
 
 	def double distancia(Point otroPunto) {
 		punto.distance(otroPunto)

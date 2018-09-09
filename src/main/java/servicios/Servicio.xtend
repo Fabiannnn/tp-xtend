@@ -1,13 +1,12 @@
 package servicios
 
-import org.eclipse.xtend.lib.annotations.Accessors
-import org.uqbar.geodds.Point
-import excepciones.EventoException
 import eventos.Entidad
 import eventos.Evento
-import org.uqbar.commons.model.annotations.Observable
+import excepciones.EventoException
 import java.util.List
+import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.commons.model.annotations.TransactionalAndObservable
+import org.uqbar.geodds.Point
 
 @Accessors
 @TransactionalAndObservable
@@ -21,15 +20,14 @@ class Servicio implements Entidad {
 	double porcentajeCostoMinimo = 0
 	double costoPorPersona = 0
 	double costoPorKm = 0
-	public Point ubicacion= new Point(0.0,0.0)
+	public Point ubicacion = new Point(0.0, 0.0)
 	int id
 
-
-	def  List<TipoDeServicio> getTiposDeServicios() {
+	def List<TipoDeServicio> getTiposDeServicios() {
 		#[new ServicioMultiple, new ServicioSimple]
 	}
 
-	def  List<TipoDeTarifa> getTiposDeTarifas(){
+	def List<TipoDeTarifa> getTiposDeTarifas() {
 		#[new TarifaPorHora, new TarifaPorPersona, new TarifaFija]
 	}
 

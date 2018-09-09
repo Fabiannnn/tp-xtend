@@ -9,7 +9,7 @@ import org.uqbar.commons.model.annotations.Observable
 
 @Accessors
 @Observable
-class JsonLocacion extends JsonsInterface {
+class JsonLocacion extends JsonsInterface<Locacion> {
 	var List<Locacion> locaciones = newArrayList
 
 	override jsonAObjetoFinal(JsonObject locacionObject) {

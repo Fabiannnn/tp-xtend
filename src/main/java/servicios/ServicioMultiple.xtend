@@ -13,7 +13,7 @@ class ServicioMultiple implements TipoDeServicio {
 	var Double descuento = 0d // se pasa como un porcentaje de 0 a 100
 	List<Servicio> serviciosMultiples = newArrayList
 
-	override  tipoServicio() {
+	override tipoServicio() {
 		tipoServicio
 	}
 

@@ -3,7 +3,6 @@ package servicios
 import eventos.Evento
 import excepciones.EventoException
 import org.uqbar.commons.model.annotations.Observable
-import org.uqbar.commons.model.annotations.TransactionalAndObservable
 
 @Observable
 class TarifaPorPersona implements TipoDeTarifa {
@@ -24,7 +23,7 @@ class TarifaPorPersona implements TipoDeTarifa {
 		Math.round(unEvento.capacidadMaxima() * unServicio.porcentajeCostoMinimo / 100) * unServicio.costoPorPersona
 	}
 
-	override String tipoTarifa(){
+	override String tipoTarifa() {
 		"Por Persona"
 	}
 }
