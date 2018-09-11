@@ -19,9 +19,9 @@ class TestsRepositorioServicios extends FixtureTest {
 	def void initTest() {
 
 		servicioCatering = new Servicio => [
-			ubicacion = new Point(34.910067, 45) // distancia a reunion chica aproximada 10 km
+			punto = new Point(34.910067, 45) // distancia a reunion chica aproximada 10 km
 			descripcion = "Catering"
-			ubicacion = new Point(34.910067, 45)
+			punto = new Point(34.910067, 45)
 			costoFijo = 200
 			costoPorKm = 2
 			costoMinimo = 100
@@ -29,9 +29,9 @@ class TestsRepositorioServicios extends FixtureTest {
 		]
 
 		servicioAnimacion = new Servicio => [
-			ubicacion = new Point(35, 45) // distancia a reunion chica 0
+			punto = new Point(35, 45) // distancia a reunion chica 0
 			descripcion = "Animacion"
-			ubicacion = new Point(34.910067, 45)
+			punto = new Point(34.910067, 45)
 			costoFijo = 300
 			costoPorKm = 2
 			costoMinimo = 100

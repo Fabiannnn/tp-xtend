@@ -72,7 +72,7 @@ abstract class FixtureTest {
 			email = "mail1"
 			nombreApellido = "Pepe Argento"
 			fechaNacimiento = LocalDate.of(2002, 05, 15)
-			coordenadas = new Point(40, 50)
+			punto = new Point(40, 50)
 		]
 
 		usuario2 = new Usuario => [
@@ -80,13 +80,13 @@ abstract class FixtureTest {
 			email = "mail2"
 			nombreApellido = "Mario Perez"
 			fechaNacimiento = LocalDate.of(1900, 04, 02)
-			coordenadas = new Point(45, 60)
+			punto = new Point(45, 60)
 		]
 		usuario3 = new Usuario => [
 			email = "mail3"
 			nombreApellido = "María Gomez"
 			fechaNacimiento = LocalDate.of(1900, 04, 02)
-			coordenadas = new Point(34, 45)
+			punto = new Point(34, 45)
 			esAntisocial = false
 		]
 		reunionAbierta = new EventoAbierto => [
@@ -140,7 +140,7 @@ abstract class FixtureTest {
 		unUsuario = new Usuario => [
 			nombreUsuario = "Usuario"
 			fechaNacimiento = LocalDate.of(2002, 05, 15)
-			coordenadas = new Point(40, 50)
+			punto = new Point(40, 50)
 		]
 		primerEvento = new EventoCerrado => [
 			nombre = "Reunion Proyecto"

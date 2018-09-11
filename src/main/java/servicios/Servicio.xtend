@@ -7,6 +7,7 @@ import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.commons.model.annotations.TransactionalAndObservable
 import org.uqbar.geodds.Point
+import org.uqbar.commons.model.annotations.Dependencies
 
 @Accessors
 @TransactionalAndObservable
@@ -20,8 +21,19 @@ class Servicio implements Entidad {
 	double porcentajeCostoMinimo = 0
 	double costoPorPersona = 0
 	double costoPorKm = 0
-	public Point ubicacion = new Point(0.0, 0.0)
+	public Point punto = new Point(0.0, 0.0)
 	int id
+	
+	@Dependencies("ubicacion")
+	def double getPuntoX(){punto.latitude}
+	def setPuntoX(double unValor){	
+		punto.x = unValor.doubleValue
+	}
+	@Dependencies("ubicacion")
+	def double getPuntoY(){punto.longitude}
+	def setPuntoY(double unValor){	
+		punto.y = unValor.doubleValue
+	}
 
 	def List<TipoDeServicio> getTiposDeServicios() {
 		#[new ServicioMultiple, new ServicioSimple]
@@ -54,7 +66,7 @@ class Servicio implements Entidad {
 	}
 
 	def double costoTraslado(Evento unEvento) {
-		costoPorKm * unEvento.locacion.distancia(ubicacion)
+		costoPorKm * unEvento.locacion.distancia(punto)
 	}
 
 	def void agregarServicio(Servicio servicio) {
@@ -84,7 +96,7 @@ class Servicio implements Entidad {
 	}
 
 	def validarUbicacion() {
-		if (ubicacion === null) {
+		if (punto === null) {
 			throw new EventoException("Faltan Datos de Ubicacion")
 		}
 	}

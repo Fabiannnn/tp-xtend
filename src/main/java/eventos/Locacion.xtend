@@ -4,6 +4,7 @@ import excepciones.EventoException
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.commons.model.annotations.TransactionalAndObservable
 import org.uqbar.geodds.Point
+import org.uqbar.commons.model.annotations.Dependencies
 
 @Accessors
 @TransactionalAndObservable
@@ -20,7 +21,7 @@ class Locacion implements Entidad {
 	}
 
 	def estaDentroDelRadioDeCercania(Usuario usuario) {
-		distancia(usuario.coordenadas) <= usuario.radioDeCercania
+		distancia(usuario.punto) <= usuario.radioDeCercania
 	}
 
 	def capacidadMaxima() {
@@ -50,5 +51,16 @@ class Locacion implements Entidad {
 
 	override toString() {
 		nombre
+	}
+	
+	@Dependencies("ubicacion")
+	def double getPuntoX(){punto.latitude}
+	def setPuntoX(double unValor){	
+		punto.x = unValor.doubleValue
+	}
+	@Dependencies("ubicacion")
+	def double getPuntoY(){punto.longitude}
+	def setPuntoY(double unValor){	
+		punto.y = unValor.doubleValue
 	}
 }

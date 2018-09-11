@@ -29,7 +29,7 @@ class TestsRepositorioUsuarios extends FixtureTest {
 
 	@Test(expected=EventoException)
 	def void noSePuedeAgregarUnUsuarioSinCoordenadas() {
-		usuario1.coordenadas = null
+		usuario1.punto = null
 		repoUsuario.create(usuario1)
 	}
 

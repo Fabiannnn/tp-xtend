@@ -11,18 +11,20 @@ import ordenes.Orden
 import ordenes.Rechazo
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.commons.model.annotations.Observable
+import org.uqbar.commons.model.annotations.TransactionalAndObservable
 import org.uqbar.geodds.Point
+import org.uqbar.commons.model.annotations.Dependencies
 
 @Accessors
-@Observable
+@TransactionalAndObservable
 class Usuario implements Entidad {
 
 	String nombreUsuario
 	String nombreApellido
 	String email
 	LocalDate fechaNacimiento
-	Point coordenadas = new Point(0, 0)
-	boolean esAntisocial
+	Point punto = new Point(0, 0)
+	Boolean esAntisocial
 	Set<Usuario> amigos = newHashSet
 	double radioDeCercania
 	double saldoCuenta = 0.0 // esto se agrego segun issue 8 entrega 1
@@ -38,15 +40,17 @@ class Usuario implements Entidad {
 		#[new UsuarioFree, new UsuarioAmateur, new UsuarioProfesional]
 	}
 
-//	@Dependencies("coordenadas")
-//	def getCoordenadasX() {
-//		return coordenadas.latitude
-//	}
-//	
-//	@Dependencies("coordenadas")
-//	def getCoordenadasY() {
-//		return coordenadas.longitude
-//	}
+	@Dependencies("ubicacion")
+	def double getPuntoX(){punto.latitude}
+	def setPuntoX(double unValor){	
+		punto.x = unValor.doubleValue
+	}
+	@Dependencies("ubicacion")
+	def double getPuntoY(){punto.longitude}
+	def setPuntoY(double unValor){	
+		punto.y = unValor.doubleValue
+	}
+	
 	def invitacionesRecibidas() {
 		invitaciones
 	}
@@ -271,7 +275,7 @@ class Usuario implements Entidad {
 	}
 
 	def validarUbicacion() {
-		if (coordenadas === null) {
+		if (punto === null) {
 			throw new EventoException("Falta Ubicacion")
 		}
 	}
@@ -394,7 +398,7 @@ class UsuarioFree implements TipoDeUsuario {
 		throw new EventoException("Un usuario free no puede rechazar una invitacion de forma asincronica")
 	}
 
-	override def void removerOrdenAsincronica(Invitacion invitacion) {
+	override void removerOrdenAsincronica(Invitacion invitacion) {
 		throw new EventoException("Un usuario free no puede remover ordenes asincronicas")
 	}
 
@@ -445,7 +449,7 @@ class UsuarioAmateur implements TipoDeUsuario {
 		throw new EventoException("Un usuario amateur no puede rechazar una invitacion de forma asincronica")
 	}
 
-	override def void removerOrdenAsincronica(Invitacion invitacion) {
+	override void removerOrdenAsincronica(Invitacion invitacion) {
 		throw new EventoException("Un usuario amateur no puede remover ordenes asincronicas")
 	}
 
@@ -503,7 +507,7 @@ class UsuarioProfesional implements TipoDeUsuario {
 		invitacion.eventoCerrado.recibirOrden(rechazo)
 	}
 
-	override def void removerOrdenAsincronica(Invitacion invitacion) {
+	override void removerOrdenAsincronica(Invitacion invitacion) {
 		invitacion.eventoCerrado.removerOrdenAsincronica(invitacion)
 	}
 

@@ -24,17 +24,17 @@ class TestServicios extends FixtureTest {
 
 		new Usuario => [
 			fechaNacimiento = LocalDate.of(1900, 04, 02)
-			coordenadas = new Point(34, 45)
+			punto = new Point(34, 45)
 			esAntisocial = false
 		]
 
 		servicioCatering = new Servicio => [
-			ubicacion = new Point(34.910067, 45) // distancia a reunion chica aproximada 10 km
+			punto = new Point(34.910067, 45) // distancia a reunion chica aproximada 10 km
 			costoFijo = 100
 			costoPorKm = 2
 		]
 		servicioAnimacion = new Servicio => [
-			ubicacion = new Point(35, 45) // distancia a reunion chica 0
+			punto = new Point(35, 45) // distancia a reunion chica 0
 			costoFijo = 200
 			costoPorKm = 2
 			costoMinimo = 100
@@ -50,7 +50,7 @@ class TestServicios extends FixtureTest {
 
 	@Test
 	def distanciaEntreServicioYEvento10Km() {
-		Assert.assertEquals(10, reunionChica.distancia(servicioCatering.ubicacion), 0.3)
+		Assert.assertEquals(10, reunionChica.distancia(servicioCatering.punto), 0.3)
 	}
 
 	@Test

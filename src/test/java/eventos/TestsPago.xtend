@@ -55,7 +55,7 @@ class TestsPago {
 			email = "mail2"
 			nombreApellido = "Mario Perez"
 			fechaNacimiento = LocalDate.of(1900, 04, 02)
-			coordenadas = new Point(45, 60)
+			punto = new Point(45, 60)
 		]
 		salon_SM = new Locacion => [
 			nombre = "San Martin"

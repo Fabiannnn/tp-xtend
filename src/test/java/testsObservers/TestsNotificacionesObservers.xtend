@@ -58,7 +58,7 @@ class TestsNotificacionesObservers extends FixtureTest {
 			email = "mail1"
 			nombreApellido = "Pepe Argento"
 			fechaNacimiento = LocalDate.of(2002, 05, 15)
-			coordenadas = new Point(100, 50)
+			punto = new Point(100, 50)
 			radioDeCercania = 2
 		]
 		val Usuario usuario5 = new Usuario => [
@@ -66,7 +66,7 @@ class TestsNotificacionesObservers extends FixtureTest {
 			email = "mail1"
 			nombreApellido = "Pepe Argento"
 			fechaNacimiento = LocalDate.of(2002, 05, 15)
-			coordenadas = new Point(35, 45)
+			punto = new Point(35, 45)
 			radioDeCercania = 2000
 		]
 
@@ -99,7 +99,7 @@ class TestsNotificacionesObservers extends FixtureTest {
 			email = "mail1"
 			nombreApellido = "Pepe Argento"
 			fechaNacimiento = LocalDate.of(2002, 05, 15)
-			coordenadas = new Point(100, 50)
+			punto = new Point(100, 50)
 			radioDeCercania = 2
 		]
 //		val Usuario usuario5 = new Usuario => [
@@ -110,7 +110,7 @@ class TestsNotificacionesObservers extends FixtureTest {
 //			coordenadas = new Point(35, 45)
 //			radioDeCercania = 2000
 //		]
-		usuario2.coordenadas = new Point(35.0, 47.0)
+		usuario2.punto = new Point(35.0, 47.0)
 		usuario2.radioDeCercania = 2000000.0
 
 		val MailService _MailService = new MailService
@@ -143,7 +143,7 @@ class TestsNotificacionesObservers extends FixtureTest {
 			email = "mail1"
 			nombreApellido = "Pepe Argento"
 			fechaNacimiento = LocalDate.of(2002, 05, 15)
-			coordenadas = new Point(100, 50)
+			punto = new Point(100, 50)
 			radioDeCercania = 2
 		]
 		val Usuario usuario5 = new Usuario => [
@@ -151,11 +151,11 @@ class TestsNotificacionesObservers extends FixtureTest {
 			email = "mail1"
 			nombreApellido = "Pepe Argento"
 			fechaNacimiento = LocalDate.of(2002, 05, 15)
-			coordenadas = new Point(35, 45)
+			punto = new Point(35, 45)
 			radioDeCercania = 2000
 		]
 		usuario3.nombreUsuario = "TercerUsuario"
-		usuario2.coordenadas = new Point(35.0, 47.0)
+		usuario2.punto = new Point(35.0, 47.0)
 		usuario2.radioDeCercania = 2000000.0
 		usuario3.radioDeCercania = 2000000.0
 
@@ -194,7 +194,7 @@ class TestsNotificacionesObservers extends FixtureTest {
 			email = "mail1"
 			nombreApellido = "Pepe Argento"
 			fechaNacimiento = LocalDate.of(2002, 05, 15)
-			coordenadas = new Point(100, 50)
+			punto = new Point(100, 50)
 			radioDeCercania = 2
 		]
 		val Usuario usuario5 = new Usuario => [
@@ -202,7 +202,7 @@ class TestsNotificacionesObservers extends FixtureTest {
 			email = "mail1"
 			nombreApellido = "Pepe Argento"
 			fechaNacimiento = LocalDate.of(2002, 05, 15)
-			coordenadas = new Point(35, 45)
+			punto = new Point(35, 45)
 			radioDeCercania = 2000
 		]
 
@@ -228,7 +228,7 @@ class TestsNotificacionesObservers extends FixtureTest {
 			email = "mail1"
 			nombreApellido = "Pepe Argento"
 			fechaNacimiento = LocalDate.of(2002, 05, 15)
-			coordenadas = new Point(100, 50)
+			punto = new Point(100, 50)
 			radioDeCercania = 2
 		]
 		val Usuario usuario5 = new Usuario => [
@@ -236,7 +236,7 @@ class TestsNotificacionesObservers extends FixtureTest {
 			email = "mail1"
 			nombreApellido = "Pepe Argento"
 			fechaNacimiento = LocalDate.of(2002, 05, 15)
-			coordenadas = new Point(35, 45)
+			punto = new Point(35, 45)
 			radioDeCercania = 2000
 		]
 		reunionAbierta.artistas.add("Madonna")

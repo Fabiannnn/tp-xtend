@@ -20,7 +20,7 @@ class JsonServicio extends JsonsInterface<Servicio> {
 
 		servAuxiliar = new Servicio() => [
 			descripcion = unaDescripcion
-			ubicacion = unPunto
+			punto = unPunto
 			costoPorKm = unaTarifaTraslado
 		]
 

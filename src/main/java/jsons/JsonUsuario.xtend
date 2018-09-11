@@ -31,7 +31,7 @@ class JsonUsuario extends JsonsInterface<Usuario> {
 			nombreApellido = unNombreApellido
 			email = unEmail
 			fechaNacimiento = unaFN
-			coordenadas = unaCoordenada
+			punto = unaCoordenada
 			fechaNacimiento = LocalDate.now()
 		]
 		return usuarioAuxiliar

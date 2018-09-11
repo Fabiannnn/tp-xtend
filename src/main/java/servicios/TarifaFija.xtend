@@ -17,7 +17,8 @@ class TarifaFija implements TipoDeTarifa {
 		}
 		return true
 	}
-	override  tipoTarifa(){
+
+	override tipoTarifa() {
 		"Fija"
 	}
 }

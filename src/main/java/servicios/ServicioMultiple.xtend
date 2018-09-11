@@ -1,12 +1,12 @@
 package servicios
 
+import eventos.Evento
 import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
-import eventos.Evento
-import org.uqbar.commons.model.annotations.Observable
+import org.uqbar.commons.model.annotations.TransactionalAndObservable
 
 @Accessors
-@Observable
+@TransactionalAndObservable
 class ServicioMultiple implements TipoDeServicio {
 	val tipoServicio = "Múltiple"
 

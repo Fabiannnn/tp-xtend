@@ -1,12 +1,12 @@
 package servicios
 
-import excepciones.EventoException
 import eventos.Evento
-import org.uqbar.commons.model.annotations.Observable
+import excepciones.EventoException
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.uqbar.commons.model.annotations.TransactionalAndObservable
 
 @Accessors
-@Observable
+@TransactionalAndObservable
 class ServicioSimple implements TipoDeServicio {
 	val tipoServicio = "Simple"
 
