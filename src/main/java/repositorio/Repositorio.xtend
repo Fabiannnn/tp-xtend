@@ -4,16 +4,18 @@ import eventos.Entidad
 import excepciones.EventoException
 import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
-import org.uqbar.commons.model.annotations.TransactionalAndObservable
+//import org.uqbar.commons.model.annotations.TransactionalAndObservable
 import org.uqbar.updateService.UpdateService
 
 @Accessors
-@TransactionalAndObservable
+//@TransactionalAndObservable
 abstract class Repositorio<T extends Entidad> {
 
 	public List<T> elementos = newArrayList
 	public int proximoId = 1
 	public UpdateService updateService
+
+
 
 	def void updateAll()
 

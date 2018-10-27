@@ -2,12 +2,12 @@ package eventos
 
 import excepciones.EventoException
 import org.eclipse.xtend.lib.annotations.Accessors
-import org.uqbar.commons.model.annotations.TransactionalAndObservable
+//import org.uqbar.commons.model.annotations.TransactionalAndObservable
 import org.uqbar.geodds.Point
-import org.uqbar.commons.model.annotations.Dependencies
+//import org.uqbar.commons.model.annotations.Dependencies
 
 @Accessors
-@TransactionalAndObservable
+//@TransactionalAndObservable
 class Locacion implements Entidad {
 
 	String nombre
@@ -15,6 +15,11 @@ class Locacion implements Entidad {
 	double superficie
 	val personasPorMetroCuadrado = 0.8
 	int id
+
+
+
+
+
 
 	def double distancia(Point otroPunto) {
 		punto.distance(otroPunto)
@@ -53,7 +58,7 @@ class Locacion implements Entidad {
 		nombre
 	}
 	
-	@Dependencies("ubicacion")
+/* 	@Dependencies("ubicacion")
 	def double getPuntoX(){punto.latitude}
 	def setPuntoX(double unValor){	
 		punto.x = unValor.doubleValue
@@ -62,5 +67,5 @@ class Locacion implements Entidad {
 	def double getPuntoY(){punto.longitude}
 	def setPuntoY(double unValor){	
 		punto.y = unValor.doubleValue
-	}
+	}*/
 }

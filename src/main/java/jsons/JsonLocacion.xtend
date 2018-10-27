@@ -8,7 +8,7 @@ import org.uqbar.geodds.Point
 import org.uqbar.commons.model.annotations.Observable
 
 @Accessors
-@Observable
+//@Observable
 class JsonLocacion extends JsonsInterface<Locacion> {
 	var List<Locacion> locaciones = newArrayList
 

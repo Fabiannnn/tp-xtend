@@ -8,9 +8,28 @@ import eventos.FixtureTest
 
 @Accessors
 class TestJsonUsuario extends FixtureTest {
-	String jsonText
+	String jsonText= '''[  
+		   {  
+		      "nombreUsuario":"lucas_capo",
+		      "nombreApellido":"Lucas Lopez",
+		      "email":"lucas_93@hotmail.com",
+		      "fechaNacimiento":"15/01/1993",
+		      "direccion":{  
+		         "calle":"25 de Mayo",
+		         "numero":3918,
+		         "localidad":"San Martín",
+		         "provincia":"Buenos Aires",
+		         "coordenadas":{  
+		            "x":-34.572224,
+		            "y":58.535651
+		         }
+		      }
+		   }
+		]'''
+
+	
 	String jsonText2
-	JsonUsuario jsonUsuario
+
 
 	@Test
 	def void seActualizaConJsonUsuario1Usuario() {

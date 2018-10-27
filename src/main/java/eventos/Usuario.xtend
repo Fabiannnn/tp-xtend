@@ -14,11 +14,14 @@ import org.uqbar.commons.model.annotations.Observable
 import org.uqbar.commons.model.annotations.TransactionalAndObservable
 import org.uqbar.geodds.Point
 import org.uqbar.commons.model.annotations.Dependencies
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonProperty
+import java.time.format.DateTimeFormatter
 
 @Accessors
 @TransactionalAndObservable
 class Usuario implements Entidad {
-
+	static String DATE_PATTERN = "dd/MM/yyyy"
 	String nombreUsuario
 	String nombreApellido
 	String email
@@ -87,6 +90,20 @@ class Usuario implements Entidad {
 	def boolean fanDeUnArtista(String artista) {
 		fanArtistas.exists[artistaUsuario|artistaUsuario.equals(artista)]
 	}
+@JsonProperty("fechaNacimiento")
+	def getFechaAsString() {
+		formatter.format(this.fechaNacimiento)
+	}
+	
+	
+	def asignarFecha(String fecha) {
+		this.fechaNacimiento = LocalDate.parse(fecha, formatter)
+	}
+	
+	def formatter() {
+		DateTimeFormatter.ofPattern(DATE_PATTERN)
+	}
+
 
 //metodo recibir lista de artistas
 	def boolean soyFanDeAlgunoDeLosArtistas(Set<String> artistas) {
@@ -169,7 +186,6 @@ class Usuario implements Entidad {
 	def agregarAmigoALaLista(Usuario unAmigo) {
 		amigos.add(unAmigo)
 	}
-
 	def cancelarUnEvento(Evento unEvento) {
 		if (tipoDeUsuario.puedeCancelarEventos()) {
 			unEvento.cancelarElEvento()
@@ -270,7 +286,7 @@ class Usuario implements Entidad {
 		validarNombreUsuario()
 		validarNombreApellido()
 		validarEMail()
-		validarFechaNacimiento()
+		//validarFechaNacimiento()
 		validarUbicacion()
 	}
 
@@ -491,6 +507,7 @@ class UsuarioProfesional implements TipoDeUsuario {
 		unUsuario.eventosOrganizados.filter[evento|evento.fechaDeInicio.month == unaFecha.month].size() <
 			cantidadMaximaEventosMensuales
 	}
+
 
 	override agregarOrdenAsincronica(Evento evento, Orden orden) {
 		evento.recibirOrden(orden)
