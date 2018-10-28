@@ -53,7 +53,21 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 		]
 
 		val usuario4 = new Usuario => [
-			nombreUsuario = "user4"
+			nombreUsuario = "manolito"
+			email = "email4"
+			nombreApellido = "manolito otro"
+			fechaNacimiento = LocalDate.of(2002, 05, 15)
+			punto = new Point(40.0, 50.0)
+		]
+		val usuario5 = new Usuario => [
+			nombreUsuario = "susanita"
+			email = "email4"
+			nombreApellido = "susanitatro"
+			fechaNacimiento = LocalDate.of(2002, 05, 15)
+			punto = new Point(40.0, 50.0)
+		]
+		val usuario6 = new Usuario => [
+			nombreUsuario = "Quino"
 			email = "email4"
 			nombreApellido = "Perez otro"
 			fechaNacimiento = LocalDate.of(2002, 05, 15)
@@ -64,14 +78,23 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 		usuario2.setUsuarioProfesional()
 		usuario3.setUsuarioProfesional()
 		usuario4.setUsuarioProfesional()
-		this.create(usuario1)
+		usuario5.setUsuarioFree()
+		usuario6.setUsuarioAmateur()
+
 		usuario1.agregarAmigoALaLista(usuario2)
 		usuario1.agregarAmigoALaLista(usuario3)
 		usuario1.agregarAmigoALaLista(usuario4)
-		this.create(usuario2)
+		usuario1.agregarAmigoALaLista(usuario5)
+		usuario1.agregarAmigoALaLista(usuario6)
+
 		usuario2.agregarAmigoALaLista(usuario3)
+		usuario2.agregarAmigoALaLista(usuario4)
+				this.create(usuario1)
+		this.create(usuario2)
 		this.create(usuario3)
 		this.create(usuario4)
+		this.create(usuario5)
+		this.create(usuario6)
 
 	}
 
@@ -105,7 +128,6 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 
 	}
 
-	
 	def listadoDeMisAmigos(Usuario _usuario) {
 		elementos.filter[unUsuario|unUsuario.esMiAmigo(_usuario)].toSet
 	}
@@ -119,4 +141,5 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 		// Tiene que traer una lista con los usuarios que son fans de algun artista del evento.
 		elementos.filter[usuario|usuario.soyFanDeAlgunoDeLosArtistas(artistas)]
 
-	}}
+	}
+}
