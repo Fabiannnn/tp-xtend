@@ -18,6 +18,9 @@ class Entrada {
 		unEventoAbierto = elEventoAbierto
 		unUsuario = elUsuario
 	}
+		def getEventoAbierto() {
+		return unEventoAbierto
+	}
 
 // Metodos para devolucion de entradas,   por cancelación o postergacion
 	def void cancelacionDeEvento() {

@@ -16,7 +16,7 @@ import org.uqbar.geodds.Point
 @Controller
 class PerfilController {
 
-	Usuario usuario1
+	Usuario usuarioBuscado
 
 	extension JSONUtils = new JSONUtils
 	JsonUsuario jsonUsuario
@@ -27,9 +27,11 @@ class PerfilController {
 		val iId = Integer.valueOf(id)
 
 		try {
-			ok(RepositorioUsuarios.instance.searchById(iId).toJson)
+			usuarioBuscado = RepositorioUsuarios.instance.searchById(iId)
+			ok(usuarioBuscado.toJson)
+		// ok((RepositorioUsuarios.instance.searchById(iId).toJson))
 		} catch (Exception e) {
-			notFound("No existe la Usuario con id " + id + "")
+			notFound("No existe el Usuario con id " + id + "")
 		}
 	}
 
@@ -40,6 +42,20 @@ class PerfilController {
 			ok(usuarios.toJson)
 		} catch (Exception e) {
 			internalServerError(e.message)
+		}
+	}
+
+	@Get('/amigosUsuario/:id')
+	def Result amigosUsuario() {
+		val iId = Integer.valueOf(id)
+
+		try {
+			usuarioBuscado = RepositorioUsuarios.instance.searchById(iId)
+			ok(usuarioBuscado.amigos.toJson)
+		// ok(usuarioBuscado.amigos.toJson)
+		// ok((RepositorioUsuarios.instance.searchById(iId).toJson))
+		} catch (Exception e) {
+			notFound("No existe el Usuario con id " + id + "")
 		}
 	}
 
@@ -60,26 +76,34 @@ class PerfilController {
 		}
 	}
 
-/* @Put('/amigoEliminar')
- * def Result amigoEliminar(@Body String body) {
- * 	try {
- * 		//if (true) throw new RuntimeException("ACHALAY")
- * 		val actualizado = body.fromJson(Tarea)
+	@Get('/eventosAgendaUsuario/:id')
+	def Result eventosAgendaUsuario() {
+		val iId = Integer.valueOf(id)
 
- * 		actualizado.asignarFecha(body.getPropertyValue("fecha"))
- * 		
- * 		val asignadoA = body.getPropertyValue("asignadoA")
- * 		val asignatario = RepoUsuarios.instance.getAsignatario(asignadoA)
- * 		actualizado.asignarA(asignatario)
+		try {
+			usuarioBuscado = RepositorioUsuarios.instance.searchById(iId)
 
- * 		if (Integer.parseInt(id) != actualizado.id) {
- * 			return badRequest('{ "error" : "Id en URL distinto del cuerpo" }')
- * 		}
+			usuarioBuscado.eventosAgenda = RepositorioUsuarios.instance.agendaUsuario(iId)
+			println(" en perfil controller   " + usuarioBuscado.eventosAgenda)
+			ok(usuarioBuscado.eventosAgenda.toJson)
+		} catch (Exception e) {
+			notFound("No existe el Usuario con id " + id + "")
+		}
+	}
 
- * 		RepoTareas.instance.update(actualizado)
- * 		ok('{ "status" : "OK" }');
- * 	} catch (Exception e) {
- * 		badRequest(e.message)
- * 	}
- }*/
+	@Get('/invitacionesPendientes/:id')
+	def Result invitacionesPendientes() {
+		val iId = Integer.valueOf(id)
+
+		try {
+			usuarioBuscado = RepositorioUsuarios.instance.searchById(iId)
+			println(usuarioBuscado.invitaciones.filter[invitacion| invitacion.estaPendiente()])
+			ok(usuarioBuscado.invitaciones.toJson)
+			
+		} catch (Exception e) {
+			notFound("No existe el Usuario con id " + id + "")
+		}
+
+	}
+
 }

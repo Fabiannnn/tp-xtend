@@ -23,7 +23,7 @@ class RepositorioLocaciones extends Repositorio<Locacion> {
 
 	new() {
 		// LOCACIONES ##########################################################################################
-		val sanMartin1 = new Locacion => [
+		/*val sanMartin1 = new Locacion => [
 			nombre = "San Martin 1"
 			punto = new Point(10.0, 20.0)
 			superficie = 16
@@ -50,7 +50,7 @@ class RepositorioLocaciones extends Repositorio<Locacion> {
 		repoLocaciones.create(sanMartin1)
 		repoLocaciones.create(sanMartin2)
 		repoLocaciones.create(sanMartin3)
-		repoLocaciones.create(salonCompleto)
+		repoLocaciones.create(salonCompleto)*/
 	}
 
 	override void recibirListaActualizacionJson(List<Locacion> locaciones) {

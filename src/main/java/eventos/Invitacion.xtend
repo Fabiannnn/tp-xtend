@@ -4,24 +4,35 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import java.time.LocalDate
 import java.time.LocalDateTime
 import org.uqbar.commons.model.annotations.Observable
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonProperty
 
 @Accessors
 @Observable
 class Invitacion {
 
-	EventoCerrado unEventoCerrado
-	Usuario unUsuario
+	@JsonIgnore EventoCerrado unEventoCerrado
+	@JsonIgnore Usuario unUsuario
 	int cantidadDeAcompanantes
 	Boolean aceptada = null
 	int cantidadDeAcompanantesConfirmados = 0
-	Boolean asincronico = null
+	@JsonIgnore Boolean asincronico = null
+
+	@JsonProperty("unEventoCerrado")
+	def nombreDelEvento() { unEventoCerrado.nombre }
+
+	@JsonProperty("unUsuario")
+	def usuarioInvitado() {
+		unUsuario.nombreApellido
+	}
 
 	new(EventoCerrado elEventoCerrado, Usuario elUsuario, int laCantidadDeAcompanantes) { // clase de ordenes para aceptar y rechazar 
 		unEventoCerrado = elEventoCerrado
 		unUsuario = elUsuario
 		cantidadDeAcompanantes = laCantidadDeAcompanantes
 	}
-	def  estaAceptada(){
+
+	def estaAceptada() {
 		aceptada
 	}
 

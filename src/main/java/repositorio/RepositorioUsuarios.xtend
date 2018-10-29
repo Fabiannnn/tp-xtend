@@ -11,6 +11,12 @@ import org.eclipse.xtend.lib.annotations.Accessors
 //import org.uqbar.commons.model.annotations.TransactionalAndObservable
 import java.time.LocalDate
 import com.fasterxml.jackson.annotation.JsonProperty
+import eventos.EventoAbierto
+import eventos.EventoCerrado
+import java.time.LocalDateTime
+import java.time.Period
+import eventos.Entrada
+import eventos.Invitacion
 
 @Accessors
 //@TransactionalAndObservable
@@ -31,7 +37,7 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 			nombreUsuario = "Felipe"
 			email = "Felipe_Quino@maflada.mfq.mfq"
 			nombreApellido = "Felipe no se "
-			fechaNacimiento = LocalDate.of(2002, 05, 15)
+			fechaNacimiento = LocalDate.of(1950, 05, 15)
 			punto = new Point(40.0, 50.0)
 		]
 
@@ -86,16 +92,144 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 		usuario1.agregarAmigoALaLista(usuario4)
 		usuario1.agregarAmigoALaLista(usuario5)
 		usuario1.agregarAmigoALaLista(usuario6)
-
 		usuario2.agregarAmigoALaLista(usuario3)
 		usuario2.agregarAmigoALaLista(usuario4)
-				this.create(usuario1)
+		this.create(usuario1)
 		this.create(usuario2)
 		this.create(usuario3)
 		this.create(usuario4)
 		this.create(usuario5)
 		this.create(usuario6)
 
+		val salon_SM = new Locacion => [
+			nombre = "San Martin"
+			punto = new Point(35, 45)
+			superficie = 16
+		]
+		val salon_2 = new Locacion => [
+			nombre = "San Martin 2"
+			punto = new Point(35, 65)
+			superficie = 45
+		]
+		val salon_3 = new Locacion => [
+			nombre = "salon_3"
+			punto = new Point(35, 65)
+			superficie = 100
+		]
+
+		val reunionProyecto = new EventoAbierto => [
+			nombre = "Reunion Personal"
+			organizador = usuario1
+			locacion = salon_SM
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(2))
+			edadMinima = 17
+			precioEntrada = 100
+		]
+		val cumple = new EventoAbierto => [
+			nombre = "cumple"
+			organizador = usuario1
+			locacion = salon_3
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(25))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(26))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(7))
+			edadMinima = 1
+			precioEntrada = 200
+		]
+		val reunionChica = new EventoCerrado => [
+			nombre = "Reunion Chica"
+			organizador = usuario1
+			locacion = salon_3
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(1))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
+			fechaLimiteConfirmacion = LocalDate.now()
+			capacidadMaxima = 10
+		]
+		val otroEvento = new EventoCerrado => [
+			nombre = "Otra Reunion "
+			organizador = usuario1
+			locacion = salon_SM
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(2))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(3))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(1))
+			capacidadMaxima = 50
+		]
+		val reunionGrande = new EventoCerrado => [
+			nombre = "Reunion++ "
+			organizador = usuario2
+			locacion = salon_SM
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(2))
+			capacidadMaxima = 20
+		]
+
+		val primerEvento = new EventoCerrado => [
+			nombre = "por que a mi  Proyecto"
+			organizador = usuario3
+			locacion = salon_SM
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(2))
+			capacidadMaxima = 10
+		]
+		val segundoEvento = new EventoCerrado => [
+			nombre = "otra cosa Proyecto"
+			organizador = usuario3
+			locacion = salon_SM
+			fechaDeInicio = LocalDateTime.now.plus(Period.ofDays(4))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(2))
+			capacidadMaxima = 10
+		]
+		val tercerEvento = new EventoCerrado => [
+			nombre = "Reunion de nuevo"
+			organizador = usuario2
+			locacion = salon_2
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(13))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(14))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(2))
+			capacidadMaxima = 10
+		]
+		val cuartoEvento = new EventoCerrado => [
+			nombre = "los mafalditos"
+			locacion = salon_SM
+			organizador = usuario3
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(5))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(9))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(3))
+			capacidadMaxima = 50
+		]
+
+		val quintoEvento = new EventoAbierto => [
+			nombre = "jeje Proyecto"
+			organizador = usuario4
+			locacion = salon_SM
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(2))
+			edadMinima = 1
+			precioEntrada = 30
+		]
+
+		usuario1.organizarEventoAbierto(reunionProyecto)
+		usuario1.organizarEventoAbierto(cumple)
+		usuario1.organizarEventoCerrado(reunionChica)
+		usuario1.organizarEventoCerrado(otroEvento)
+		usuario4.organizarEventoAbierto(quintoEvento)
+		// otroEvento.fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(-1))
+		// reunionChica.fechaDeInicio = LocalDateTime.now()
+		// cumple.comprarEntrada(usuario3)
+		quintoEvento.comprarEntrada(usuario1)
+
+		val invitacion = new Invitacion(reunionGrande, usuario1, 3)
+		usuario1.recibirInvitacion(invitacion)
+		val invitacion2 = new Invitacion(tercerEvento, usuario1, 4)
+		usuario1.recibirInvitacion(invitacion2)
+		val invitacion3 = new Invitacion(tercerEvento, usuario1, 5)
+		usuario1.recibirInvitacion(invitacion3)
+usuario1.rechazarInvitacion(invitacion3)
 	}
 
 	def int eventosPorLocacionTotal(Locacion _locacion) {
@@ -142,4 +276,30 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 		elementos.filter[usuario|usuario.soyFanDeAlgunoDeLosArtistas(artistas)]
 
 	}
+
+	def agendaUsuario(int _id) {
+		val Set<Evento> eventosAgenda = newHashSet
+		var elUsuario = this.searchById(_id)
+
+		elUsuario.eventosOrganizados.forEach [ evento |
+			if (LocalDate.now() <= LocalDate.from(evento.fechaLimiteConfirmacion)) {
+				eventosAgenda.add(evento)
+			}
+		]
+		elUsuario.invitaciones.forEach [ invitacion |
+			if (LocalDate.now() <= LocalDate.from(invitacion.getEventoCerrado.fechaLimiteConfirmacion)) {
+				eventosAgenda.add(invitacion.getEventoCerrado())
+			}
+		]
+		elUsuario.entradaComprada.forEach [ entrada |
+			if (LocalDate.now() <= LocalDate.from(entrada.getEventoAbierto.fechaLimiteConfirmacion)) {
+				eventosAgenda.add(entrada.getEventoAbierto())
+			}
+		]
+
+		println(" en repositorioUsuario cuado genera el array eventos" + eventosAgenda)
+		return eventosAgenda
+
+	}
+
 }

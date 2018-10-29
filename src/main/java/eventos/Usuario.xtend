@@ -26,34 +26,44 @@ class Usuario implements Entidad {
 	String nombreApellido
 	String email
 	LocalDate fechaNacimiento
-	Point punto = new Point(0, 0)
+	@JsonIgnore Point punto = new Point(0, 0)
 	Boolean esAntisocial
 	Set<Usuario> amigos = newHashSet
 	double radioDeCercania
 	double saldoCuenta = 0.0 // esto se agrego segun issue 8 entrega 1
-	Set<Invitacion> invitaciones = newHashSet
-	Set<String> notificaciones = newHashSet // paraInvitaciones cancelaciones postergaciones
-	Set<Entrada> entradaComprada = newHashSet
+	@JsonIgnore Set<Invitacion> invitaciones = newHashSet
+	@JsonIgnore Set<String> notificaciones = newHashSet // paraInvitaciones cancelaciones postergaciones
+	@JsonIgnore Set<Entrada> entradaComprada = newHashSet
 	TipoDeUsuario tipoDeUsuario
-	Set<Evento> eventosOrganizados = newHashSet
+	@JsonIgnore Set<Evento> eventosOrganizados = newHashSet
 	int id
-	Set<String> fanArtistas = newHashSet
+	@JsonIgnore Set<String> fanArtistas = newHashSet
+	Set<Evento> eventosAgenda = newHashSet
 
 	def List<TipoDeUsuario> getTiposDeUsuarios() {
 		#[new UsuarioFree, new UsuarioAmateur, new UsuarioProfesional]
 	}
 
-	@Dependencies("ubicacion")
-	def double getPuntoX(){punto.latitude}
-	def setPuntoX(double unValor){	
-		punto.x = unValor.doubleValue
-	}
-	@Dependencies("ubicacion")
-	def double getPuntoY(){punto.longitude}
-	def setPuntoY(double unValor){	
-		punto.y = unValor.doubleValue
+	
+	@JsonProperty("fechaNacimiento")
+	def getFechaAsString() {
+		formatter.format(this.fechaNacimiento)
 	}
 	
+	@Dependencies("ubicacion")
+	def double getPuntoX() { punto.latitude }
+
+	def setPuntoX(double unValor) {
+		punto.x = unValor.doubleValue
+	}
+
+	@Dependencies("ubicacion")
+	def double getPuntoY() { punto.longitude }
+
+	def setPuntoY(double unValor) {
+		punto.y = unValor.doubleValue
+	}
+
 	def invitacionesRecibidas() {
 		invitaciones
 	}
@@ -90,20 +100,16 @@ class Usuario implements Entidad {
 	def boolean fanDeUnArtista(String artista) {
 		fanArtistas.exists[artistaUsuario|artistaUsuario.equals(artista)]
 	}
-@JsonProperty("fechaNacimiento")
-	def getFechaAsString() {
-		formatter.format(this.fechaNacimiento)
-	}
-	
-	
+
+
+
 	def asignarFecha(String fecha) {
 		this.fechaNacimiento = LocalDate.parse(fecha, formatter)
 	}
-	
+
 	def formatter() {
 		DateTimeFormatter.ofPattern(DATE_PATTERN)
 	}
-
 
 //metodo recibir lista de artistas
 	def boolean soyFanDeAlgunoDeLosArtistas(Set<String> artistas) {
@@ -186,6 +192,7 @@ class Usuario implements Entidad {
 	def agregarAmigoALaLista(Usuario unAmigo) {
 		amigos.add(unAmigo)
 	}
+
 	def cancelarUnEvento(Evento unEvento) {
 		if (tipoDeUsuario.puedeCancelarEventos()) {
 			unEvento.cancelarElEvento()
@@ -286,7 +293,7 @@ class Usuario implements Entidad {
 		validarNombreUsuario()
 		validarNombreApellido()
 		validarEMail()
-		//validarFechaNacimiento()
+		// validarFechaNacimiento()
 		validarUbicacion()
 	}
 
@@ -332,6 +339,11 @@ class Usuario implements Entidad {
 	override boolean filtroPorTexto(String cadena) {
 		nombreApellido.contains(cadena) || nombreUsuario.contentEquals(cadena)
 	}
+	
+	def invitacionesVigentes() {
+		invitaciones.filter[invitacion | (invitacion.estaPendiente()) ]//&& (invitacion.fechaParaConfirmar()))
+	}
+	
 }
 
 interface TipoDeUsuario {
@@ -507,7 +519,6 @@ class UsuarioProfesional implements TipoDeUsuario {
 		unUsuario.eventosOrganizados.filter[evento|evento.fechaDeInicio.month == unaFecha.month].size() <
 			cantidadMaximaEventosMensuales
 	}
-
 
 	override agregarOrdenAsincronica(Evento evento, Orden orden) {
 		evento.recibirOrden(orden)

@@ -24,7 +24,7 @@ class RepositorioServicios extends Repositorio<Servicio> {
 
 new(){
 		// SERVICIOS #########################################################################################
-
+/*
 		val servicioCatering = new Servicio => [
 			punto = new Point(35, 45)
 			descripcion = "Catering"
@@ -50,7 +50,7 @@ new(){
 
 		repoServicios.create(servicioAnimacion)
 		repoServicios.create(servicioCatering)
-	
+*/	
 }
 
 
