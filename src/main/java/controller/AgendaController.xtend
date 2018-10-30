@@ -66,4 +66,27 @@ class AgendaController {
 		}
 	}
 
+	@Get('/organizadosUsuarioAbiertos/:id')
+	def Result organizadosUsuarioAbiertos() {
+		val iId = Integer.valueOf(id)
+		try {
+			usuarioBuscado = RepositorioUsuarios.instance.searchById(iId)
+			usuarioBuscado.eventosAgenda = RepositorioUsuarios.instance.organizadosUsuarioAbiertos(iId)
+			ok(usuarioBuscado.eventosAgenda.toJson)
+		} catch (Exception e) {
+			notFound("No existe el Usuario con id " + id + "")
+		}
+	}
+	@Get('/organizadosUsuarioCerrados/:id')
+	def Result organizadosUsuarioCerrados() {
+		val iId = Integer.valueOf(id)
+		try {
+			usuarioBuscado = RepositorioUsuarios.instance.searchById(iId)
+			usuarioBuscado.eventosAgenda = RepositorioUsuarios.instance.organizadosUsuarioCerrados(iId)
+			ok(usuarioBuscado.eventosAgenda.toJson)
+		} catch (Exception e) {
+			notFound("No existe el Usuario con id " + id + "")
+		}
+	}
+
 }

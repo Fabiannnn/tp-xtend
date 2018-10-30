@@ -287,7 +287,8 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 			}
 		]
 		elUsuario.invitaciones.forEach [ invitacion |
-			if (LocalDate.now() <= LocalDate.from(invitacion.getEventoCerrado.fechaDeInicio) && (invitacion.aceptada === true) ) {
+			if (LocalDate.now() <= LocalDate.from(invitacion.getEventoCerrado.fechaDeInicio) &&
+				(invitacion.aceptada === true)) {
 				eventosAgenda.add(invitacion.getEventoCerrado())
 			}
 		]
@@ -299,7 +300,7 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 		return eventosAgenda
 	}
 
-/* metodos Agenda para el controller */
+	/* metodos Agenda para el controller */
 	def agendaHoy(int _id) {
 		val Set<Evento> eventosAgenda = newHashSet
 		this.agendaUsuario(_id).forEach [ unEvento |
@@ -318,7 +319,7 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 				eventosAgenda.add(unEvento)
 			}
 		]
-		
+
 		return eventosAgenda
 	}
 
@@ -331,4 +332,27 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 		]
 		return eventosAgenda
 	}
+
+	def organizadosUsuarioAbiertos(int _id) {
+		val Set<Evento> organizadosPorUsuarioA = newHashSet
+		var elUsuario = this.searchById(_id)
+		elUsuario.eventosOrganizados.forEach [ evento |
+			if (LocalDate.now() <= LocalDate.from(evento.fechaDeInicio) && (evento instanceof EventoAbierto )) {
+				organizadosPorUsuarioA.add(evento)
+			}
+		]
+		return organizadosPorUsuarioA
+	}
+
+	def organizadosUsuarioCerrados(int _id) {
+		val Set<Evento> organizadosPorUsuarioC = newHashSet
+		var elUsuario = this.searchById(_id)
+		elUsuario.eventosOrganizados.forEach [ evento |
+			if (LocalDate.now() <= LocalDate.from(evento.fechaDeInicio) && (evento instanceof EventoCerrado )) {
+				organizadosPorUsuarioC.add(evento)
+			}
+		]
+		return organizadosPorUsuarioC
+	}
+
 }
