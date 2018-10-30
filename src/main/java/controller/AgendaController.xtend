@@ -18,15 +18,48 @@ class AgendaController {
 	JsonUsuario jsonUsuario
 	Usuario usuarioBuscado
 
+	@Get('/agendaHoy/:id')
+	def Result agendaHoy() {
+		val iId = Integer.valueOf(id)
+		try {
+			usuarioBuscado = RepositorioUsuarios.instance.searchById(iId)
+			usuarioBuscado.eventosAgenda = RepositorioUsuarios.instance.agendaHoy(iId)
+			ok(usuarioBuscado.eventosAgenda.toJson)
+		} catch (Exception e) {
+			notFound("No existe el Usuario con id " + id + "")
+		}
+	}
+
+	@Get('/agendaSemana/:id')
+	def Result agendaSemana() {
+		val iId = Integer.valueOf(id)
+		try {
+			usuarioBuscado = RepositorioUsuarios.instance.searchById(iId)
+			usuarioBuscado.eventosAgenda = RepositorioUsuarios.instance.agendaSemana(iId)
+			ok(usuarioBuscado.eventosAgenda.toJson)
+		} catch (Exception e) {
+			notFound("No existe el Usuario con id " + id + "")
+		}
+	}
+
+	@Get('/agendaProximos/:id')
+	def Result agendaProximos() {
+		val iId = Integer.valueOf(id)
+		try {
+			usuarioBuscado = RepositorioUsuarios.instance.searchById(iId)
+			usuarioBuscado.eventosAgenda = RepositorioUsuarios.instance.agendaProximos(iId)
+			ok(usuarioBuscado.eventosAgenda.toJson)
+		} catch (Exception e) {
+			notFound("No existe el Usuario con id " + id + "")
+		}
+	}
+
 	@Get('/agendaUsuario/:id')
 	def Result agendaUsuario() {
 		val iId = Integer.valueOf(id)
-
 		try {
 			usuarioBuscado = RepositorioUsuarios.instance.searchById(iId)
-
 			usuarioBuscado.eventosAgenda = RepositorioUsuarios.instance.agendaUsuario(iId)
-			
 			ok(usuarioBuscado.eventosAgenda.toJson)
 		} catch (Exception e) {
 			notFound("No existe el Usuario con id " + id + "")

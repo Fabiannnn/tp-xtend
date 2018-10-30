@@ -33,7 +33,7 @@ class Invitacion {
 	}
 
 	def estaAceptada() {
-		aceptada
+		aceptada =true
 	}
 
 	def verificaRechazo(Usuario _usuario) {

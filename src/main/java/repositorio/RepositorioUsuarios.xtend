@@ -141,9 +141,9 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 			nombre = "Reunion Chica"
 			organizador = usuario1
 			locacion = salon_3
-			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(1))
+			fechaDeInicio = LocalDateTime.now()
 			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
-			fechaLimiteConfirmacion = LocalDate.now()
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(-1))
 			capacidadMaxima = 10
 		]
 		val otroEvento = new EventoCerrado => [
@@ -159,9 +159,9 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 			nombre = "Reunion++ "
 			organizador = usuario2
 			locacion = salon_SM
-			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(2))
 			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
-			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(2))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(1))
 			capacidadMaxima = 20
 		]
 
@@ -206,9 +206,9 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 			nombre = "jeje Proyecto"
 			organizador = usuario4
 			locacion = salon_SM
-			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
-			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
-			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(2))
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(1))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(2))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(-1))
 			edadMinima = 1
 			precioEntrada = 30
 		]
@@ -227,9 +227,10 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 		usuario1.recibirInvitacion(invitacion)
 		val invitacion2 = new Invitacion(tercerEvento, usuario1, 4)
 		usuario1.recibirInvitacion(invitacion2)
-		val invitacion3 = new Invitacion(tercerEvento, usuario1, 5)
+		val invitacion3 = new Invitacion(cuartoEvento, usuario1, 5)
 		usuario1.recibirInvitacion(invitacion3)
-usuario1.rechazarInvitacion(invitacion3)
+		usuario1.rechazarInvitacion(invitacion3)
+		invitacion3.aceptarseCompleto()
 	}
 
 	def int eventosPorLocacionTotal(Locacion _locacion) {
@@ -280,26 +281,54 @@ usuario1.rechazarInvitacion(invitacion3)
 	def agendaUsuario(int _id) {
 		val Set<Evento> eventosAgenda = newHashSet
 		var elUsuario = this.searchById(_id)
-
 		elUsuario.eventosOrganizados.forEach [ evento |
-			if (LocalDate.now() <= LocalDate.from(evento.fechaLimiteConfirmacion)) {
+			if (LocalDate.now() <= LocalDate.from(evento.fechaDeInicio)) {
 				eventosAgenda.add(evento)
 			}
 		]
 		elUsuario.invitaciones.forEach [ invitacion |
-			if (LocalDate.now() <= LocalDate.from(invitacion.getEventoCerrado.fechaLimiteConfirmacion)) {
+			if (LocalDate.now() <= LocalDate.from(invitacion.getEventoCerrado.fechaDeInicio) && (invitacion.aceptada === true) ) {
 				eventosAgenda.add(invitacion.getEventoCerrado())
 			}
 		]
 		elUsuario.entradaComprada.forEach [ entrada |
-			if (LocalDate.now() <= LocalDate.from(entrada.getEventoAbierto.fechaLimiteConfirmacion)) {
+			if (LocalDate.now() <= LocalDate.from(entrada.getEventoAbierto.fechaDeInicio)) {
 				eventosAgenda.add(entrada.getEventoAbierto())
 			}
 		]
-
-		println(" en repositorioUsuario cuado genera el array eventos" + eventosAgenda)
 		return eventosAgenda
-
 	}
 
+/* metodos Agenda para el controller */
+	def agendaHoy(int _id) {
+		val Set<Evento> eventosAgenda = newHashSet
+		this.agendaUsuario(_id).forEach [ unEvento |
+			if (LocalDate.from(unEvento.fechaDeInicio) < LocalDate.now().plus(Period.ofDays(1))) {
+				eventosAgenda.add(unEvento)
+			}
+		]
+		return eventosAgenda
+	}
+
+	def agendaSemana(int _id) {
+		val Set<Evento> eventosAgenda = newHashSet
+		this.agendaUsuario(_id).forEach [ unEvento |
+			if (LocalDate.from(unEvento.fechaDeInicio) > LocalDate.now() &&
+				LocalDate.from(unEvento.fechaDeInicio) < LocalDate.now().plus(Period.ofDays(8))) {
+				eventosAgenda.add(unEvento)
+			}
+		]
+		
+		return eventosAgenda
+	}
+
+	def agendaProximos(int _id) {
+		val Set<Evento> eventosAgenda = newHashSet
+		this.agendaUsuario(_id).forEach [ unEvento |
+			if (LocalDate.from(unEvento.fechaDeInicio) > LocalDate.now().plus(Period.ofDays(7))) {
+				eventosAgenda.add(unEvento)
+			}
+		]
+		return eventosAgenda
+	}
 }

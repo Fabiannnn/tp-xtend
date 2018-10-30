@@ -14,6 +14,7 @@ import org.uqbar.geodds.Point
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.format.DateTimeFormatter
+import java.time.Period
 
 @Accessors
 @Observable
@@ -224,7 +225,7 @@ class EventoAbierto extends Evento {
 	}
 
 	override fechaAnteriorALaLimite() {
-		LocalDate.now() <= LocalDate.from(fechaLimiteConfirmacion)
+		LocalDate.now().plus(Period.ofDays(-2)) <= LocalDate.from(fechaLimiteConfirmacion)
 	}
 
 	override esExitoso() {
@@ -260,10 +261,8 @@ class EventoAbierto extends Evento {
 class EventoCerrado extends Evento {
 
 	// static val COEF_EXITO = 0.9
-	
- @JsonIgnore Set<Invitacion> invitados = newHashSet
-	
-	
+	@JsonIgnore Set<Invitacion> invitados = newHashSet
+
 	int capacidadMaxima = 0
 
 	def void crearInvitacion(Usuario elInvitado, int unaCantidadDeAcompanantes) {
