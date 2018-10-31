@@ -65,14 +65,14 @@ abstract class Evento {
 	def getFechaAsString() {
 		formatter.format(this.fechaLimiteConfirmacion)
 	}
-
+	def formatterTiempo() {
+		DateTimeFormatter.ofPattern(TIME_DATE_PATTERN)
+	}
 	def formatter() {
 		DateTimeFormatter.ofPattern(DATE_PATTERN)
 	}
 
-	def formatterTiempo() {
-		DateTimeFormatter.ofPattern(TIME_DATE_PATTERN)
-	}
+
 
 	def double duracion() {
 		Duration.between(fechaDeInicio, fechaFinalizacion).getSeconds() / 3600.0

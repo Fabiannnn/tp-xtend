@@ -6,25 +6,41 @@ import java.time.LocalDateTime
 import org.uqbar.commons.model.annotations.Observable
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.time.format.DateTimeFormatter
 
 @Accessors
 @Observable
 class Invitacion {
-
+	static String DATE_PATTERN = "dd/MM/yyyy"
+	static String TIME_DATE_PATTERN = "dd/MM/yyyy HH:mm"
 	@JsonIgnore EventoCerrado unEventoCerrado
 	@JsonIgnore Usuario unUsuario
-	int cantidadDeAcompanantes
+	int cantidadDeAcompanantes=0
 	Boolean aceptada = null
 	int cantidadDeAcompanantesConfirmados = 0
 	@JsonIgnore Boolean asincronico = null
 
 	@JsonProperty("unEventoCerrado")
-	def nombreDelEvento() { unEventoCerrado.nombre }
-
-	@JsonProperty("unUsuario")
-	def usuarioInvitado() {
-		unUsuario.nombreApellido
+	def String getNombreDelEvento() { unEventoCerrado.nombre }
+	
+	@JsonProperty("fechaDeInicio")
+	def getFechaAsString() {
+		formatterTiempo.format(unEventoCerrado.fechaDeInicio)
 	}
+	
+	def formatterTiempo() {
+		DateTimeFormatter.ofPattern(TIME_DATE_PATTERN)
+	}
+	
+	@JsonProperty("unUsuario")
+	def String getUsuarioInvitado() {
+		unEventoCerrado.organizadoPor
+	}
+	@JsonProperty("lugarDelEvento")
+	def String getLugarDelEvento() {
+		unEventoCerrado.locacionNombre
+	}
+
 
 	new(EventoCerrado elEventoCerrado, Usuario elUsuario, int laCantidadDeAcompanantes) { // clase de ordenes para aceptar y rechazar 
 		unEventoCerrado = elEventoCerrado
@@ -33,7 +49,7 @@ class Invitacion {
 	}
 
 	def estaAceptada() {
-		aceptada =true
+		aceptada 
 	}
 
 	def verificaRechazo(Usuario _usuario) {
@@ -45,11 +61,11 @@ class Invitacion {
 	def rechazar() {
 		aceptada = false
 	}
-
+@JsonIgnore
 	def getUsuario() {
 		unUsuario
 	}
-
+@JsonIgnore
 	def getEventoCerrado() {
 		return unEventoCerrado
 	}

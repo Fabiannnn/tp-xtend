@@ -62,7 +62,7 @@ class AgendaController {
 			usuarioBuscado.eventosAgenda = RepositorioUsuarios.instance.agendaUsuario(iId)
 			ok(usuarioBuscado.eventosAgenda.toJson)
 		} catch (Exception e) {
-			notFound("No existe el Usuario con id " + id + "")
+			notFound("No existe el Usuario con id " + id + " al buscar la agenda de usuario")
 		}
 	}
 
@@ -77,6 +77,7 @@ class AgendaController {
 			notFound("No existe el Usuario con id " + id + "")
 		}
 	}
+	
 	@Get('/organizadosUsuarioCerrados/:id')
 	def Result organizadosUsuarioCerrados() {
 		val iId = Integer.valueOf(id)

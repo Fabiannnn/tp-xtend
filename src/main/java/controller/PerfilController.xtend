@@ -15,9 +15,7 @@ import org.uqbar.geodds.Point
 
 @Controller
 class PerfilController {
-
 	Usuario usuarioBuscado
-
 	extension JSONUtils = new JSONUtils
 	JsonUsuario jsonUsuario
 
@@ -25,7 +23,6 @@ class PerfilController {
 	@Get('/usuarioPerfil/:id')
 	def Result perfil() {
 		val iId = Integer.valueOf(id)
-
 		try {
 			usuarioBuscado = RepositorioUsuarios.instance.searchById(iId)
 			ok(usuarioBuscado.toJson)
@@ -87,23 +84,38 @@ class PerfilController {
 			println(" en perfil controller   " + usuarioBuscado.eventosAgenda)
 			ok(usuarioBuscado.eventosAgenda.toJson)
 		} catch (Exception e) {
-			notFound("No existe el Usuario con id " + id + "")
+			notFound("No existe el Usuario con id " + id)
 		}
 	}
 
 	@Get('/invitacionesPendientes/:id')
 	def Result invitacionesPendientes() {
 		val iId = Integer.valueOf(id)
-
 		try {
 			usuarioBuscado = RepositorioUsuarios.instance.searchById(iId)
-			println(usuarioBuscado.invitaciones.filter[invitacion| invitacion.estaPendiente()])
+					println(usuarioBuscado.invitaciones.filter[invitacion | invitacion.aceptada === null].toList.toJson)
 			ok(usuarioBuscado.invitaciones.toJson)
 			
 		} catch (Exception e) {
-			notFound("No existe el Usuario con id " + id + "")
+			notFound("No existe el Usuario con id " + id)
 		}
 
 	}
+		/*Para RECHAZAR INVITACION     ESTO FALTA MODIFICAR PARA RECHAZAR LA INVITACION
+	@Put('/rechazarInvitacion/:id')
+	def Result rechazarInvitacion(@Body String body) {
+		val idPerfil = Integer.valueOf(id)
+
+		val invitacion = invitacion.valueOf(body.getPropertyValue("idAmigo"))
+
+		try {
+			val usuarioPerfil = RepositorioUsuarios.instance.searchById(idPerfil)
+			val usuarioExAmigo = RepositorioUsuarios.instance.searchById(idExAmigo)
+			usuarioPerfil.amigos.remove(usuarioExAmigo)
+			ok('{ "status" : "OK" }');
+		} catch (Exception e) {
+			badRequest(e.message)
+		}
+	}*/
 
 }
