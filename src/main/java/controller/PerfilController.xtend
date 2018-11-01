@@ -12,6 +12,7 @@ import jsons.JsonUsuario
 import org.uqbar.xtrest.api.annotation.Post
 import java.time.LocalDate
 import org.uqbar.geodds.Point
+import eventos.Invitacion
 
 @Controller
 class PerfilController {
@@ -48,8 +49,8 @@ class PerfilController {
 
 		try {
 			usuarioBuscado = RepositorioUsuarios.instance.searchById(iId)
-			ok(usuarioBuscado.amigos.toJson)
-		// ok(usuarioBuscado.amigos.toJson)
+
+		ok(usuarioBuscado.amigos.toJson)
 		// ok((RepositorioUsuarios.instance.searchById(iId).toJson))
 		} catch (Exception e) {
 			notFound("No existe el Usuario con id " + id + "")
@@ -93,29 +94,48 @@ class PerfilController {
 		val iId = Integer.valueOf(id)
 		try {
 			usuarioBuscado = RepositorioUsuarios.instance.searchById(iId)
-					println(usuarioBuscado.invitaciones.filter[invitacion | invitacion.aceptada === null].toList.toJson)
-			ok(usuarioBuscado.invitaciones.toJson)
-			
+			// println(usuarioBuscado.invitaciones.filter[invitacion|invitacion.aceptada === null].toList.toJson)
+			ok(usuarioBuscado.invitaciones.filter[invitacion|invitacion.aceptada === null].toList.toJson)
+
 		} catch (Exception e) {
 			notFound("No existe el Usuario con id " + id)
 		}
 
 	}
-		/*Para RECHAZAR INVITACION     ESTO FALTA MODIFICAR PARA RECHAZAR LA INVITACION
+
+	/*Para RECHAZAR INVITACION    Confirmado por postman*/
 	@Put('/rechazarInvitacion/:id')
 	def Result rechazarInvitacion(@Body String body) {
-		val idPerfil = Integer.valueOf(id)
+println(body)
 
-		val invitacion = invitacion.valueOf(body.getPropertyValue("idAmigo"))
+	val idPerfil = Integer.valueOf(id)
+			val usuarioPerfil = RepositorioUsuarios.instance.searchById(idPerfil)
+			val eventoCerradoNombre = String.valueOf(body.getPropertyValue("unEventoCerrado"))
+
+			/*	
+			 * 	println(usuarioPerfil)
+			 * 	println(eventoCerradoNombre)
+			 * 	println(usuarioPerfil.id)
+			 * 	println(usuarioPerfil.invitaciones)
+			 * 	println( usuarioPerfil.invitaciones.findFirst [ invit |
+			 * 		invit.nombreDelEvento.equals(eventoCerradoNombre)
+			 * 	])
+			 * 	println(usuarioPerfil.invitaciones.findFirst [ elemento |
+			 * 		elemento.nombreDelEvento.equals(eventoCerradoNombre)
+			 ].toJson)*/
 
 		try {
-			val usuarioPerfil = RepositorioUsuarios.instance.searchById(idPerfil)
-			val usuarioExAmigo = RepositorioUsuarios.instance.searchById(idExAmigo)
-			usuarioPerfil.amigos.remove(usuarioExAmigo)
+		
+			val unaInvitacion = usuarioPerfil.invitaciones.findFirst [ elemento |
+				elemento.unEventoCerrado.nombre.equals(eventoCerradoNombre)
+			]
+			println(unaInvitacion)
+
+			unaInvitacion.rechazar()
 			ok('{ "status" : "OK" }');
 		} catch (Exception e) {
 			badRequest(e.message)
 		}
-	}*/
+	}
 
 }

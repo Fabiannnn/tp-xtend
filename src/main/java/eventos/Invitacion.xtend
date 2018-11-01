@@ -36,6 +36,7 @@ class Invitacion {
 	def String getUsuarioInvitado() {
 		unEventoCerrado.organizadoPor
 	}
+
 	@JsonProperty("lugarDelEvento")
 	def String getLugarDelEvento() {
 		unEventoCerrado.locacionNombre

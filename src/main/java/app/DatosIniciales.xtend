@@ -11,17 +11,30 @@ import eventos.Locacion
 import repositorio.RepositorioLocaciones
 import repositorio.RepositorioServicios
 import servicios.Servicio
+import eventos.Invitacion
+import java.time.LocalDateTime
+import java.time.Period
+import eventos.EventoAbierto
+import eventos.EventoCerrado
 
 @Accessors
 class DatosIniciales {
+	/* Singleton */
+	static DatosIniciales datosIniciales
+
+	def static DatosIniciales getInstance() {
+		if (datosIniciales === null) {
+			datosIniciales = new DatosIniciales
+		}
+		datosIniciales
+	}
 
 	new() {
-	val repoUsuarios= new RepositorioUsuarios
 		val usuario1 = new Usuario => [
 			nombreUsuario = "Felipe"
 			email = "Felipe_Quino@maflada.mfq.mfq"
 			nombreApellido = "Felipe no se "
-			fechaNacimiento = LocalDate.of(2002, 05, 15)
+			fechaNacimiento = LocalDate.of(1950, 05, 15)
 			punto = new Point(40.0, 50.0)
 		]
 
@@ -78,13 +91,143 @@ class DatosIniciales {
 		usuario1.agregarAmigoALaLista(usuario6)
 		usuario2.agregarAmigoALaLista(usuario3)
 		usuario2.agregarAmigoALaLista(usuario4)
+		
+		 val RepositorioUsuarios repoUsuarios = new RepositorioUsuarios
 		repoUsuarios.create(usuario1)
-	/* repoUsuarios.create(usuario2)
+		repoUsuarios.create(usuario2)
 		repoUsuarios.create(usuario3)
 		repoUsuarios.create(usuario4)
 		repoUsuarios.create(usuario5)
-		repoUsuarios.create(usuario6)*/
+		repoUsuarios.create(usuario6)
 
+		val salon_SM = new Locacion => [
+			nombre = "San Martin"
+			punto = new Point(35, 45)
+			superficie = 16
+		]
+		val salon_2 = new Locacion => [
+			nombre = "San Martin 2"
+			punto = new Point(35, 65)
+			superficie = 45
+		]
+		val salon_3 = new Locacion => [
+			nombre = "salon_3"
+			punto = new Point(35, 65)
+			superficie = 100
+		]
+
+		val reunionProyecto = new EventoAbierto => [
+			nombre = "Reunion Personal"
+			organizador = usuario1
+			locacion = salon_SM
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(2))
+			edadMinima = 17
+			precioEntrada = 100
+		]
+		val cumple = new EventoAbierto => [
+			nombre = "cumple"
+			organizador = usuario1
+			locacion = salon_3
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(25))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(26))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(7))
+			edadMinima = 1
+			precioEntrada = 200
+		]
+		val reunionChica = new EventoCerrado => [
+			nombre = "Reunion Chica"
+			organizador = usuario1
+			locacion = salon_3
+			fechaDeInicio = LocalDateTime.now()
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(-1))
+			capacidadMaxima = 10
+		]
+		val otroEvento = new EventoCerrado => [
+			nombre = "Otra Reunion "
+			organizador = usuario1
+			locacion = salon_SM
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(2))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(3))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(1))
+			capacidadMaxima = 50
+		]
+		val reunionGrande = new EventoCerrado => [
+			nombre = "Reunion++ "
+			organizador = usuario2
+			locacion = salon_SM
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(2))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(1))
+			capacidadMaxima = 20
+		]
+
+		val primerEvento = new EventoCerrado => [
+			nombre = "por que a mi  Proyecto"
+			organizador = usuario3
+			locacion = salon_SM
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(2))
+			capacidadMaxima = 10
+		]
+		val segundoEvento = new EventoCerrado => [
+			nombre = "otra cosa Proyecto"
+			organizador = usuario3
+			locacion = salon_SM
+			fechaDeInicio = LocalDateTime.now.plus(Period.ofDays(4))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(2))
+			capacidadMaxima = 10
+		]
+		val tercerEvento = new EventoCerrado => [
+			nombre = "Reunion de nuevo"
+			organizador = usuario2
+			locacion = salon_2
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(13))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(14))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(2))
+			capacidadMaxima = 10
+		]
+		val cuartoEvento = new EventoCerrado => [
+			nombre = "los mafalditos"
+			locacion = salon_SM
+			organizador = usuario3
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(5))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(9))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(3))
+			capacidadMaxima = 50
+		]
+
+		val quintoEvento = new EventoAbierto => [
+			nombre = "jeje Proyecto"
+			organizador = usuario4
+			locacion = salon_SM
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(1))
+			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(2))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(-1))
+			edadMinima = 1
+			precioEntrada = 30
+		]
+
+		usuario1.organizarEventoAbierto(reunionProyecto)
+		usuario1.organizarEventoAbierto(cumple)
+		usuario1.organizarEventoCerrado(reunionChica)
+		usuario1.organizarEventoCerrado(otroEvento)
+		usuario4.organizarEventoAbierto(quintoEvento)
+		// otroEvento.fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(-1))
+		// reunionChica.fechaDeInicio = LocalDateTime.now()
+		// cumple.comprarEntrada(usuario3)
+		quintoEvento.comprarEntrada(usuario1)
+		val invitacion = new Invitacion(reunionGrande, usuario1, 3)
+		usuario1.recibirInvitacion(invitacion)
+		val invitacion2 = new Invitacion(tercerEvento, usuario1, 4)
+		usuario1.recibirInvitacion(invitacion2)
+		val invitacion3 = new Invitacion(cuartoEvento, usuario1, 5)
+		usuario1.recibirInvitacion(invitacion3)
+//		usuario1.rechazarInvitacion(invitacion3)
+	
 	}
-
 }

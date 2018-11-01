@@ -222,15 +222,14 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 		// reunionChica.fechaDeInicio = LocalDateTime.now()
 		// cumple.comprarEntrada(usuario3)
 		quintoEvento.comprarEntrada(usuario1)
-
 		val invitacion = new Invitacion(reunionGrande, usuario1, 3)
 		usuario1.recibirInvitacion(invitacion)
 		val invitacion2 = new Invitacion(tercerEvento, usuario1, 4)
 		usuario1.recibirInvitacion(invitacion2)
 		val invitacion3 = new Invitacion(cuartoEvento, usuario1, 5)
 		usuario1.recibirInvitacion(invitacion3)
-		usuario1.rechazarInvitacion(invitacion3)
-		invitacion3.aceptarseCompleto()
+//		usuario1.rechazarInvitacion(invitacion3)
+	
 	}
 
 	def int eventosPorLocacionTotal(Locacion _locacion) {
@@ -332,6 +331,8 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 		]
 		return eventosAgenda
 	}
+	def buscarIdconNombre(String value) {
+		return elementos.findFirst[elemento | elemento.nombreApellido.equals(value)  ]	}
 
 	def organizadosUsuarioAbiertos(int _id) {
 		val Set<Evento> organizadosPorUsuarioA = newHashSet

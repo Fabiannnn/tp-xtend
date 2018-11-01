@@ -70,6 +70,7 @@ abstract class Repositorio<T extends Entidad> {
 		return elementos.filter[filtroPorTexto(value)].toList()
 	}
 
+
 	def noEstaEnRepositorio(T elemento) {
 		if (elementos.contains(elemento)) {
 			throw new EventoException("El objeto " + elemento.toString() + "ya está en el repositorio")
