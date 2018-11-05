@@ -5,20 +5,36 @@ import java.time.LocalDate
 import java.time.Period
 import java.time.LocalDateTime
 import org.uqbar.commons.model.annotations.Observable
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonProperty
 
 @Accessors
 @Observable
 class Entrada {
-
-	EventoAbierto unEventoAbierto
-	Usuario unUsuario
+	// FP
+	@JsonIgnore EventoAbierto unEventoAbierto
+	@JsonIgnore Usuario unUsuario
 	boolean vigente = true
 
 	new(EventoAbierto elEventoAbierto, Usuario elUsuario) {
 		unEventoAbierto = elEventoAbierto
 		unUsuario = elUsuario
 	}
-		def getEventoAbierto() {
+
+	// FP
+	@JsonProperty("unEventoAbierto")
+	def nombreDelEvento() {
+		unEventoAbierto.nombre
+	}
+
+	// FP
+	@JsonProperty("unUsuario")
+	def nombreDelUsuario() {
+		unUsuario.nombreUsuario
+	}
+
+	// FP
+	def eventoAbierto() {
 		return unEventoAbierto
 	}
 
@@ -52,7 +68,8 @@ class Entrada {
 		}
 	}
 
-	def double getImporteDevolucion() {
+	// FP
+	@JsonIgnore def double getImporteDevolucion() {
 		unEventoAbierto.precioEntrada * porcentajeDevolucion() / 100
 	}
 

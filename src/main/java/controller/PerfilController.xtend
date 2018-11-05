@@ -1,28 +1,21 @@
 package controller
 
+import eventos.Usuario
 import org.uqbar.xtrest.api.Result
+import org.uqbar.xtrest.api.annotation.Body
 import org.uqbar.xtrest.api.annotation.Controller
 import org.uqbar.xtrest.api.annotation.Get
+import org.uqbar.xtrest.api.annotation.Put
 import org.uqbar.xtrest.json.JSONUtils
 import repositorio.RepositorioUsuarios
-import org.uqbar.xtrest.api.annotation.Body
-import org.uqbar.xtrest.api.annotation.Put
-import eventos.Usuario
-import jsons.JsonUsuario
-import org.uqbar.xtrest.api.annotation.Post
-import java.time.LocalDate
-import org.uqbar.geodds.Point
-import eventos.Invitacion
-import java.util.List
-import java.util.Set
 
 @Controller
 class PerfilController {
 	Usuario usuarioBuscado
 	extension JSONUtils = new JSONUtils
-	JsonUsuario jsonUsuario
 
-// (usuarioIng.id + usuarioIng.nombreUsuario + usuarioIng.nombreApellido + usuarioIng.tipoDeUsuario.nom).toJson	}
+	// JsonUsuario jsonUsuario
+	// (usuarioIng.id + usuarioIng.nombreUsuario + usuarioIng.nombreApellido + usuarioIng.tipoDeUsuario.nom).toJson	}
 	@Get('/usuarioPerfil/:id')
 	def Result perfil() {
 		val iId = Integer.valueOf(id)
@@ -105,13 +98,12 @@ class PerfilController {
 		} catch (Exception e) {
 			notFound("No existe el Usuario con id " + id)
 		}
-
 	}
 
 	/*Para RECHAZAR INVITACION    Confirmado por postman*/
 	@Put('/rechazarInvitacion/:id')
 	def Result rechazarInvitacion(@Body String body) {
-println(body)
+	println(body)
 
 	val idPerfil = Integer.valueOf(id)
 			val usuarioPerfil = RepositorioUsuarios.instance.searchById(idPerfil)
@@ -142,10 +134,10 @@ println(body)
 			badRequest(e.message)
 		}
 	}
-/*Para Aceptar INVITACION    */
+	/*Para Aceptar INVITACION    */
 	@Put('/aceptarInvitacion/:id')
 	def Result aceptarInvitacion(@Body String body) {
-println("<<<<<< body aceptar invitacion >>>>\n" + body)
+	println("<<<<<< body aceptar invitacion >>>>\n" + body)
 
 	val idPerfil = Integer.valueOf(id)
 			val usuarioPerfil = RepositorioUsuarios.instance.searchById(idPerfil)

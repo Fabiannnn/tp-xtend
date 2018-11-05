@@ -11,27 +11,27 @@ import java.time.format.DateTimeFormatter
 @Accessors
 @Observable
 class Invitacion {
-	static String DATE_PATTERN = "dd/MM/yyyy"
+	//FP static String DATE_PATTERN = "dd/MM/yyyy"
 	static String TIME_DATE_PATTERN = "dd/MM/yyyy HH:mm"
 	@JsonIgnore EventoCerrado unEventoCerrado
 	@JsonIgnore Usuario unUsuario
-	int cantidadDeAcompanantes=0
+	int cantidadDeAcompanantes = 0
 	Boolean aceptada = null
 	int cantidadDeAcompanantesConfirmados = 0
 	@JsonIgnore Boolean asincronico = null
 
 	@JsonProperty("unEventoCerrado")
 	def String getNombreDelEvento() { unEventoCerrado.nombre }
-	
+
 	@JsonProperty("fechaDeInicio")
 	def getFechaAsString() {
 		formatterTiempo.format(unEventoCerrado.fechaDeInicio)
 	}
-	
+
 	def formatterTiempo() {
 		DateTimeFormatter.ofPattern(TIME_DATE_PATTERN)
 	}
-	
+
 	@JsonProperty("unUsuario")
 	def String getUsuarioInvitado() {
 		unEventoCerrado.organizadoPor
@@ -42,7 +42,6 @@ class Invitacion {
 		unEventoCerrado.locacionNombre
 	}
 
-
 	new(EventoCerrado elEventoCerrado, Usuario elUsuario, int laCantidadDeAcompanantes) { // clase de ordenes para aceptar y rechazar 
 		unEventoCerrado = elEventoCerrado
 		unUsuario = elUsuario
@@ -50,7 +49,7 @@ class Invitacion {
 	}
 
 	def estaAceptada() {
-		aceptada 
+		aceptada
 	}
 
 	def verificaRechazo(Usuario _usuario) {
@@ -62,11 +61,13 @@ class Invitacion {
 	def rechazar() {
 		aceptada = false
 	}
-@JsonIgnore
+
+	@JsonIgnore
 	def getUsuario() {
 		unUsuario
 	}
-@JsonIgnore
+
+	@JsonIgnore
 	def getEventoCerrado() {
 		return unEventoCerrado
 	}

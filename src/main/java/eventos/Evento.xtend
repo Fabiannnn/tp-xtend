@@ -65,30 +65,26 @@ abstract class Evento {
 		this.fechaFinalizacion = LocalDateTime.parse(fecha, formatterTiempo)
 	}
 
-
-@JsonProperty("usuarioOrganizador")
+	@JsonProperty("usuarioOrganizador")
 	def String getOrganizadoPor() {
 
 		organizador.nombreApellido
 	}
 
-@JsonProperty("locacionNombre")
+	@JsonProperty("locacionNombre")
 	def String getLocacionNombre() {
 		locacion.nombre
 	}
 
-@JsonProperty("fechaDeInicio")
+	@JsonProperty("fechaDeInicio")
 	def getTiempoFechaAsString() {
 		formatterTiempo.format(this.fechaDeInicio)
 	}
 
-@JsonProperty("fechaLimiteConfirmacion")
+	@JsonProperty("fechaLimiteConfirmacion")
 	def getFechaAsString() {
 		formatter.format(this.fechaLimiteConfirmacion)
 	}
-
-
-
 
 	def double duracion() {
 		Duration.between(fechaDeInicio, fechaFinalizacion).getSeconds() / 3600.0
@@ -152,7 +148,7 @@ abstract class Evento {
 		}
 	}
 
-abstract def boolean usuariosCercanosAlEvento(Usuario usuario)
+	abstract def boolean usuariosCercanosAlEvento(Usuario usuario)
 
 	override toString() {
 		nombre
@@ -170,8 +166,10 @@ class EventoAbierto extends Evento {
 
 	int edadMinima
 	double precioEntrada
-	@JsonIgnore Set<Entrada> entradas = newHashSet
+	// FP
+	Set<Entrada> entradas = newHashSet
 
+	// FP @JsonIgnore Set<Entrada> entradas = newHashSet
 	def void comprarEntrada(Usuario elComprador) {
 		puedeComprarEntrada(elComprador)
 		generarEntrada(elComprador)
@@ -277,8 +275,9 @@ class EventoAbierto extends Evento {
 class EventoCerrado extends Evento {
 
 	// static val COEF_EXITO = 0.9
-	@JsonIgnore Set<Invitacion> invitados = newHashSet
-
+	// FP
+	Set<Invitacion> invitados = newHashSet
+	// FP @JsonIgnore Set<Invitacion> invitados = newHashSet
 	int capacidadMaxima = 0
 
 	def void crearInvitacion(Usuario elInvitado, int unaCantidadDeAcompanantes) {
@@ -291,7 +290,8 @@ class EventoCerrado extends Evento {
 		}
 	}
 
-	def getInvitadosDelEvento() {
+	// FP
+	@JsonIgnore def getInvitadosDelEvento() {
 		invitados.map[unUsuario].toList
 	}
 

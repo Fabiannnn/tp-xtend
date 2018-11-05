@@ -3,22 +3,21 @@ package controller
 import org.uqbar.xtrest.api.annotation.Controller
 import eventos.Usuario
 import org.uqbar.xtrest.json.JSONUtils
-import jsons.JsonUsuario
+//import jsons.JsonUsuario
 import org.uqbar.xtrest.api.annotation.Get
 import org.uqbar.xtrest.api.Result
 import repositorio.RepositorioUsuarios
-import eventos.Evento
-import java.util.Set
-import repositorio.RepositorioLocaciones
+//import eventos.Evento
+//import java.util.Set
+//import repositorio.RepositorioLocaciones
 
 @Controller
 class AgendaController {
-	Set<Evento> eventosAgenda = newHashSet
+	//FP Set<Evento> eventosAgenda = newHashSet
 
 	extension JSONUtils = new JSONUtils
-	JsonUsuario jsonUsuario
+	//FP JsonUsuario jsonUsuario
 	Usuario usuarioBuscado
-
 
 	@Get('/agendaHoy/:id')
 	def Result agendaHoy() {
@@ -79,7 +78,7 @@ class AgendaController {
 			notFound("No existe el Usuario con id " + id + "")
 		}
 	}
-	
+
 	@Get('/organizadosUsuarioCerrados/:id')
 	def Result organizadosUsuarioCerrados() {
 		val iId = Integer.valueOf(id)

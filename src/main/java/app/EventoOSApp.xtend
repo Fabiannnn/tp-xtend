@@ -1,19 +1,18 @@
 package app
 
-import org.uqbar.xtrest.api.XTRest
-import controller.PerfilController
 import controller.AgendaController
-import org.eclipse.xtend.lib.annotations.Accessors
-import app.DatosIniciales
 import controller.OrganizarEventosController
+import controller.PerfilController
+import org.eclipse.xtend.lib.annotations.Accessors
+import org.uqbar.xtrest.api.XTRest
+import controller.EventoController
 
 @Accessors
 class EventoOSApp {
 
 	def static void main(String[] args) {
-
-
-		XTRest.start(9000, PerfilController, AgendaController,OrganizarEventosController)
+		// FP Agregamos EventoController
+		XTRest.start(9000, PerfilController, AgendaController, OrganizarEventosController, EventoController)
 	}
 
 }

@@ -5,7 +5,7 @@ import jsons.JsonServicio
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.commons.model.annotations.TransactionalAndObservable
 import servicios.Servicio
-import org.uqbar.geodds.Point
+//import org.uqbar.geodds.Point
 
 @Accessors
 @TransactionalAndObservable

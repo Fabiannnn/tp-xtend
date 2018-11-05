@@ -1,3 +1,4 @@
+/* FP
 package bootstrap
 import eventos.EventoAbierto
 import eventos.EventoCerrado
@@ -240,3 +241,4 @@ class Bootstrap {
 	
 
 }
+*/

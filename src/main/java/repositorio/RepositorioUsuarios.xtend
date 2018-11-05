@@ -1,23 +1,19 @@
 package repositorio
 
 import eventos.Evento
-import eventos.Locacion
-import eventos.Usuario
-import java.util.List
-import java.util.Set
-import org.uqbar.geodds.Point
-import jsons.JsonUsuario
-import org.eclipse.xtend.lib.annotations.Accessors
-//import org.uqbar.commons.model.annotations.TransactionalAndObservable
-import java.time.LocalDate
-import com.fasterxml.jackson.annotation.JsonProperty
 import eventos.EventoAbierto
 import eventos.EventoCerrado
+import eventos.Invitacion
+import eventos.Locacion
+import eventos.Usuario
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.Period
-import eventos.Entrada
-import eventos.Invitacion
-import repositorio.RepositorioLocaciones
+import java.util.List
+import java.util.Set
+import jsons.JsonUsuario
+import org.eclipse.xtend.lib.annotations.Accessors
+import org.uqbar.geodds.Point
 
 @Accessors
 //@TransactionalAndObservable
@@ -33,20 +29,20 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 		repoUsuarios
 	}
 
-RepositorioLocaciones repoLocaciones
+	RepositorioLocaciones repoLocaciones
 
 	new() {
 		val usuario1 = new Usuario => [
 			nombreUsuario = "Felipe"
-			email = "Felipe_Quino@maflada.mfq.mfq"
-			nombreApellido = "Felipe no se "
+			email = "Felipe_Quino@qwe.com"
+			nombreApellido = "Felipe no se"
 			fechaNacimiento = LocalDate.of(1950, 05, 15)
 			punto = new Point(40.0, 50.0)
 		]
 
 		val usuario2 = new Usuario => [
 			nombreUsuario = "Mafalda"
-			email = "mafaldita@mafalda.mfq.mfq"
+			email = "mafaldita@asd.org"
 			nombreApellido = "Mario Argentina"
 			fechaNacimiento = LocalDate.of(1900, 04, 02)
 			punto = new Point(45.0, 60.0)
@@ -54,7 +50,7 @@ RepositorioLocaciones repoLocaciones
 
 		val usuario3 = new Usuario => [
 			nombreUsuario = "Libertad"
-			email = "libertad_Quino@mafalda.mfq.mfq"
+			email = "libertad_Quino@zxc.qq"
 			nombreApellido = "Libertad Gomez"
 			fechaNacimiento = LocalDate.of(1900, 04, 02)
 			punto = new Point(34.0, 45.0)
@@ -72,7 +68,7 @@ RepositorioLocaciones repoLocaciones
 			nombreUsuario = "susanita"
 			email = "email4"
 			nombreApellido = "susanitatro"
-			fechaNacimiento = LocalDate.of(2002, 05, 15)
+			fechaNacimiento = LocalDate.of(1991, 05, 15)
 			punto = new Point(40.0, 50.0)
 		]
 		val usuario6 = new Usuario => [
@@ -123,7 +119,7 @@ RepositorioLocaciones repoLocaciones
 		RepositorioLocaciones.instance.create(salon_SM)
 		RepositorioLocaciones.instance.create(salon_2)
 		RepositorioLocaciones.instance.create(salon_3)
-		
+
 		val reunionProyecto = new EventoAbierto => [
 			nombre = "Reunion Personal"
 			organizador = usuario1
@@ -172,24 +168,24 @@ RepositorioLocaciones repoLocaciones
 			capacidadMaxima = 20
 		]
 
-		val primerEvento = new EventoCerrado => [
-			nombre = "por que a mi  Proyecto"
-			organizador = usuario3
-			locacion = salon_SM
-			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
-			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
-			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(2))
-			capacidadMaxima = 10
-		]
-		val segundoEvento = new EventoCerrado => [
-			nombre = "otra cosa Proyecto"
-			organizador = usuario3
-			locacion = salon_SM
-			fechaDeInicio = LocalDateTime.now.plus(Period.ofDays(4))
-			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
-			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(2))
-			capacidadMaxima = 10
-		]
+//		val primerEvento = new EventoCerrado => [
+//			nombre = "por que a mi  Proyecto"
+//			organizador = usuario3
+//			locacion = salon_SM
+//			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
+//			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
+//			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(2))
+//			capacidadMaxima = 10
+//		]
+//		val segundoEvento = new EventoCerrado => [
+//			nombre = "otra cosa Proyecto"
+//			organizador = usuario3
+//			locacion = salon_SM
+//			fechaDeInicio = LocalDateTime.now.plus(Period.ofDays(4))
+//			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
+//			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(2))
+//			capacidadMaxima = 10
+//		]
 		val tercerEvento = new EventoCerrado => [
 			nombre = "Reunion de nuevo"
 			organizador = usuario2
@@ -228,15 +224,24 @@ RepositorioLocaciones repoLocaciones
 		// otroEvento.fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(-1))
 		// reunionChica.fechaDeInicio = LocalDateTime.now()
 		// cumple.comprarEntrada(usuario3)
-		quintoEvento.comprarEntrada(usuario1)
+		// FP quintoEvento.comprarEntrada(usuario1)
 		val invitacion = new Invitacion(reunionGrande, usuario1, 3)
 		usuario1.recibirInvitacion(invitacion)
 		val invitacion2 = new Invitacion(tercerEvento, usuario1, 4)
 		usuario1.recibirInvitacion(invitacion2)
 		val invitacion3 = new Invitacion(cuartoEvento, usuario1, 5)
 		usuario1.recibirInvitacion(invitacion3)
-//		usuario1.rechazarInvitacion(invitacion3)
-	
+		// usuario1.rechazarInvitacion(invitacion3)
+		// FP
+		reunionProyecto.comprarEntrada(usuario5)
+		reunionProyecto.comprarEntrada(usuario3)
+		reunionProyecto.comprarEntrada(usuario2)
+		otroEvento.crearInvitacion(usuario2, 3)
+		usuario2.invitaciones.last.aceptada = true
+		otroEvento.crearInvitacion(usuario3, 4)
+		usuario3.invitaciones.last.aceptada = true
+		otroEvento.crearInvitacion(usuario4, 5)
+		usuario4.invitaciones.last.aceptada = true
 	}
 
 	def int eventosPorLocacionTotal(Locacion _locacion) {
@@ -299,8 +304,8 @@ RepositorioLocaciones repoLocaciones
 			}
 		]
 		elUsuario.entradaComprada.forEach [ entrada |
-			if (LocalDate.now() <= LocalDate.from(entrada.getEventoAbierto.fechaDeInicio)) {
-				eventosAgenda.add(entrada.getEventoAbierto())
+			if (LocalDate.now() <= LocalDate.from(entrada.eventoAbierto.fechaDeInicio)) {
+				eventosAgenda.add(entrada.eventoAbierto())
 			}
 		]
 		return eventosAgenda
@@ -338,8 +343,8 @@ RepositorioLocaciones repoLocaciones
 		]
 		return eventosAgenda
 	}
-	def buscarIdconNombre(String value) {
-		return elementos.findFirst[elemento | elemento.nombreApellido.equals(value)  ]	}
+
+	def buscarIdconNombre(String value) { return elementos.findFirst[elemento|elemento.nombreApellido.equals(value)] }
 
 	def organizadosUsuarioAbiertos(int _id) {
 		val Set<Evento> organizadosPorUsuarioA = newHashSet
@@ -363,4 +368,15 @@ RepositorioLocaciones repoLocaciones
 		return organizadosPorUsuarioC
 	}
 
+	// FP Obtenemos la lista de eventos abiertos del usuario.
+	def Set<Evento> buscarEventosAbiertoUsuario(int _id) {
+		val eventos = elementos.findFirst[elemento|elemento.getId() == _id].eventosOrganizados
+		return eventos.filter[evento|evento instanceof EventoAbierto].toSet
+	}
+
+	// FP Obtenemos la lista de eventos cerrados del usuario.
+	def Set<Evento> buscarEventosCerradosUsuario(int _id) {
+		val eventos = elementos.findFirst[elemento|elemento.getId() == _id].eventosOrganizados
+		return eventos.filter[evento|evento instanceof EventoCerrado].toSet
+	}
 }

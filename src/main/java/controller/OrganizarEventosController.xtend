@@ -1,29 +1,22 @@
 package controller
 
+import eventos.EventoCerrado
+//import eventos.Usuario
+//import jsons.JsonUsuario
 import org.uqbar.xtrest.api.Result
+import org.uqbar.xtrest.api.annotation.Body
 import org.uqbar.xtrest.api.annotation.Controller
 import org.uqbar.xtrest.api.annotation.Get
-import org.uqbar.xtrest.json.JSONUtils
-import repositorio.RepositorioUsuarios
-import repositorio.RepositorioLocaciones
-import org.uqbar.xtrest.api.annotation.Body
-import org.uqbar.xtrest.api.annotation.Put
-import eventos.Usuario
-import jsons.JsonUsuario
 import org.uqbar.xtrest.api.annotation.Post
-import java.time.LocalDate
-import org.uqbar.geodds.Point
-import eventos.Invitacion
-import java.util.List
-import java.util.Set
-import java.time.LocalDateTime
-import eventos.EventoCerrado
+import org.uqbar.xtrest.json.JSONUtils
+import repositorio.RepositorioLocaciones
+import repositorio.RepositorioUsuarios
 
 @Controller
 class OrganizarEventosController {
 	extension JSONUtils = new JSONUtils
-	JsonUsuario jsonUsuario
-	Usuario usuarioBuscado
+	//JsonUsuario jsonUsuario
+	//Usuario usuarioBuscado
 
 // toma las locaciones para los modales de organizar eventos
 	@Get('/locaciones')
