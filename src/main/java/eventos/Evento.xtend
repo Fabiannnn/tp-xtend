@@ -65,14 +65,14 @@ abstract class Evento {
 	def getFechaAsString() {
 		formatter.format(this.fechaLimiteConfirmacion)
 	}
+
 	def formatterTiempo() {
 		DateTimeFormatter.ofPattern(TIME_DATE_PATTERN)
 	}
+
 	def formatter() {
 		DateTimeFormatter.ofPattern(DATE_PATTERN)
 	}
-
-
 
 	def double duracion() {
 		Duration.between(fechaDeInicio, fechaFinalizacion).getSeconds() / 3600.0
@@ -154,7 +154,7 @@ class EventoAbierto extends Evento {
 
 	int edadMinima
 	double precioEntrada
-	@JsonIgnore Set<Entrada> entradas = newHashSet
+	Set<Entrada> entradas = newHashSet
 
 	def void comprarEntrada(Usuario elComprador) {
 		puedeComprarEntrada(elComprador)
@@ -167,6 +167,7 @@ class EventoAbierto extends Evento {
 
 	def puedeComprarEntrada(Usuario elComprador) {
 		if (!edadValida(elComprador) || !fechaAnteriorALaLimite() || !hayEntradasDisponibles()) { // TODO revisar agregado por pago tarjeta
+			println("No se puede Comprar la Entrada")
 			throw new EventoException("No se puede Comprar la Entrada")
 		}
 	}
@@ -253,6 +254,11 @@ class EventoAbierto extends Evento {
 	override usuariosCercanosAlEvento(Usuario usuario) {
 		locacion.estaDentroDelRadioDeCercania(usuario)
 	}
+	
+	//FP Obtener entradas del evento.
+//	def getEntradasDelEvento() {
+//		return entradas
+//	}
 
 }
 
@@ -261,7 +267,7 @@ class EventoAbierto extends Evento {
 class EventoCerrado extends Evento {
 
 	// static val COEF_EXITO = 0.9
-	@JsonIgnore Set<Invitacion> invitados = newHashSet
+	Set<Invitacion> invitados = newHashSet
 
 	int capacidadMaxima = 0
 
@@ -275,7 +281,7 @@ class EventoCerrado extends Evento {
 		}
 	}
 
-	def getInvitadosDelEvento() {
+	@JsonIgnore def getInvitadosDelEvento() {
 		invitados.map[unUsuario].toList
 	}
 

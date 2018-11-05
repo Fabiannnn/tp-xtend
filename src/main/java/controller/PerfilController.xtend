@@ -1,26 +1,21 @@
 package controller
 
+import eventos.Usuario
 import org.uqbar.xtrest.api.Result
+import org.uqbar.xtrest.api.annotation.Body
 import org.uqbar.xtrest.api.annotation.Controller
 import org.uqbar.xtrest.api.annotation.Get
+import org.uqbar.xtrest.api.annotation.Put
 import org.uqbar.xtrest.json.JSONUtils
 import repositorio.RepositorioUsuarios
-import org.uqbar.xtrest.api.annotation.Body
-import org.uqbar.xtrest.api.annotation.Put
-import eventos.Usuario
-import jsons.JsonUsuario
-import org.uqbar.xtrest.api.annotation.Post
-import java.time.LocalDate
-import org.uqbar.geodds.Point
-import eventos.Invitacion
 
 @Controller
 class PerfilController {
 	Usuario usuarioBuscado
 	extension JSONUtils = new JSONUtils
-	JsonUsuario jsonUsuario
 
-// (usuarioIng.id + usuarioIng.nombreUsuario + usuarioIng.nombreApellido + usuarioIng.tipoDeUsuario.nom).toJson	}
+	// JsonUsuario jsonUsuario
+	// (usuarioIng.id + usuarioIng.nombreUsuario + usuarioIng.nombreApellido + usuarioIng.tipoDeUsuario.nom).toJson	}
 	@Get('/usuarioPerfil/:id')
 	def Result perfil() {
 		val iId = Integer.valueOf(id)
@@ -50,7 +45,7 @@ class PerfilController {
 		try {
 			usuarioBuscado = RepositorioUsuarios.instance.searchById(iId)
 
-		ok(usuarioBuscado.amigos.toJson)
+			ok(usuarioBuscado.amigos.toJson)
 		// ok((RepositorioUsuarios.instance.searchById(iId).toJson))
 		} catch (Exception e) {
 			notFound("No existe el Usuario con id " + id + "")
@@ -106,26 +101,25 @@ class PerfilController {
 	/*Para RECHAZAR INVITACION    Confirmado por postman*/
 	@Put('/rechazarInvitacion/:id')
 	def Result rechazarInvitacion(@Body String body) {
-println(body)
+		println(body)
 
-	val idPerfil = Integer.valueOf(id)
-			val usuarioPerfil = RepositorioUsuarios.instance.searchById(idPerfil)
-			val eventoCerradoNombre = String.valueOf(body.getPropertyValue("unEventoCerrado"))
+		val idPerfil = Integer.valueOf(id)
+		val usuarioPerfil = RepositorioUsuarios.instance.searchById(idPerfil)
+		val eventoCerradoNombre = String.valueOf(body.getPropertyValue("unEventoCerrado"))
 
-			/*	
-			 * 	println(usuarioPerfil)
-			 * 	println(eventoCerradoNombre)
-			 * 	println(usuarioPerfil.id)
-			 * 	println(usuarioPerfil.invitaciones)
-			 * 	println( usuarioPerfil.invitaciones.findFirst [ invit |
-			 * 		invit.nombreDelEvento.equals(eventoCerradoNombre)
-			 * 	])
-			 * 	println(usuarioPerfil.invitaciones.findFirst [ elemento |
-			 * 		elemento.nombreDelEvento.equals(eventoCerradoNombre)
-			 ].toJson)*/
-
+		/*	
+		 * 	println(usuarioPerfil)
+		 * 	println(eventoCerradoNombre)
+		 * 	println(usuarioPerfil.id)
+		 * 	println(usuarioPerfil.invitaciones)
+		 * 	println( usuarioPerfil.invitaciones.findFirst [ invit |
+		 * 		invit.nombreDelEvento.equals(eventoCerradoNombre)
+		 * 	])
+		 * 	println(usuarioPerfil.invitaciones.findFirst [ elemento |
+		 * 		elemento.nombreDelEvento.equals(eventoCerradoNombre)
+		 ].toJson)*/
 		try {
-		
+
 			val unaInvitacion = usuarioPerfil.invitaciones.findFirst [ elemento |
 				elemento.unEventoCerrado.nombre.equals(eventoCerradoNombre)
 			]

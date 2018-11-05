@@ -30,5 +30,9 @@ class TestLocacionBuilder {
 	def void locacionSinNombreDaExcepcion() {
 		salon_Incompleto = new LocacionBuilder().punto(new Point(35, 45)).superficie(16).build
 	}
+	
+	def Locacion obtenerLocacion() {
+		return salon_Incompleto
+	}
 
 }

@@ -1,3 +1,4 @@
+/* FP
 package bootstrap
 import eventos.EventoAbierto
 import eventos.EventoCerrado
@@ -8,10 +9,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.Period
 import org.eclipse.xtend.lib.annotations.Accessors
-
-
 import org.uqbar.commons.applicationContext.ApplicationContext
-
 import repositorio.RepositorioLocaciones
 import repositorio.RepositorioServicios
 import repositorio.RepositorioUsuarios
@@ -23,7 +21,7 @@ import org.uqbar.geodds.Point
 @Accessors
 class Bootstrap 
  {
-/* 
+ 
 	new() {
 		ApplicationContext.instance.configureSingleton(typeof(Locacion), new RepositorioLocaciones)
 		ApplicationContext.instance.configureSingleton(typeof(Usuario), new RepositorioUsuarios)
@@ -253,9 +251,5 @@ def run() {
 		usuario1.aceptarInvitacion(unaInvitacion, 8)
 
 	}
-	
-
-	
-
-*/
 }
+*/

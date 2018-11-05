@@ -10,7 +10,7 @@ import repositorio.Repositorio
 
 abstract class JsonsInterface<T extends Entidad> {
 
-	def void deserializarJson(String _json, Repositorio _repositorio) {
+	def void deserializarJson(String _json, Repositorio<T> _repositorio) {
 		var List<T> elementos = newArrayList
 		var JsonArray jsonArray = Json.parse(_json).asArray()
 		for (JsonValue elemento : jsonArray) {
