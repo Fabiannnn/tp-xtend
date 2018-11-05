@@ -21,36 +21,7 @@ class RepositorioLocaciones extends Repositorio<Locacion> {
 		repoLocaciones
 	}
 
-	new() {
-		// LOCACIONES ##########################################################################################
-		/*val sanMartin1 = new Locacion => [
-			nombre = "San Martin 1"
-			punto = new Point(10.0, 20.0)
-			superficie = 16
-		]
-
-		val sanMartin2 = new Locacion => [
-			nombre = "San Martin 2"
-			punto = new Point(30.0, 40.0)
-			superficie = 2.5
-		]
-
-		val sanMartin3 = new Locacion => [
-			nombre = "San Martin 3"
-			punto = new Point(50.0, 60.0)
-			superficie = 100
-		]
-
-		val salonCompleto = new Locacion => [
-			nombre = "Salon Completo"
-			punto = new Point(70.0, 80.0)
-			superficie = 16
-		]
-
-		repoLocaciones.create(sanMartin1)
-		repoLocaciones.create(sanMartin2)
-		repoLocaciones.create(sanMartin3)
-		repoLocaciones.create(salonCompleto)*/
+	new() {	
 	}
 
 	override void recibirListaActualizacionJson(List<Locacion> locaciones) {

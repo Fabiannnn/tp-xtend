@@ -5,6 +5,7 @@ import controller.PerfilController
 import controller.AgendaController
 import org.eclipse.xtend.lib.annotations.Accessors
 import app.DatosIniciales
+import controller.OrganizarEventosController
 
 @Accessors
 class EventoOSApp {
@@ -12,7 +13,7 @@ class EventoOSApp {
 	def static void main(String[] args) {
 
 
-		XTRest.start(9000, PerfilController, AgendaController)
+		XTRest.start(9000, PerfilController, AgendaController,OrganizarEventosController)
 	}
 
 }

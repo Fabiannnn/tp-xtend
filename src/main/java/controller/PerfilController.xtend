@@ -13,6 +13,8 @@ import org.uqbar.xtrest.api.annotation.Post
 import java.time.LocalDate
 import org.uqbar.geodds.Point
 import eventos.Invitacion
+import java.util.List
+import java.util.Set
 
 @Controller
 class PerfilController {
@@ -50,7 +52,7 @@ class PerfilController {
 		try {
 			usuarioBuscado = RepositorioUsuarios.instance.searchById(iId)
 
-		ok(usuarioBuscado.amigos.toJson)
+		ok(usuarioBuscado.amigos.sortBy[nombreApellido].toJson)
 		// ok((RepositorioUsuarios.instance.searchById(iId).toJson))
 		} catch (Exception e) {
 			notFound("No existe el Usuario con id " + id + "")
@@ -94,7 +96,10 @@ class PerfilController {
 		val iId = Integer.valueOf(id)
 		try {
 			usuarioBuscado = RepositorioUsuarios.instance.searchById(iId)
-			// println(usuarioBuscado.invitaciones.filter[invitacion|invitacion.aceptada === null].toList.toJson)
+			//estos println son para chequear por consola el estado de las invitaciones segun lo que se pida desde angular
+			 println("<<<<<    Rechazadas   >>>>>>\n" +usuarioBuscado.invitaciones.filter[invitacion|invitacion.aceptada ===false].toList.toJson)			
+			 println("<<<<<    Aceptadas   >>>>>>\n" +usuarioBuscado.invitaciones.filter[invitacion|invitacion.aceptada ===true].toList.toJson)
+			 println("<<<<<    Pendientes   >>>>>>\n"+ usuarioBuscado.invitaciones.filter[invitacion|invitacion.aceptada === null].toList.toJson)
 			ok(usuarioBuscado.invitaciones.filter[invitacion|invitacion.aceptada === null].toList.toJson)
 
 		} catch (Exception e) {
@@ -137,5 +142,38 @@ println(body)
 			badRequest(e.message)
 		}
 	}
+/*Para Aceptar INVITACION    */
+	@Put('/aceptarInvitacion/:id')
+	def Result aceptarInvitacion(@Body String body) {
+println("<<<<<< body aceptar invitacion >>>>\n" + body)
 
+	val idPerfil = Integer.valueOf(id)
+			val usuarioPerfil = RepositorioUsuarios.instance.searchById(idPerfil)
+			val eventoCerradoNombre = String.valueOf(body.getPropertyValue("unEventoCerrado"))
+			val cantidadDeAcompanantesConfirmados = Integer.valueOf(body.getPropertyValue("cantidadDeAcompanantesConfirmados"))
+			/*	
+			 * 	println(usuarioPerfil)
+			 * 	println(eventoCerradoNombre)
+			 * 	println(usuarioPerfil.id)
+			 * 	println(usuarioPerfil.invitaciones)
+			 * 	println( usuarioPerfil.invitaciones.findFirst [ invit |
+			 * 		invit.nombreDelEvento.equals(eventoCerradoNombre)
+			 * 	])
+			 * 	println(usuarioPerfil.invitaciones.findFirst [ elemento |
+			 * 		elemento.nombreDelEvento.equals(eventoCerradoNombre)
+			 ].toJson)*/
+
+		try {
+		
+			val unaInvitacion = usuarioPerfil.invitaciones.findFirst [ elemento |
+				elemento.unEventoCerrado.nombre.equals(eventoCerradoNombre)
+			]
+			println(unaInvitacion)
+
+			unaInvitacion.verificaAceptacion(usuarioPerfil, cantidadDeAcompanantesConfirmados)
+			ok('{ "status" : "OK" }');
+		} catch (Exception e) {
+			badRequest(e.message)
+		}
+	}
 }

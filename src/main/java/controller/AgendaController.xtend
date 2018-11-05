@@ -9,6 +9,7 @@ import org.uqbar.xtrest.api.Result
 import repositorio.RepositorioUsuarios
 import eventos.Evento
 import java.util.Set
+import repositorio.RepositorioLocaciones
 
 @Controller
 class AgendaController {
@@ -17,6 +18,7 @@ class AgendaController {
 	extension JSONUtils = new JSONUtils
 	JsonUsuario jsonUsuario
 	Usuario usuarioBuscado
+
 
 	@Get('/agendaHoy/:id')
 	def Result agendaHoy() {

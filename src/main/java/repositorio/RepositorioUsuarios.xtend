@@ -17,6 +17,7 @@ import java.time.LocalDateTime
 import java.time.Period
 import eventos.Entrada
 import eventos.Invitacion
+import repositorio.RepositorioLocaciones
 
 @Accessors
 //@TransactionalAndObservable
@@ -31,6 +32,8 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 		}
 		repoUsuarios
 	}
+
+RepositorioLocaciones repoLocaciones
 
 	new() {
 		val usuario1 = new Usuario => [
@@ -61,7 +64,7 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 		val usuario4 = new Usuario => [
 			nombreUsuario = "manolito"
 			email = "email4"
-			nombreApellido = "manolito otro"
+			nombreApellido = "aaamanolito otro"
 			fechaNacimiento = LocalDate.of(2002, 05, 15)
 			punto = new Point(40.0, 50.0)
 		]
@@ -103,20 +106,24 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 
 		val salon_SM = new Locacion => [
 			nombre = "San Martin"
-			punto = new Point(35, 45)
+			punto = new Point(35.0, 45.0)
 			superficie = 16
 		]
 		val salon_2 = new Locacion => [
 			nombre = "San Martin 2"
-			punto = new Point(35, 65)
+			punto = new Point(35.5, 65.9)
 			superficie = 45
 		]
 		val salon_3 = new Locacion => [
 			nombre = "salon_3"
-			punto = new Point(35, 65)
+			punto = new Point(35.3, 65.2)
 			superficie = 100
 		]
 
+		RepositorioLocaciones.instance.create(salon_SM)
+		RepositorioLocaciones.instance.create(salon_2)
+		RepositorioLocaciones.instance.create(salon_3)
+		
 		val reunionProyecto = new EventoAbierto => [
 			nombre = "Reunion Personal"
 			organizador = usuario1
@@ -141,9 +148,9 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 			nombre = "Reunion Chica"
 			organizador = usuario1
 			locacion = salon_3
-			fechaDeInicio = LocalDateTime.now()
+			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(1))
 			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
-			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(-1))
+			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(0))
 			capacidadMaxima = 10
 		]
 		val otroEvento = new EventoCerrado => [

@@ -19,32 +19,16 @@ import servicios.Servicio
 import org.uqbar.commons.model.CollectionBasedRepo
 import org.uqbar.commons.model.Entity
 import org.uqbar.geodds.Point
+import org.uqbar.arena.bootstrap.CollectionBasedBootstrap
 
 @Accessors
-class Bootstrap 
- {
-/* 
+class Bootstrap {
+
 	new() {
 		ApplicationContext.instance.configureSingleton(typeof(Locacion), new RepositorioLocaciones)
 		ApplicationContext.instance.configureSingleton(typeof(Usuario), new RepositorioUsuarios)
 		ApplicationContext.instance.configureSingleton(typeof(Servicio), new RepositorioServicios)
-	}
-	
-	override protected getCriterio(T example) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-		override protected getCriterio(T example) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-	override getEntityType() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
 
-	override createExample() {
-throw new UnsupportedOperationException("TODO: auto-generated method stub")
-}	
-
-def run() {
 		// LOCACIONES ##########################################################################################
 		val RepoLocaciones = ApplicationContext.instance.getSingleton(typeof(Locacion)) as RepositorioLocaciones
 
@@ -255,7 +239,4 @@ def run() {
 	}
 	
 
-	
-
-*/
 }

@@ -4,17 +4,20 @@ import excepciones.EventoException
 import org.eclipse.xtend.lib.annotations.Accessors
 //import org.uqbar.commons.model.annotations.TransactionalAndObservable
 import org.uqbar.geodds.Point
+import com.fasterxml.jackson.annotation.JsonIgnore
+
 //import org.uqbar.commons.model.annotations.Dependencies
 
 @Accessors
 //@TransactionalAndObservable
 class Locacion implements Entidad {
-
-	String nombre
-	public Point punto = new Point(0.0, 0.0)
-	double superficie
-	val personasPorMetroCuadrado = 0.8
 	int id
+	String nombre
+	
+	@JsonIgnore public Point punto = new Point(0.0, 0.0)
+	@JsonIgnore double superficie
+	@JsonIgnore val personasPorMetroCuadrado = 0.8
+
 
 
 

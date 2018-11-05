@@ -45,32 +45,48 @@ abstract class Evento {
 
 	abstract def int cantidadAsistentes() // agregado para eventos abiertos entradas vendidas vigentes y cerrados posibles asistentes
 
-	@JsonProperty("usuarioOrganizador")
+	def formatterTiempo() {
+		DateTimeFormatter.ofPattern(TIME_DATE_PATTERN)
+	}
+
+	def formatter() {
+		DateTimeFormatter.ofPattern(DATE_PATTERN)
+	}
+
+	def asignarFechaLimiteConfirmacion(String fecha) {
+		this.fechaLimiteConfirmacion = LocalDate.parse(fecha, formatter)
+	}
+
+	def asignarFechaDeInicio(String fecha) {
+		this.fechaDeInicio = LocalDateTime.parse(fecha, formatterTiempo)
+	}
+
+	def asignarFechaFinalizacion(String fecha) {
+		this.fechaFinalizacion = LocalDateTime.parse(fecha, formatterTiempo)
+	}
+
+
+@JsonProperty("usuarioOrganizador")
 	def String getOrganizadoPor() {
 
 		organizador.nombreApellido
 	}
 
-	@JsonProperty("locacionNombre")
+@JsonProperty("locacionNombre")
 	def String getLocacionNombre() {
 		locacion.nombre
 	}
 
-	@JsonProperty("fechaDeInicio")
+@JsonProperty("fechaDeInicio")
 	def getTiempoFechaAsString() {
 		formatterTiempo.format(this.fechaDeInicio)
 	}
 
-	@JsonProperty("fechaLimiteConfirmacion")
+@JsonProperty("fechaLimiteConfirmacion")
 	def getFechaAsString() {
 		formatter.format(this.fechaLimiteConfirmacion)
 	}
-	def formatterTiempo() {
-		DateTimeFormatter.ofPattern(TIME_DATE_PATTERN)
-	}
-	def formatter() {
-		DateTimeFormatter.ofPattern(DATE_PATTERN)
-	}
+
 
 
 
@@ -119,7 +135,7 @@ abstract class Evento {
 	}
 
 	def boolean validarFechas() {
-		if (!((fechaLimiteConfirmacion < LocalDate.from(fechaDeInicio)) && (fechaDeInicio < fechaFinalizacion))) {
+		if (!((fechaLimiteConfirmacion <= LocalDate.from(fechaDeInicio)) && (fechaDeInicio < fechaFinalizacion))) {
 			throw new EventoException("Fechas del evento Inconsistentes")
 		} else {
 			true
@@ -136,7 +152,7 @@ abstract class Evento {
 		}
 	}
 
-	abstract def boolean usuariosCercanosAlEvento(Usuario usuario)
+abstract def boolean usuariosCercanosAlEvento(Usuario usuario)
 
 	override toString() {
 		nombre
