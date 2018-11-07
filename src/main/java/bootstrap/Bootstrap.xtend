@@ -270,21 +270,22 @@ class Bootstrap extends CollectionBasedBootstrap {
 		// otroEvento.fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(-1))
 		// reunionChica.fechaDeInicio = LocalDateTime.now()
 		// cumple.comprarEntrada(usuario3)
+		
 		// FP quintoEvento.comprarEntrada(usuario1)
 		val invitacion = new Invitacion(cuartoEvento, usuario1, 3)
 		usuario1.recibirInvitacion(invitacion)
 
 		val invitacion2 = new Invitacion(tercerEvento, usuario1, 0)
+		
 		usuario1.recibirInvitacion(invitacion2)
 //		usuario1.aceptarInvitacion(invitacion2, 2)
-
 		// val invitacion3 = new Invitacion(cuartoEvento, usuario1, 5)
 		// usuario1.recibirInvitacion(invitacion3)
 		val invitacion7 = new Invitacion(reunionGrande, usuario1, 2)
 		usuario1.recibirInvitacion(invitacion7)
 //Usuario1 invita a evento reunionChica Aceptan Rechazan y pendiente
 		val invitacion4 = new Invitacion(reunionChica, usuario2, 10)
-		
+
 		usuario2.recibirInvitacion(invitacion4)
 		usuario2.aceptarInvitacion(invitacion4, 2)
 		// usuario2.invitaciones.last.aceptada = true
@@ -301,13 +302,13 @@ class Bootstrap extends CollectionBasedBootstrap {
 		reunionProyecto.comprarEntrada(usuario5)
 		reunionProyecto.comprarEntrada(usuario3)
 		reunionProyecto.comprarEntrada(usuario2)
-		
+
 		otroEvento.crearInvitacion(usuario2, 3)
-		usuario2.invitaciones.last.aceptada=true
+		usuario2.invitaciones.last.aceptada = true
 		otroEvento.crearInvitacion(usuario3, 4)
-		usuario3.invitaciones.last.aceptada=false
+		usuario3.invitaciones.last.aceptada = false
 		otroEvento.crearInvitacion(usuario4, 5)
-	//	usuario4.invitaciones.last.aceptada= false
+	// usuario4.invitaciones.last.aceptada= false
 //		
 //		val reunionAbierta1 = new EventoAbierto => [
 //			nombre = "Evento Abierto 1"
