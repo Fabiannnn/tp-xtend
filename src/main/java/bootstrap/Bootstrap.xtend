@@ -125,7 +125,7 @@ class Bootstrap extends CollectionBasedBootstrap {
 			fechaNacimiento = LocalDate.of(2002, 05, 15)
 			punto = new Point(40.0, 50.0)
 		]
-
+		/*
 		val usuario7 = new Usuario => [
 			nombreUsuario = "ArgPep"
 			email = "email1"
@@ -158,7 +158,7 @@ class Bootstrap extends CollectionBasedBootstrap {
 			fechaNacimiento = LocalDate.of(2002, 05, 15)
 			punto = new Point(40.0, 50.0)
 		]
-
+		 */
 		usuario1.setUsuarioProfesional()
 		usuario2.setUsuarioProfesional()
 		usuario3.setUsuarioProfesional()

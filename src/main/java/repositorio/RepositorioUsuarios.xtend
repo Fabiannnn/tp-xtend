@@ -3,17 +3,17 @@ package repositorio
 import eventos.Evento
 import eventos.EventoAbierto
 import eventos.EventoCerrado
-import eventos.Invitacion
+//import eventos.Invitacion
 import eventos.Locacion
 import eventos.Usuario
 import java.time.LocalDate
-import java.time.LocalDateTime
+//import java.time.LocalDateTime
 import java.time.Period
 import java.util.List
 import java.util.Set
 import jsons.JsonUsuario
 import org.eclipse.xtend.lib.annotations.Accessors
-import org.uqbar.geodds.Point
+//import org.uqbar.geodds.Point
 
 @Accessors
 //@TransactionalAndObservable

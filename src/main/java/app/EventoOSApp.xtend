@@ -6,8 +6,8 @@ import controller.PerfilController
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.xtrest.api.XTRest
 import controller.EventoController
-import org.uqbar.commons.model.application.Application
-import org.uqbar.commons.model.Entity
+//import org.uqbar.commons.model.application.Application
+//import org.uqbar.commons.model.Entity
 import bootstrap.Bootstrap
 
 @Accessors

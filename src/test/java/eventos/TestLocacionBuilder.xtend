@@ -8,7 +8,7 @@ import excepciones.EventoException
 
 class TestLocacionBuilder {
 	Locacion salon_SM
-	Locacion salon_Incompleto
+	Locacion salonIncompleto
 
 	@Before
 	def void init() {
@@ -23,12 +23,12 @@ class TestLocacionBuilder {
 
 	@Test(expected=EventoException)
 	def void locacionSinUbicacionDaExcepcion() {
-		salon_Incompleto = new LocacionBuilder().nombre("San Martin").superficie(16).build
+		salonIncompleto = new LocacionBuilder().nombre("San Martin").superficie(16).build
 	}
 
 	@Test(expected=EventoException)
 	def void locacionSinNombreDaExcepcion() {
-		salon_Incompleto = new LocacionBuilder().punto(new Point(35, 45)).superficie(16).build
+		salonIncompleto = new LocacionBuilder().punto(new Point(35, 45)).superficie(16).build
 	}
 
 }

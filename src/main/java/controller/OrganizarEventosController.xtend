@@ -1,8 +1,8 @@
 package controller
 
 import eventos.EventoCerrado
-import eventos.Usuario
-import jsons.JsonUsuario
+//import eventos.Usuario
+//import jsons.JsonUsuario
 import org.uqbar.xtrest.api.Result
 import org.uqbar.xtrest.api.annotation.Body
 import org.uqbar.xtrest.api.annotation.Controller
