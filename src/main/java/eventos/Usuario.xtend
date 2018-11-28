@@ -22,6 +22,7 @@ import java.time.format.DateTimeFormatter
 @TransactionalAndObservable
 class Usuario implements Entidad {
 	static String DATE_PATTERN = "dd/MM/yyyy"
+	static int idEvento = 0
 	String nombreUsuario
 	String nombreApellido
 	String email
@@ -44,12 +45,11 @@ class Usuario implements Entidad {
 		#[new UsuarioFree, new UsuarioAmateur, new UsuarioProfesional]
 	}
 
-	
 	@JsonProperty("fechaNacimiento")
 	def getFechaAsString() {
 		formatter.format(this.fechaNacimiento)
 	}
-	
+
 	@Dependencies("ubicacion")
 	def double getPuntoX() { punto.latitude }
 
@@ -100,8 +100,6 @@ class Usuario implements Entidad {
 	def boolean fanDeUnArtista(String artista) {
 		fanArtistas.exists[artistaUsuario|artistaUsuario.equals(artista)]
 	}
-
-
 
 	def asignarFecha(String fecha) {
 		this.fechaNacimiento = LocalDate.parse(fecha, formatter)
@@ -167,6 +165,8 @@ class Usuario implements Entidad {
 		if (unEventoAbierto.validarDatosEvento()) {
 			if (tipoDeUsuario.puedoOrganizarElEventoAbierto(this, unEventoAbierto)) {
 				unEventoAbierto.organizador = this
+				unEventoAbierto.id = idEvento + 1
+				idEvento++
 				unEventoAbierto.notificar()
 				eventosOrganizados.add(unEventoAbierto)
 
@@ -339,11 +339,11 @@ class Usuario implements Entidad {
 	override boolean filtroPorTexto(String cadena) {
 		nombreApellido.contains(cadena) || nombreUsuario.contentEquals(cadena)
 	}
-	
+
 	def invitacionesVigentes() {
-		invitaciones.filter[invitacion | (invitacion.estaPendiente()) ]//&& (invitacion.fechaParaConfirmar()))
+		invitaciones.filter[invitacion|(invitacion.estaPendiente())] // && (invitacion.fechaParaConfirmar()))
 	}
-	
+
 }
 
 interface TipoDeUsuario {

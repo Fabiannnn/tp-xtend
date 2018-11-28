@@ -168,4 +168,16 @@ class PerfilController {
 			badRequest(e.message)
 		}
 	}
+	
+	/* REACT */
+	@Get('/usuario/:id')
+	def Result usuarioLogueado() {
+		val iId = Integer.valueOf(id)
+		try {
+			usuarioBuscado = RepositorioUsuarios.instance.searchById(iId)
+			ok(usuarioBuscado.toJson)
+		} catch (Exception e) {
+			notFound("No existe el Usuario con id " + id + "")
+		}
+	}
 }

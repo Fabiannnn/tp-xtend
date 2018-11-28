@@ -13,8 +13,8 @@ import java.util.List
 import java.util.Set
 import jsons.JsonUsuario
 import org.eclipse.xtend.lib.annotations.Accessors
-//import org.uqbar.geodds.Point
 
+//import org.uqbar.geodds.Point
 @Accessors
 //@TransactionalAndObservable
 class RepositorioUsuarios extends Repositorio<Usuario> {
@@ -30,9 +30,7 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 	}
 
 //	RepositorioLocaciones repoLocaciones
-
 	new() {
-		
 //		
 //		val salon_SM = new Locacion => [
 //			nombre = "San Martin"
@@ -380,5 +378,25 @@ class RepositorioUsuarios extends Repositorio<Usuario> {
 	def Set<Evento> buscarEventosCerradosUsuario(int _id) {
 		val eventos = elementos.findFirst[elemento|elemento.getId() == _id].eventosOrganizados
 		return eventos.filter[evento|evento instanceof EventoCerrado].toSet
+	}
+
+	/* REACT OBTENEMOS TODOS LOS EVENTOS ABIERTOS. */
+	def List<Evento> todosLosEventosOrganizadosAbiertos() {
+		val eventos = elementos.map(elemento|elemento.eventosOrganizados).flatten().toList()
+		return eventos.filter[evento|evento instanceof EventoAbierto].toList()
+	}
+
+	def eventosConArtistasFavoritos(List<Evento> eventos, Usuario usuario) {
+		eventos.filter(evento|evento.artistas.exists(artista | usuario.fanArtistas.contains(artista))).toSet()
+	}
+
+	/*
+	def eventosConAmigos(List<Evento> eventos, Usuario usuario) {
+		eventos.filter(evento|evento.entradas.exists(amigo | amigo.unUsuario.esMiAmigo(usuario))).toSet()
+	}
+	 */
+	 
+	def eventosRadioCercania(List<Evento> eventos, Usuario usuario) {
+		eventos.filter(evento|evento.usuariosCercanosAlEvento(usuario)).toSet()
 	}
 }

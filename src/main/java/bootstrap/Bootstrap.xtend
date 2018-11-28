@@ -32,19 +32,19 @@ class Bootstrap extends CollectionBasedBootstrap {
 		// val RepoLocaciones = ApplicationContext.instance.getSingleton(typeof(Locacion)) as RepositorioLocaciones
 		val sanMartin1 = new Locacion => [
 			nombre = "Calesita"
-			punto = new Point(10.0, 20.0)
+			punto = new Point(40.0, 50.0)
 			superficie = 16
 		]
 
 		val sanMartin2 = new Locacion => [
 			nombre = "La Estacion"
-			punto = new Point(30.0, 40.0)
+			punto = new Point(40.0, 50.0)
 			superficie = 2.5
 		]
 
 		val sanMartin3 = new Locacion => [
 			nombre = "M&M"
-			punto = new Point(50.0, 60.0)
+			punto = new Point(40.0, 50.0)
 			superficie = 100
 		]
 
@@ -79,12 +79,14 @@ class Bootstrap extends CollectionBasedBootstrap {
 
 		// USUARIOS #######################################################################################
 		// val repoUsuarios = ApplicationContext.instance.getSingleton(typeof(Usuario)) as RepositorioUsuarios
+		/* USUARIO USAR PARA REACT EL USUARIO1 */
 		val usuario1 = new Usuario => [
-			nombreUsuario = "Felipe"
-			email = "Felipe_Quino@qwe.com"
-			nombreApellido = "Felipe no se"
+			nombreUsuario = "Pepe"
+			email = "pepe@gmail.com"
+			nombreApellido = "Sapo"
 			fechaNacimiento = LocalDate.of(1950, 05, 15)
 			punto = new Point(40.0, 50.0)
+			saldoCuenta = 568.56
 		]
 
 		val usuario2 = new Usuario => [
@@ -92,7 +94,7 @@ class Bootstrap extends CollectionBasedBootstrap {
 			email = "mafaldita@asd.org"
 			nombreApellido = "Mario Argentina"
 			fechaNacimiento = LocalDate.of(1900, 04, 02)
-			punto = new Point(45.0, 60.0)
+			punto = new Point(0, 0)
 		]
 
 		val usuario3 = new Usuario => [
@@ -184,22 +186,22 @@ class Bootstrap extends CollectionBasedBootstrap {
 		val reunionProyecto = new EventoAbierto => [
 			nombre = "Reunion Personal"
 			organizador = usuario1
-			locacion = salon_SM
 			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(3))
 			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(4))
 			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(2))
 			edadMinima = 17
 			precioEntrada = 100
+			locacion = sanMartin1
 		]
 		val cumple = new EventoAbierto => [
 			nombre = "cumple"
-			organizador = usuario3
-			locacion = salon_3
+			organizador = usuario1
 			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(5))
 			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(6))
 			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(3))
 			edadMinima = 1
 			precioEntrada = 200
+			locacion = sanMartin2
 		]
 		val reunionChica = new EventoCerrado => [
 			nombre = "Reunion Chica"
@@ -250,13 +252,13 @@ class Bootstrap extends CollectionBasedBootstrap {
 
 		val quintoEvento = new EventoAbierto => [
 			nombre = "jeje Proyecto"
-			organizador = usuario4
-			locacion = salon_SM
+			organizador = usuario1
 			fechaDeInicio = LocalDateTime.now().plus(Period.ofDays(2))
 			fechaFinalizacion = LocalDateTime.now().plus(Period.ofDays(3))
 			fechaLimiteConfirmacion = LocalDate.now().plus(Period.ofDays(1))
 			edadMinima = 1
 			precioEntrada = 30
+			locacion = sanMartin3
 		]
 
 		usuario1.organizarEventoAbierto(reunionProyecto)

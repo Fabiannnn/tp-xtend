@@ -21,6 +21,7 @@ import java.time.Period
 abstract class Evento {
 	static String DATE_PATTERN = "dd/MM/yyyy"
 	static String TIME_DATE_PATTERN = "dd/MM/yyyy HH:mm"
+	int id
 	String nombre
 	@JsonIgnore Usuario organizador
 	@JsonIgnore LocalDateTime fechaDeInicio
@@ -84,6 +85,11 @@ abstract class Evento {
 	@JsonProperty("fechaLimiteConfirmacion")
 	def getFechaAsString() {
 		formatter.format(this.fechaLimiteConfirmacion)
+	}
+	
+	@JsonProperty("fechaFinalizacion")
+	def getFechaFinAsString() {
+		formatter.format(this.fechaFinalizacion)
 	}
 
 	def double duracion() {
